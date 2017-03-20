@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Trips android</string>
+    <string name="search_box_placeholder">Search</string>
 </resources>
