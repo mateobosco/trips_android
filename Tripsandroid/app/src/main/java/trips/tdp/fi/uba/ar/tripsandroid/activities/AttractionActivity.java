@@ -31,6 +31,11 @@ public class AttractionActivity extends AppCompatActivity {
         t.setText(attraction.getDescription());
         t = (TextView)findViewById(R.id.attractionScheduleTimeTextView);
         t.setText(attraction.getSchedule());
+        t = (TextView)findViewById(R.id.attractionAverageTimeTextView);
+        t.setText(Integer.toString(attraction.getAverageTime()));
+        t = (TextView)findViewById(R.id.attractionCostTextView);
+        t.setText("$ " + Float.toString(attraction.getCost()));
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
