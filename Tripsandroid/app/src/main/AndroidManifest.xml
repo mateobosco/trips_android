@@ -9,13 +9,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ListCities">
+        </activity>
+        <activity android:name=".ListAtractions" />
+
+        <activity
+            android:name=".activities.AttractionActivity"
+            android:label="@string/title_activity_attraction"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListAtractions"></activity>
     </application>
 
 </manifest>
