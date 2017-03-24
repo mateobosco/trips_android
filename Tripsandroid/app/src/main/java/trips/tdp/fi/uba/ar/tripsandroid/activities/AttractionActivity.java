@@ -32,7 +32,7 @@ public class AttractionActivity extends AppCompatActivity {
         t = (TextView)findViewById(R.id.attractionScheduleTimeTextView);
         t.setText(attraction.getSchedule());
         t = (TextView)findViewById(R.id.attractionAverageTimeTextView);
-        t.setText(Integer.toString(attraction.getAverageTime()));
+        t.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
         t = (TextView)findViewById(R.id.attractionCostTextView);
         t.setText("$ " + Float.toString(attraction.getCost()));
 
@@ -42,7 +42,7 @@ public class AttractionActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Marcado como favorito", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

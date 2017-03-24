@@ -1,6 +1,10 @@
 package trips.tdp.fi.uba.ar.tripsandroid;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
+import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 /**
  * Created by joako on 19/3/17.
@@ -24,5 +28,20 @@ public class BackEndClient {
         a.setScheduleTime("Lu-Do 9:00 - 18:00");
 
         return a;
+    }
+
+    public City getCity(){
+        City city = new City("Paris");
+        city.setAttractions(this.getAttractions());
+        return city;
+    }
+
+    public ArrayList<Attraction> getAttractions(){
+        ArrayList<Attraction> attractions = new ArrayList<>();
+        attractions.add(this.getAttraction());
+        attractions.add(this.getAttraction());
+        attractions.add(this.getAttraction());
+        attractions.add(this.getAttraction());
+        return attractions;
     }
 }

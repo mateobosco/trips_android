@@ -1,5 +1,6 @@
 package trips.tdp.fi.uba.ar.tripsandroid.model;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -9,7 +10,23 @@ import java.util.Set;
 public class City {
 
     private String name;
-    private Set<Attraction> attractions;
+    private ArrayList<Attraction> attractions;
+
+    public City(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public void setAttractions(ArrayList<Attraction> attractions){
+        this.attractions = attractions;
+    }
+
+    public ArrayList<Attraction> getAttractions(){
+        return this.attractions;
+    }
 
 
 }
