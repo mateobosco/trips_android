@@ -1,5 +1,11 @@
 package trips.tdp.fi.uba.ar.tripsandroid;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -12,7 +18,36 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 public class BackEndClient {
 
+    private String baseUrl;
+
+
+    public BackEndClient() {
+        this.baseUrl = new String("localhost:8080/TripsWebApp/");
+    }
+
+
     public String[] getCitiesNames(){
+
+        URL url = null;
+        HttpURLConnection urlConnection;
+        try {
+            url = new URL(this.baseUrl + "cities.json");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            try {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            } finally {
+                urlConnection.disconnect();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
         return new String[] {
                 "Paris", "Roma", "Venecia", "Krakovia", "Mardel","Buenos Aires",
                 "New York", "Londres", "Sao paulo", "Valencia","Madrid", "Barcelona"
