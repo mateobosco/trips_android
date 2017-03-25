@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
@@ -15,6 +17,8 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 public class AttractionActivity extends AppCompatActivity {
 
     private Attraction attraction;
+    private BackEndClient backEndClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +27,7 @@ public class AttractionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        BackEndClient backEndClient = new BackEndClient();
+        backEndClient = new BackEndClient();
         attraction = backEndClient.getAttraction();
         setTitle(attraction.getName());
 

@@ -1,5 +1,20 @@
 package trips.tdp.fi.uba.ar.tripsandroid;
 
+import android.content.Context;
+import android.util.Log;
+
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
@@ -17,36 +32,57 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.City;
  */
 
 public class BackEndClient {
+    private static final String TAG = "BackEndClient";
 
     private String baseUrl;
 
 
     public BackEndClient() {
-        this.baseUrl = new String("localhost:8080/TripsWebApp/");
+        this.baseUrl = new String("http://10.0.2.2:8080/TripsWebApp/");
     }
 
 
-    public String[] getCitiesNames(){
+    public String[] getCitiesNames(Context context) {
+        /*// Instantiate the RequestQueue.
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url =this.baseUrl + "cities.json";
+        url = "https://raw.githubusercontent.com/nlohmann/json/develop/test/data/json.org/1.json";
 
-        URL url = null;
-        HttpURLConnection urlConnection;
+        // Request a string response from the provided URL.
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, future, future);
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, future, future);
+        // Add the request to the RequestQueue.
+        queue.add(request);
         try {
-            url = new URL(this.baseUrl + "cities.json");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        try {
-            urlConnection = (HttpURLConnection) url.openConnection();
-            try {
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            } finally {
-                urlConnection.disconnect();
+            JSONObject response = future.get();
+        } catch (InterruptedException e) {
+        } catch (ExecutionException e) {
+        }*/
+
+
+
+// Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url =this.baseUrl + "cities.json";
+//        url ="http://www.google.com"
+        Log.d("url", url);
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        Log.d("exito", "Response is: "+ response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("fracaso", "fracaso");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
 
         return new String[] {
                 "Paris", "Roma", "Venecia", "Krakovia", "Mardel","Buenos Aires",

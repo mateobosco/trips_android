@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
+
 public class ListCities extends AppCompatActivity {
     private BackEndClient backEndClient;
 
@@ -30,7 +32,12 @@ public class ListCities extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.list);
 
-        String[] values = backEndClient.getCitiesNames();
+        String[] values = new String[0];
+        values = backEndClient.getCitiesNames(this);
+        values = new String[] {
+                "Paris", "Roma", "Venecia", "Krakovia", "Mardel","Buenos Aires",
+                "New York", "Londres", "Sao paulo", "Valencia","Madrid", "Barcelona"
+        };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);
