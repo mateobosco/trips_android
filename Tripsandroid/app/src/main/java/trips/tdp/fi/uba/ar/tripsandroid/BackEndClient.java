@@ -42,52 +42,15 @@ public class BackEndClient {
     }
 
 
-    public String[] getCitiesNames(Context context) {
-        /*// Instantiate the RequestQueue.
-        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+    public void getCities(Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
+        // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String url =this.baseUrl + "cities.json";
-        url = "https://raw.githubusercontent.com/nlohmann/json/develop/test/data/json.org/1.json";
-
-        // Request a string response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, future, future);
-//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, future, future);
-        // Add the request to the RequestQueue.
-        queue.add(request);
-        try {
-            JSONObject response = future.get();
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
-        }*/
-
-
-
-// Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String url =this.baseUrl + "cities.json";
-//        url ="http://www.google.com"
         Log.d("url", url);
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        Log.d("exito", "Response is: "+ response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("fracaso", "fracaso");
-            }
-        });
-// Add the request to the RequestQueue.
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+        // Add the request to the RequestQueue.
         queue.add(stringRequest);
-
-        return new String[] {
-                "Paris", "Roma", "Venecia", "Krakovia", "Mardel","Buenos Aires",
-                "New York", "Londres", "Sao paulo", "Valencia","Madrid", "Barcelona"
-        };
     }
 
     public Attraction getAttraction(){
