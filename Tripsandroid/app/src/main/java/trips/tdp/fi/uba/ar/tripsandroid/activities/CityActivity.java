@@ -1,7 +1,10 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -22,5 +25,15 @@ public class CityActivity extends AppCompatActivity {
         BackEndClient client = new BackEndClient();
         this.city = client.getCity();
         this.setTitle(city.getName());
+
+
+        ImageButton imageButton = (ImageButton) findViewById(R.id.attractionsImageButton);
+        imageButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),AttractionListActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }
