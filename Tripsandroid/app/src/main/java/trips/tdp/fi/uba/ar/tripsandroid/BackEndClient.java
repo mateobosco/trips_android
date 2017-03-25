@@ -5,6 +5,7 @@ import java.util.Set;
 
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
+import trips.tdp.fi.uba.ar.tripsandroid.model.Country;
 
 /**
  * Created by joako on 19/3/17.
@@ -31,7 +32,8 @@ public class BackEndClient {
     }
 
     public City getCity(){
-        City city = new City("Paris");
+        Country country = new Country("Francia");
+        City city = new City("Paris", country);
         city.setAttractions(this.getAttractions());
         return city;
     }
