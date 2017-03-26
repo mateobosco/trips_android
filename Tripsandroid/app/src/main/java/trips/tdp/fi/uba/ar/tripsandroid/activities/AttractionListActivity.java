@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class AttractionListActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Attraction> filteredModelList;
+    private EditText searchEditBox;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -58,7 +60,14 @@ public class AttractionListActivity extends AppCompatActivity {
         mAdapter = new AttractionsAdapter(filteredModelList);
         mRecyclerView.setAdapter(mAdapter);
 
-        EditText searchEditBox = (EditText) findViewById(R.id.searchAttractionListEditText);
+        searchEditBox = (EditText) findViewById(R.id.searchAttractionListEditText);
+
+        searchEditBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                searchEditBox.setText("");
+            }
+        });
         searchEditBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
