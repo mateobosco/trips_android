@@ -1,4 +1,4 @@
-package trips.tdp.fi.uba.ar.tripsandroid;
+package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +20,10 @@ import org.json.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ListCities extends AppCompatActivity {
+import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
+import trips.tdp.fi.uba.ar.tripsandroid.R;
+
+public class CityListActivity extends AppCompatActivity {
     private BackEndClient backEndClient;
     private ProgressBar spinner;
     private EditText searchEditBox;
@@ -31,12 +34,12 @@ public class ListCities extends AppCompatActivity {
 
     private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-            Intent intent = new Intent(ListCities.this, ListAtractions.class);
+            Intent intent = new Intent(CityListActivity.this, AttractionListActivity.class);
             startActivity(intent);
         }
     };
 
-    public ListCities() {
+    public CityListActivity() {
         this.backEndClient = new BackEndClient();
     }
 
@@ -83,7 +86,7 @@ public class ListCities extends AppCompatActivity {
 
                     displayableCityNames = cityNames;
 
-                    final ArrayAdapter<String> a = new ArrayAdapter<String>(ListCities.this, android.R.layout.simple_list_item_1, android.R.id.text1, displayableCityNames);
+                    final ArrayAdapter<String> a = new ArrayAdapter<String>(CityListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, displayableCityNames);
 
                     listView.setAdapter(a);
                     spinner.setVisibility(View.GONE);
@@ -121,7 +124,7 @@ public class ListCities extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String query = charSequence.toString();
                 displayableCityNames = filter(cityNames, query);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ListCities.this, android.R.layout.simple_list_item_1, android.R.id.text1, displayableCityNames);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(CityListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, displayableCityNames);
                 listView.setAdapter(adapter);
             }
 

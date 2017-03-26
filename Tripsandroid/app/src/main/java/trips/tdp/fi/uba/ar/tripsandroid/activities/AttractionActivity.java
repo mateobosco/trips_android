@@ -5,10 +5,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.io.IOException;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
@@ -26,6 +32,10 @@ public class AttractionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_attraction);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         backEndClient = new BackEndClient();
         attraction = backEndClient.getAttraction();
@@ -40,7 +50,19 @@ public class AttractionActivity extends AppCompatActivity {
         t = (TextView)findViewById(R.id.attractionCostTextView);
         t.setText("$ " + Float.toString(attraction.getCost()));
 
-
+        MapView mapView = (MapView) findViewById(R.id.attractionMapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap map) {
+                LatLng loc = new LatLng(attraction.getLatitude(), attraction.getLongitude());
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 13));
+                map.addMarker(new MarkerOptions()
+                        .title(attraction.getName())
+                        .snippet(attraction.getSchedule())
+                        .position(loc));
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -50,5 +72,16 @@ public class AttractionActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

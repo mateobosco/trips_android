@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.ImageView;
 
-import trips.tdp.fi.uba.ar.tripsandroid.ListAtractions;
-import trips.tdp.fi.uba.ar.tripsandroid.ListCities;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -29,7 +26,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                Intent intent = new Intent(HomeActivity.this, ListCities.class);
+                Intent intent = new Intent(HomeActivity.this, CityListActivity.class);
                 startActivity(intent);
             }
         }.start();
