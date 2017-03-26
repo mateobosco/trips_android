@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,6 +20,10 @@ import java.util.ArrayList;
 
 public class ListCities extends AppCompatActivity {
     private BackEndClient backEndClient;
+    private ProgressBar spinner;
+    private EditText searchBox;
+    private ListView listView;
+
 
     private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -36,11 +42,17 @@ public class ListCities extends AppCompatActivity {
 
         setContentView(R.layout.activity_list);
 
-        ListView listView = (ListView) findViewById(R.id.list);
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        listView = (ListView) findViewById(R.id.list);
+        searchBox = (EditText) findViewById(R.id.search_box);
+
+        spinner.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.INVISIBLE);
+        searchBox.setVisibility(View.INVISIBLE);
+
 
         String[] values = new String[0];
         values = new String[] {
-                "Cargando las ciudades, aguarde"
         };
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -64,11 +76,14 @@ public class ListCities extends AppCompatActivity {
                         cityNames.add(name);
                     }
 
-                    ListView listView = (ListView) findViewById(R.id.list);
+                    listView = (ListView) findViewById(R.id.list);
 
                     final ArrayAdapter<String> a = new ArrayAdapter<String>(ListCities.this, android.R.layout.simple_list_item_1, android.R.id.text1, cityNames);
 
                     listView.setAdapter(a);
+                    spinner.setVisibility(View.GONE);
+                    listView.setVisibility(View.VISIBLE);
+                    searchBox.setVisibility(View.VISIBLE);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
