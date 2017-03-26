@@ -34,7 +34,7 @@ public class CityListActivity extends AppCompatActivity {
 
     private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-            Intent intent = new Intent(CityListActivity.this, AttractionListActivity.class);
+            Intent intent = new Intent(CityListActivity.this, CityActivity.class);
             startActivity(intent);
         }
     };
