@@ -2,6 +2,7 @@ package trips.tdp.fi.uba.ar.tripsandroid.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,10 +30,10 @@ public class AttractionsAdapter extends RecyclerView.Adapter<AttractionsAdapter.
         public ViewHolder(View v) {
             super(v);
             context = itemView.getContext();
-            mTextView = (TextView) v.findViewById(R.id.info_text);
+            mTextView = (TextView) v.findViewById(R.id.attractionTextView);
 
-            ImageButton imageButton = (ImageButton) v.findViewById(R.id.attractionCardImageButton);
-            imageButton.setOnClickListener(new View.OnClickListener(){
+            CardView cardView = (CardView) v.findViewById(R.id.attractionCardView);
+            cardView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context,AttractionActivity.class);
