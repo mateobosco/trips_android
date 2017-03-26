@@ -17,6 +17,8 @@ import org.json.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class ListCities extends AppCompatActivity {
     private BackEndClient backEndClient;
@@ -77,6 +79,7 @@ public class ListCities extends AppCompatActivity {
                     }
 
                     listView = (ListView) findViewById(R.id.list);
+                    Collections.sort(cityNames);
 
                     final ArrayAdapter<String> a = new ArrayAdapter<String>(ListCities.this, android.R.layout.simple_list_item_1, android.R.id.text1, cityNames);
 
