@@ -15,6 +15,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import java.io.IOException;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
@@ -23,6 +24,8 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 public class AttractionActivity extends AppCompatActivity {
 
     private Attraction attraction;
+    private BackEndClient backEndClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class AttractionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        BackEndClient backEndClient = new BackEndClient();
+        backEndClient = new BackEndClient();
         attraction = backEndClient.getAttraction();
         setTitle(attraction.getName());
 

@@ -28,8 +28,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC8P8vX8F9mdpdH3iqyDvk0IyIGx6r4Lfo" />
 
-
-        <activity android:name=".ListCities" />
+        <activity android:name=".ListCities">
+        </activity>
         <activity android:name=".ListAtractions" />
         <activity
             android:name=".activities.AttractionActivity"
@@ -39,13 +39,16 @@
             android:name=".activities.CityActivity"
             android:label="@string/title_activity_city"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".activities.AttractionListActivity"></activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
