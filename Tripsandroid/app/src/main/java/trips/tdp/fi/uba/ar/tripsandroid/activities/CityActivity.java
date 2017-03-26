@@ -3,6 +3,7 @@ package trips.tdp.fi.uba.ar.tripsandroid.activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
@@ -20,6 +21,7 @@ public class CityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_city);
 
         BackEndClient client = new BackEndClient();
+
         this.city = client.getCity();
         this.setTitle(city.getName());
     }
