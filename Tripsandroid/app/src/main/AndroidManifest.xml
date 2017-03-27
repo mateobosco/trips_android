@@ -28,6 +28,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC8P8vX8F9mdpdH3iqyDvk0IyIGx6r4Lfo" />
 
+        <!--<meta-data-->
+            <!--android:name="com.google.android.maps.v2.API_KEY"-->
+            <!--android:value="AIzaSyC8P8vX8F9mdpdH3iqyDvk0IyIGx6r4Lfo"/>-->
+
         <activity android:name=".activities.CityListActivity"></activity>
         <activity
             android:name=".activities.AttractionActivity"

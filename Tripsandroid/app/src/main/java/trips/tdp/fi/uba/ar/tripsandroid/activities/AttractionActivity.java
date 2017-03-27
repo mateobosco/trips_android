@@ -42,6 +42,7 @@ public class AttractionActivity extends AppCompatActivity {
 
     private Attraction attraction;
     private BackEndClient backEndClient;
+    private MapView mapView;
 
 
     @Override
@@ -60,7 +61,7 @@ public class AttractionActivity extends AppCompatActivity {
         final TextView attractionScheduleTimeTextView = (TextView)findViewById(R.id.attractionScheduleTimeTextView);
         final TextView attractionAverageTimeTextView = (TextView)findViewById(R.id.attractionAverageTimeTextView);
         final TextView attractionCostTextView = (TextView)findViewById(R.id.attractionCostTextView);
-        final MapView mapView = (MapView) findViewById(R.id.attractionMapView);
+        mapView = (MapView) findViewById(R.id.attractionMapView);
         final ImageView attractionActivityImageView = (ImageView) findViewById(R.id.attractionActivityImageView);
         mapView.onCreate(savedInstanceState);
 
@@ -96,7 +97,7 @@ public class AttractionActivity extends AppCompatActivity {
                         @Override
                         public void onMapReady(GoogleMap map) {
                             LatLng loc = new LatLng(attraction.getLatitude(), attraction.getLongitude());
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 13));
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14));
                             map.addMarker(new MarkerOptions()
                                     .title(attraction.getName())
                                     .snippet(attraction.getSchedule())
@@ -144,5 +145,28 @@ public class AttractionActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }
