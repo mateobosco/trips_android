@@ -23,13 +23,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.Country;
 public class BackEndClient {
     private static final String TAG = "BackEndClient";
 
-    private String baseUrl;
-
-
-    public BackEndClient() {
-        this.baseUrl = new String("http://10.0.2.2:8080/TripsWebApp/");
-    }
-
+    public static String baseUrl = "http://10.0.2.2:8080/TripsWebApp/";
 
     public void getCities(Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         // Instantiate the RequestQueue.
@@ -53,38 +47,43 @@ public class BackEndClient {
         return a;
     }
 
-    public City getCity(int cityId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String url =this.baseUrl + "cities/" + cityId + ".json";
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
-        Country country = new Country("Francia");
-        City city = new City(1, "Paris", country);
-        city.setAttractions(this.getAttractions());
-        return city;
-    }
+//    public City getCity(int cityId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+//
+//        RequestQueue queue = Volley.newRequestQueue(context);
+//        String url =this.baseUrl + "cities/" + cityId + ".json";
+//        // Request a string response from the provided URL.
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+//        // Add the request to the RequestQueue.
+//        queue.add(stringRequest);
+//
+//        Country country = new Country("Francia");
+//        City city = new City(1, "Paris", country);
+//        city.setAttractions(this.getAttractions());
+//        return city;
+//    }
 
     public void getCityPosta(int cityId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
 
         RequestQueue queue = Volley.newRequestQueue(context);
         String url =this.baseUrl + "cities/" + cityId + ".json";
-        // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
-        // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
     }
 
-    public ArrayList<Attraction> getAttractions(){
-        ArrayList<Attraction> attractions = new ArrayList<>();
-        attractions.add(this.getAttraction());
-        attractions.add(this.getAttraction());
-        attractions.add(this.getAttraction());
-        attractions.add(this.getAttraction());
-        return attractions;
+//    public ArrayList<Attraction> getAttractions(){
+//        ArrayList<Attraction> attractions = new ArrayList<>();
+//        attractions.add(this.getAttraction());
+//        attractions.add(this.getAttraction());
+//        attractions.add(this.getAttraction());
+//        attractions.add(this.getAttraction());
+//        return attractions;
+//    }
+
+    public void getAttractions(int cityId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = this.baseUrl + "cities/" + cityId + "/attractions.json";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+        queue.add(stringRequest);
     }
 }

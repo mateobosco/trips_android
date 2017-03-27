@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 
@@ -33,16 +35,25 @@ public class CityActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         String cityName = bundle.getString("cityName");
-        int cityId = bundle.getInt("cityId");
+        final int cityId = bundle.getInt("cityId");
+        String cityImageUrl = bundle.getString("cityImageUrl");
+        city = new City(cityId, cityName, null);
+        city.setImageUrl(cityImageUrl);
 
         CityActivity.this.setTitle(cityName);
+
+        ImageView cityToolbarImageView = (ImageView) findViewById(R.id.cityToolbarImageView);
+
+        Log.d("imageurl", city.getFullImageUrl());
+        Glide.with(this).load(city.getFullImageUrl())
+                .into(cityToolbarImageView);
+
 
         BackEndClient client = new BackEndClient();
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                // Display the first 500 characters of the response string.
                 spinner.setVisibility(View.GONE);
 
                 CardView cardView = (CardView) findViewById(R.id.attractionsCardView);
@@ -50,6 +61,8 @@ public class CityActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(getApplicationContext(),AttractionListActivity.class);
+                        i.putExtra("cityId", city.getId());
+                        i.putExtra("cityName", city.getName());
                         startActivity(i);
                     }
                 });

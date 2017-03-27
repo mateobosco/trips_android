@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
+import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
+
 /**
  * Created by mbosco on 3/22/17.
  */
@@ -15,7 +17,19 @@ public class City implements Comparable<City> {
     private Country country;
     private ArrayList<Attraction> attractions;
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
+    public String getFullImageUrl(){
+        return BackEndClient.baseUrl + "images/cities/" + imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    private String imageUrl;
 
     public City(int id, String name, Country country){
         this.name = name;

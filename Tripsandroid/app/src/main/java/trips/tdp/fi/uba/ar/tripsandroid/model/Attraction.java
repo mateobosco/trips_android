@@ -1,5 +1,9 @@
 package trips.tdp.fi.uba.ar.tripsandroid.model;
 
+import java.util.ArrayList;
+
+import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
+
 /**
  * Created by mbosco on 3/22/17.
  */
@@ -12,6 +16,7 @@ public class Attraction extends Stop{
     private float cost;
     private int averageTime;
     //Classification classification;
+    private ArrayList<String> images;
 
     public Attraction(String name, String description) {
         super(name, description);
@@ -55,6 +60,26 @@ public class Attraction extends Stop{
 
     public void setAverageTime(int averageTime) {
         this.averageTime = averageTime;
+    }
+
+    public void addImage(String path){
+        if (images == null){
+            images = new ArrayList<String>();
+        }
+        images.add(path);
+    }
+
+    public String getImage(int i){
+        try{
+            return images.get(i);
+        }catch (Exception e){
+            return "";
+        }
+    }
+
+    public String getFullImage(int i){
+        String imageUrl = getImage(i);
+        return BackEndClient.baseUrl + "images/attractions/" + imageUrl;
     }
 
 

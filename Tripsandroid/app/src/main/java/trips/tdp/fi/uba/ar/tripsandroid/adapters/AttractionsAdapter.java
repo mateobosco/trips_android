@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -26,11 +29,13 @@ public class AttractionsAdapter extends RecyclerView.Adapter<AttractionsAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
+        public ImageView mImageView;
         private final Context context;
         public ViewHolder(View v) {
             super(v);
             context = itemView.getContext();
             mTextView = (TextView) v.findViewById(R.id.attractionTextView);
+            mImageView = (ImageView) v.findViewById(R.id.attractionImageView);
 
             CardView cardView = (CardView) v.findViewById(R.id.attractionCardView);
             cardView.setOnClickListener(new View.OnClickListener(){
@@ -40,6 +45,7 @@ public class AttractionsAdapter extends RecyclerView.Adapter<AttractionsAdapter.
                     context.startActivity(i);
                 }
             });
+
         }
     }
 
@@ -58,6 +64,9 @@ public class AttractionsAdapter extends RecyclerView.Adapter<AttractionsAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mTextView.setText(mDataset.get(position).getName());
+        
+        Glide.with(holder.mImageView.getContext()).load(mDataset.get(position).getFullImage(0))
+                .into(holder.mImageView);
     }
 
     @Override

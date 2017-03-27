@@ -40,6 +40,7 @@ public class CityListActivity extends AppCompatActivity {
             Intent intent = new Intent(CityListActivity.this, CityActivity.class);
             intent.putExtra("cityName", city.getName());
             intent.putExtra("cityId", city.getId());
+            intent.putExtra("cityImageUrl", city.getImageUrl());
             startActivity(intent);
         }
     };
@@ -53,6 +54,7 @@ public class CityListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_list);
+        setTitle("Ciudades");
 
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
         listView = (ListView) findViewById(R.id.list);
@@ -84,9 +86,11 @@ public class CityListActivity extends AppCompatActivity {
                     for (int i = 0; i < arr.length(); i++) {
                         String name = arr.getJSONObject(i).getString("name");
                         String countryName = arr.getJSONObject(i).getString("country_name");
+                        String imageUrl = arr.getJSONObject(i).getJSONObject("image").getString("path");
                         Country country = new Country(countryName);
                         int id = arr.getJSONObject(i).getInt("id");
                         City city = new City(id, name, country);
+                        city.setImageUrl(imageUrl);
                         cities.add(city);
                     }
 
