@@ -10,6 +10,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 
 public class Attraction extends Stop{
 
+    private int id;
     private float latitude;
     private float longitude;
     private String scheduleTime;
@@ -18,7 +19,7 @@ public class Attraction extends Stop{
     //Classification classification;
     private ArrayList<String> images;
 
-    public Attraction(String name, String description) {
+    public Attraction(int id, String name, String description) {
         super(name, description);
     }
 
@@ -83,9 +84,8 @@ public class Attraction extends Stop{
     }
 
 
-
-
-
-
+    public int getId() {
+        return id;
+    }
 }
 

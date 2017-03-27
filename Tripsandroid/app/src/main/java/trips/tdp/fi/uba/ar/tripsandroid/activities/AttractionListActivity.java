@@ -71,9 +71,10 @@ public class AttractionListActivity extends AppCompatActivity {
                 try {
                     JSONArray arr = new JSONArray(response);
                     for(int i = 0; i < arr.length(); i++){
+                        int id = arr.getJSONObject(i).getInt("id");
                         String name = arr.getJSONObject(i).getString("name");
                         String description = arr.getJSONObject(i).getString("description");
-                        Attraction a = new Attraction(name, description);
+                        Attraction a = new Attraction(id, name, description);
                         if (arr.getJSONObject(i).getJSONArray("images").length() > 0 ) {
                             String imageUrl = arr.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("path");
                             a.addImage(imageUrl);
