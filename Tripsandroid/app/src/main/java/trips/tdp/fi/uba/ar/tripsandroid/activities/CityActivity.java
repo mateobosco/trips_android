@@ -77,7 +77,7 @@ public class CityActivity extends AppCompatActivity {
             }
         };
 
-        client.getCityPosta(cityId, this, responseListener, errorListener);
+        client.getCity(cityId, this, responseListener, errorListener);
 
     }
 }

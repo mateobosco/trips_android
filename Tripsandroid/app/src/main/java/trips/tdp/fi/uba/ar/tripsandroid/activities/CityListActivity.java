@@ -79,7 +79,6 @@ public class CityListActivity extends AppCompatActivity {
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                // Display the first 500 characters of the response string.
                 try {
                     cities = new ArrayList<City>();
                     JSONArray arr = new JSONArray(response);

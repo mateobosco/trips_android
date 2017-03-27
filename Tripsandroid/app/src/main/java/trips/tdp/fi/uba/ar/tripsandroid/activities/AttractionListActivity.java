@@ -85,6 +85,8 @@ public class AttractionListActivity extends AppCompatActivity {
                     mAdapter = new AttractionsAdapter(filteredModelList);
                     mRecyclerView.setAdapter(mAdapter);
                 } catch (JSONException e) {
+                    Log.d("error", e.toString());
+
                     Log.d("error","json error");
                 }
             }
@@ -98,7 +100,6 @@ public class AttractionListActivity extends AppCompatActivity {
 
         backEndClient.getAttractions(cityId, this, responseListener, errorListener);
 
-//        final City city = backEndClient.getCity(1, this, responseListener, errorListener);
         setTitle("Atracciones de " + cityName);
 
         mRecyclerView.setHasFixedSize(false);

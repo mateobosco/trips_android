@@ -23,11 +23,10 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/attractionActivityImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/torre_eiffel" />
+                android:scaleType="centerCrop" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

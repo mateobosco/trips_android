@@ -21,6 +21,7 @@ public class Attraction extends Stop{
 
     public Attraction(int id, String name, String description) {
         super(name, description);
+        this.id = id;
     }
 
     public float getLatitude(){

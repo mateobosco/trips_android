@@ -30,21 +30,22 @@ public class AttractionsAdapter extends RecyclerView.Adapter<AttractionsAdapter.
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
         public ImageView mImageView;
-        private final Context context;
+        public CardView mCardView;
+        public final Context context;
         public ViewHolder(View v) {
             super(v);
             context = itemView.getContext();
             mTextView = (TextView) v.findViewById(R.id.attractionTextView);
             mImageView = (ImageView) v.findViewById(R.id.attractionImageView);
 
-            CardView cardView = (CardView) v.findViewById(R.id.attractionCardView);
-            cardView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(context,AttractionActivity.class);
-                    context.startActivity(i);
-                }
-            });
+            mCardView = (CardView) v.findViewById(R.id.attractionCardView);
+//            mCardView.setOnClickListener(new View.OnClickListener(){
+//                @Override
+//                public void onClick(View v) {
+//                    Intent i = new Intent(context,AttractionActivity.class);
+//                    context.startActivity(i);
+//                }
+//            });
 
         }
     }
@@ -62,11 +63,23 @@ public class AttractionsAdapter extends RecyclerView.Adapter<AttractionsAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mTextView.setText(mDataset.get(position).getName());
         
         Glide.with(holder.mImageView.getContext()).load(mDataset.get(position).getFullImage(0))
                 .into(holder.mImageView);
+
+        final ViewHolder h = holder;
+
+        holder.mCardView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(h.context,AttractionActivity.class);
+                i.putExtra("attractionId", mDataset.get(position).getId());
+                i.putExtra("attractionName", mDataset.get(position).getName());
+                h.context.startActivity(i);
+            }
+        });
     }
 
     @Override
