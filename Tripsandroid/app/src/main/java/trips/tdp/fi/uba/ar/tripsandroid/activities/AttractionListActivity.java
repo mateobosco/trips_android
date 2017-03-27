@@ -6,9 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 
@@ -49,7 +53,22 @@ public class AttractionListActivity extends AppCompatActivity {
 
 
         BackEndClient backEndClient = new BackEndClient();
-        final City city = backEndClient.getCity();
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // Display the first 500 characters of the response string.
+                Log.d("exito", "Response is: " + response);
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("fracaso", "fracaso");
+            }
+        };
+
+        final City city = backEndClient.getCity(1, this, responseListener, errorListener);
         setTitle("Atracciones de " + city.getName());
 
         mRecyclerView.setHasFixedSize(false);

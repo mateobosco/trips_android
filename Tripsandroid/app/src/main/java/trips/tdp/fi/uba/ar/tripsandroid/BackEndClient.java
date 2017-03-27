@@ -7,22 +7,10 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
@@ -65,11 +53,30 @@ public class BackEndClient {
         return a;
     }
 
-    public City getCity(){
+    public City getCity(int cityId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url =this.baseUrl + "cities/" + cityId + ".json";
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
         Country country = new Country("Francia");
-        City city = new City("Paris", country);
+        City city = new City(1, "Paris", country);
         city.setAttractions(this.getAttractions());
         return city;
+    }
+
+    public void getCityPosta(int cityId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url =this.baseUrl + "cities/" + cityId + ".json";
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
     }
 
     public ArrayList<Attraction> getAttractions(){
