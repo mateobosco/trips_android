@@ -79,9 +79,9 @@ public class Attraction extends Stop{
         }
     }
 
-    public String getFullImage(int i){
+    public String getFullImageUrl(int i){
         String imageUrl = getImage(i);
-        return BackEndClient.baseUrl + "images/attractions/" + imageUrl;
+        return BackEndClient.getAttractionImageUrl(imageUrl);
     }
 
 

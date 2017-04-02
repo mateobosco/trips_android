@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -66,7 +65,7 @@ public class AttractionsAdapter extends RecyclerView.Adapter<AttractionsAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mTextView.setText(mDataset.get(position).getName());
         
-        Glide.with(holder.mImageView.getContext()).load(mDataset.get(position).getFullImage(0))
+        Glide.with(holder.mImageView.getContext()).load(mDataset.get(position).getFullImageUrl(0))
                 .into(holder.mImageView);
 
         final ViewHolder h = holder;

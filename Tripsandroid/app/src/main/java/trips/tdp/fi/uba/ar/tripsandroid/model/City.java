@@ -22,7 +22,7 @@ public class City implements Comparable<City> {
     }
 
     public String getFullImageUrl(){
-        return BackEndClient.baseUrl + "images/cities/" + imageUrl;
+        return BackEndClient.getCityImageUrl(imageUrl);
     }
 
     public void setImageUrl(String imageUrl) {
