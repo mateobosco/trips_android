@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -30,6 +32,12 @@ public class CityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
 
@@ -40,7 +48,7 @@ public class CityActivity extends AppCompatActivity {
         city = new City(cityId, cityName, null);
         city.setImageUrl(cityImageUrl);
 
-        CityActivity.this.setTitle(cityName);
+        setTitle(cityName);
 
         ImageView cityToolbarImageView = (ImageView) findViewById(R.id.cityToolbarImageView);
 
@@ -79,5 +87,16 @@ public class CityActivity extends AppCompatActivity {
 
         client.getCity(cityId, this, responseListener, errorListener);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
