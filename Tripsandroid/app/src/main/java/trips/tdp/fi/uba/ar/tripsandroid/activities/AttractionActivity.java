@@ -75,8 +75,8 @@ public class AttractionActivity extends AppCompatActivity {
                     attraction.setCost(BigDecimal.valueOf(obj.getDouble("cost")).floatValue());
                     attraction.setScheduleTime(obj.getString("schedule"));
 
-                    if (obj.getJSONArray("images").length() > 0 ) {
-                        String imageUrl = obj.getJSONArray("images").getJSONObject(0).getString("path");
+                    for (int i = 0; i < obj.getJSONArray("images").length(); i++ ){
+                        String imageUrl = obj.getJSONArray("images").getJSONObject(i).getString("path");
                         attraction.addImage(imageUrl);
                     }
                     attractionDescriptionTextView.setText(attraction.getDescription());
