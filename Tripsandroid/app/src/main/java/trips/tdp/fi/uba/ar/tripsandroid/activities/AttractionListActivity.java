@@ -6,9 +6,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -16,7 +23,6 @@ import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.AttractionsAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
-import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 public class AttractionListActivity extends AppCompatActivity {
 
@@ -24,7 +30,11 @@ public class AttractionListActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Attraction> filteredModelList;
+    private ArrayList<Attraction> attractions;
     private EditText searchEditBox;
+
+    private int cityId;
+    private String cityName;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -47,16 +57,56 @@ public class AttractionListActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        Bundle bundle = getIntent().getExtras();
+        cityId = bundle.getInt("cityId");
+        cityName = bundle.getString("cityName");
 
         BackEndClient backEndClient = new BackEndClient();
-        final City city = backEndClient.getCity();
-        setTitle("Atracciones de " + city.getName());
+        attractions = new ArrayList<Attraction>();
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("exito", "Response is: " + response);
+                try {
+                    JSONArray arr = new JSONArray(response);
+                    for(int i = 0; i < arr.length(); i++){
+                        int id = arr.getJSONObject(i).getInt("id");
+                        String name = arr.getJSONObject(i).getString("name");
+                        String description = arr.getJSONObject(i).getString("description");
+                        Attraction a = new Attraction(id, name, description);
+                        if (arr.getJSONObject(i).getJSONArray("images").length() > 0 ) {
+                            String imageUrl = arr.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("path");
+                            a.addImage(imageUrl);
+                        }
+                        attractions.add(a);
+                    }
+                    filteredModelList = attractions;
+                    mAdapter = new AttractionsAdapter(filteredModelList);
+                    mRecyclerView.setAdapter(mAdapter);
+                } catch (JSONException e) {
+                    Log.d("error", e.toString());
+
+                    Log.d("error","json error");
+                }
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("fracaso", "fracaso");
+            }
+        };
+
+        backEndClient.getAttractions(cityId, this, responseListener, errorListener);
+
+        setTitle("Atracciones de " + cityName);
 
         mRecyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        filteredModelList = city.getAttractions();
+        filteredModelList = attractions;
         mAdapter = new AttractionsAdapter(filteredModelList);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -72,7 +122,7 @@ public class AttractionListActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String query = charSequence.toString();
-                filteredModelList = filter(city.getAttractions(), query);
+                filteredModelList = filter(attractions, query);
                 mAdapter = new AttractionsAdapter(filteredModelList);
                 mRecyclerView.setAdapter(mAdapter);
             }

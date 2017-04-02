@@ -23,11 +23,10 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/cityToolbarImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/torre_eiffel" />
+                android:scaleType="centerCrop"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -38,6 +37,13 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
