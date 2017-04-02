@@ -8,14 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,19 +21,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
-import trips.tdp.fi.uba.ar.tripsandroid.model.City;
-import trips.tdp.fi.uba.ar.tripsandroid.model.Country;
 
 public class AttractionActivity extends AppCompatActivity {
 
@@ -91,7 +83,7 @@ public class AttractionActivity extends AppCompatActivity {
                     attractionScheduleTimeTextView.setText(attraction.getSchedule());
                     attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
                     attractionCostTextView.setText("$ " + Float.toString(attraction.getCost()));
-                    Glide.with(AttractionActivity.this).load(attraction.getFullImage(0))
+                    Glide.with(AttractionActivity.this).load(attraction.getFullImageUrl(0))
                             .into(attractionActivityImageView);
                     mapView.getMapAsync(new OnMapReadyCallback() {
                         @Override

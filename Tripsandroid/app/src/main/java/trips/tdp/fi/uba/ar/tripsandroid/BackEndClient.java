@@ -57,4 +57,12 @@ public class BackEndClient {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
         queue.add(stringRequest);
     }
+
+    public static String getAttractionImageUrl(String imageUrl) {
+        return BackEndClient.baseUrl + "images/attractions/" + imageUrl;
+    }
+
+    public static String getCityImageUrl(String imageUrl) {
+        return BackEndClient.baseUrl + "images/cities/" + imageUrl;
+    }
 }
