@@ -27,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import org.json.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -175,18 +176,21 @@ public class CityListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                double longitude = location.getLongitude();
-                double latitude = location.getLatitude();
-                Geocoder gcd = new Geocoder(getBaseContext(), Locale.ENGLISH);
                 try{
+                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    double longitude = location.getLongitude();
+                    double latitude = location.getLatitude();
+                    Geocoder gcd = new Geocoder(getBaseContext(), Locale.ENGLISH);
                     List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
                     String a = "";
                     String cityName = addresses.get(0).getLocality();
                     cityName = "Berlin";
                     matchCityName(cityName);
                 }
-                catch (Exception e){
+                catch (SecurityException e){
+                    e.printStackTrace();
+                }
+                catch (IOException e){
                     e.printStackTrace();
                 }
 
