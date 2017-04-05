@@ -1,6 +1,14 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,18 +17,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.Manifest;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import org.json.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
+
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Country;
@@ -32,18 +46,23 @@ public class CityListActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayList<City> cities;
     private ArrayList<City> displayableCityNames;
+    private Button myLocationButton;
 
 
     private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             City city= (City)parent.getItemAtPosition(position);
-            Intent intent = new Intent(CityListActivity.this, CityActivity.class);
-            intent.putExtra("cityName", city.getName());
-            intent.putExtra("cityId", city.getId());
-            intent.putExtra("cityImageUrl", city.getImageUrl());
-            startActivity(intent);
+            startCityActivity(city);
         }
     };
+
+    private void startCityActivity(City city){
+        Intent intent = new Intent(CityListActivity.this, CityActivity.class);
+        intent.putExtra("cityName", city.getName());
+        intent.putExtra("cityId", city.getId());
+        intent.putExtra("cityImageUrl", city.getImageUrl());
+        startActivity(intent);
+    }
 
     public CityListActivity() {
         this.backEndClient = new BackEndClient();
@@ -59,22 +78,16 @@ public class CityListActivity extends AppCompatActivity {
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
         listView = (ListView) findViewById(R.id.list);
         searchEditBox = (EditText) findViewById(R.id.search_box);
+        myLocationButton = (Button) findViewById(R.id.myLocationButton);
 
         spinner.setVisibility(View.VISIBLE);
         listView.setVisibility(View.INVISIBLE);
         searchEditBox.setVisibility(View.INVISIBLE);
+        askPermission();
 
-
-        String[] values = new String[0];
-        values = new String[]{
-        };
-
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);
-
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new String[]{});
 
         listView.setAdapter(adapter);
-
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -161,6 +174,61 @@ public class CityListActivity extends AppCompatActivity {
             }
         });
 
+        myLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                try{
+                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    double longitude = location.getLongitude();
+                    double latitude = location.getLatitude();
+                    Geocoder gcd = new Geocoder(getBaseContext(), Locale.ENGLISH);
+                    List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
+                    String a = "";
+                    String cityName = addresses.get(0).getLocality();
+                    cityName = "Berlin";
+                    matchCityName(cityName);
+                }
+                catch (SecurityException e){
+                    e.printStackTrace();
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    private void matchCityName(String cityName){
+        for (City c: displayableCityNames){
+            if (c.getName().contains(cityName)){
+                startCityActivity(c);
+                return;
+            }
+        }
+        //VER QUE AHCER SI NO MATCHEA NINGUNA
+
+    }
+
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private void askPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("con permiso", "con permiso");
+                } else {
+                    Log.d("sin permiso", "sin permiso");
+                    //VER QUE HACER SI NO TIENE PERMISO
+                }
+                return;
+            }
+        }
     }
 
 }
