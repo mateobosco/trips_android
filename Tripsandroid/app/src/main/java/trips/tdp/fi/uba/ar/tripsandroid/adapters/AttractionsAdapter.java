@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -38,13 +39,6 @@ public class AttractionsAdapter extends RecyclerView.Adapter<AttractionsAdapter.
             mImageView = (ImageView) v.findViewById(R.id.attractionImageView);
 
             mCardView = (CardView) v.findViewById(R.id.attractionCardView);
-//            mCardView.setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View v) {
-//                    Intent i = new Intent(context,AttractionActivity.class);
-//                    context.startActivity(i);
-//                }
-//            });
 
         }
     }
@@ -74,8 +68,11 @@ public class AttractionsAdapter extends RecyclerView.Adapter<AttractionsAdapter.
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(h.context,AttractionActivity.class);
-                i.putExtra("attractionId", mDataset.get(position).getId());
-                i.putExtra("attractionName", mDataset.get(position).getName());
+
+                Gson gson = new Gson();
+                String attractionJson = gson.toJson(mDataset.get(position));
+                i.putExtra("attractionJson", attractionJson);
+
                 h.context.startActivity(i);
             }
         });

@@ -10,12 +10,6 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.util.ArrayList;
-
-import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
-import trips.tdp.fi.uba.ar.tripsandroid.model.City;
-import trips.tdp.fi.uba.ar.tripsandroid.model.Country;
-
 /**
  * Created by joako on 19/3/17.
  */

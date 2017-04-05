@@ -20,6 +20,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +30,7 @@ import java.math.BigDecimal;
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
+import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 public class AttractionActivity extends AppCompatActivity {
 
@@ -58,27 +60,19 @@ public class AttractionActivity extends AppCompatActivity {
         mapView.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
-        final int attractionId = bundle.getInt("attractionId");
-        final String attractionName = bundle.getString("attractionName");
-        setTitle(attractionName);
+        String cityJson = bundle.getString("attractionJson");
+        Gson gson = new Gson();
+        attraction = gson.fromJson(cityJson, Attraction.class);
+
+        setTitle(attraction.getName());
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONObject obj = new JSONObject(response);
-                    String description = obj.getString("description");
-                    attraction = new Attraction(attractionId, attractionName, description);
-                    attraction.setAverageTime(obj.getInt("averageTime"));
-                    attraction.setLatitude(BigDecimal.valueOf(obj.getDouble("latitude")).floatValue());
-                    attraction.setLongitude(BigDecimal.valueOf(obj.getDouble("longitude")).floatValue());
-                    attraction.setCost(BigDecimal.valueOf(obj.getDouble("cost")).floatValue());
-                    attraction.setScheduleTime(obj.getString("schedule"));
+                    Gson gson = new Gson();
+                    attraction = gson.fromJson(response, Attraction.class);
 
-                    for (int i = 0; i < obj.getJSONArray("images").length(); i++ ){
-                        String imageUrl = obj.getJSONArray("images").getJSONObject(i).getString("path");
-                        attraction.addImage(imageUrl);
-                    }
                     attractionDescriptionTextView.setText(attraction.getDescription());
                     attractionScheduleTimeTextView.setText(attraction.getSchedule());
                     attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
@@ -97,7 +91,7 @@ public class AttractionActivity extends AppCompatActivity {
                         }
                     });
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 Log.d("exito", "Response is: " + response);
@@ -111,9 +105,7 @@ public class AttractionActivity extends AppCompatActivity {
                 Log.d("fracaso", "fracaso");
             }
         };
-        new BackEndClient().getAttraction(attractionId, this, responseListener, errorListener);
-
-
+        new BackEndClient().getAttraction(attraction.getId(), this, responseListener, errorListener);
 
 
 

@@ -25,9 +25,13 @@ import android.Manifest;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.*;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +41,6 @@ import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
-import trips.tdp.fi.uba.ar.tripsandroid.model.Country;
 
 public class CityListActivity extends AppCompatActivity {
     private BackEndClient backEndClient;
@@ -58,9 +61,11 @@ public class CityListActivity extends AppCompatActivity {
 
     private void startCityActivity(City city){
         Intent intent = new Intent(CityListActivity.this, CityActivity.class);
-        intent.putExtra("cityName", city.getName());
-        intent.putExtra("cityId", city.getId());
-        intent.putExtra("cityImageUrl", city.getImageUrl());
+
+        Gson gson = new Gson();
+        String cityJson = gson.toJson(city);
+        intent.putExtra("cityJson", cityJson);
+
         startActivity(intent);
     }
 
@@ -94,23 +99,11 @@ public class CityListActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     cities = new ArrayList<City>();
-                    JSONArray arr = new JSONArray(response);
-                    for (int i = 0; i < arr.length(); i++) {
-                        String name = arr.getJSONObject(i).getString("name");
-                        String countryName = arr.getJSONObject(i).getString("country_name");
-                        Country country = new Country(countryName);
-                        int id = arr.getJSONObject(i).getInt("id");
-                        City city = new City(id, name, country);
-                        if (! arr.getJSONObject(i).isNull("image")) {
-                            String imageUrl = arr.getJSONObject(i).getJSONObject("image").getString("path");
-                            city.setImageUrl(imageUrl);
-                        }
-                        cities.add(city);
-                    }
+                    Gson gson = new Gson();
+                    cities = gson.fromJson(response, new TypeToken<ArrayList<City>>(){}.getType());
 
                     listView = (ListView) findViewById(R.id.list);
                     Collections.sort(cities);
-
                     displayableCityNames = cities;
 
                     final ArrayAdapter<City> a = new ArrayAdapter<City>(CityListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, displayableCityNames);
@@ -120,7 +113,7 @@ public class CityListActivity extends AppCompatActivity {
                     listView.setVisibility(View.VISIBLE);
                     searchEditBox.setVisibility(View.VISIBLE);
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 Log.d("exito", "Response is: " + response);

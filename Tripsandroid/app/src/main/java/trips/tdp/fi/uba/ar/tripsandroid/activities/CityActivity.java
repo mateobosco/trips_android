@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 
@@ -42,13 +43,12 @@ public class CityActivity extends AppCompatActivity {
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
 
         Bundle bundle = getIntent().getExtras();
-        String cityName = bundle.getString("cityName");
-        final int cityId = bundle.getInt("cityId");
-        String cityImageUrl = bundle.getString("cityImageUrl");
-        city = new City(cityId, cityName, null);
-        city.setImageUrl(cityImageUrl);
+        String cityJson = bundle.getString("cityJson");
+        Gson gson = new Gson();
+        city = gson.fromJson(cityJson, City.class);
 
-        setTitle(cityName);
+
+        setTitle(city.getName());
 
         ImageView cityToolbarImageView = (ImageView) findViewById(R.id.cityToolbarImageView);
 
@@ -69,8 +69,9 @@ public class CityActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(getApplicationContext(),AttractionListActivity.class);
-                        i.putExtra("cityId", city.getId());
-                        i.putExtra("cityName", city.getName());
+                        Gson gson = new Gson();
+                        String cityJson = gson.toJson(city);
+                        i.putExtra("cityJson", cityJson);
                         startActivity(i);
                     }
                 });
@@ -85,7 +86,7 @@ public class CityActivity extends AppCompatActivity {
             }
         };
 
-        client.getCity(cityId, this, responseListener, errorListener);
+        client.getCity(city.getId(), this, responseListener, errorListener);
 
     }
 
