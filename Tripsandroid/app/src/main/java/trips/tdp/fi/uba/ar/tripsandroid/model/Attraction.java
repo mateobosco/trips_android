@@ -1,8 +1,11 @@
 package trips.tdp.fi.uba.ar.tripsandroid.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
+import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 
 /**
  * Created by mbosco on 3/22/17.
@@ -13,11 +16,15 @@ public class Attraction extends Stop{
     private int id;
     private float latitude;
     private float longitude;
+    @SerializedName("schedule")
     private String scheduleTime;
     private float cost;
     private int averageTime;
-    //Classification classification;
-    private ArrayList<String> images;
+    private Classification classification;
+    private City city;
+    private String address;
+    private String telephone;
+    private ArrayList<Image> images;
 
     public Attraction(int id, String name, String description) {
         super(name, description);
@@ -64,26 +71,18 @@ public class Attraction extends Stop{
         this.averageTime = averageTime;
     }
 
-    public void addImage(String path){
-        if (images == null){
-            images = new ArrayList<String>();
-        }
-        images.add(path);
-    }
-
-    public String getImage(int i){
+    public Image getImage(int i){
         try{
             return images.get(i);
         }catch (Exception e){
-            return "";
+            return null;
         }
     }
 
     public String getFullImageUrl(int i){
-        String imageUrl = getImage(i);
-        return BackEndClient.getAttractionImageUrl(imageUrl);
+        Image image = getImage(i);
+        return BackEndClient.getAttractionImageUrl(image.getPath());
     }
-
 
     public int getId() {
         return id;

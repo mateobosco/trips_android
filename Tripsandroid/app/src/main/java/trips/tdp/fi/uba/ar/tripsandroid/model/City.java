@@ -2,9 +2,12 @@ package trips.tdp.fi.uba.ar.tripsandroid.model;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
+import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 
 /**
  * Created by mbosco on 3/22/17.
@@ -14,35 +17,35 @@ public class City implements Comparable<City> {
 
     private int id;
     private String name;
-    private Country country;
+    @SerializedName("country_name")
+    private String countryName;
     private ArrayList<Attraction> attractions;
+    private Image image;
+
+    public City(int id, String name, String countryName){
+        this.name = name;
+        this.countryName = countryName;
+        this.id = id;
+    }
 
     public String getImageUrl() {
-        return imageUrl;
+        return image.getPath();
     }
 
     public String getFullImageUrl(){
-        return BackEndClient.getCityImageUrl(imageUrl);
+        return BackEndClient.getCityImageUrl(this.getImageUrl());
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    private String imageUrl;
-
-    public City(int id, String name, Country country){
-        this.name = name;
-        this.country = country;
-        this.id = id;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public int getId() {
         return id;
     }
 
-    public Country getCountry(){
-        return this.country;
+    public String getCountryName(){
+        return this.countryName;
     }
 
     public String getName(){
@@ -65,7 +68,7 @@ public class City implements Comparable<City> {
 
     @Override
     public String toString() {
-        return name + " - " + country.getName();
+        return name + " - " + countryName;
     }
 
 }

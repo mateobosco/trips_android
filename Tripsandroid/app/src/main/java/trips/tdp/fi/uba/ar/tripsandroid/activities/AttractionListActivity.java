@@ -13,6 +13,8 @@ import android.widget.EditText;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +25,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.AttractionsAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
+import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 public class AttractionListActivity extends AppCompatActivity {
 
@@ -33,8 +36,7 @@ public class AttractionListActivity extends AppCompatActivity {
     private ArrayList<Attraction> attractions;
     private EditText searchEditBox;
 
-    private int cityId;
-    private String cityName;
+    private City city;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -58,8 +60,9 @@ public class AttractionListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Bundle bundle = getIntent().getExtras();
-        cityId = bundle.getInt("cityId");
-        cityName = bundle.getString("cityName");
+        String cityJson = bundle.getString("cityJson");
+        Gson gson = new Gson();
+        city = gson.fromJson(cityJson, City.class);
 
         BackEndClient backEndClient = new BackEndClient();
         attractions = new ArrayList<Attraction>();
@@ -69,25 +72,16 @@ public class AttractionListActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.d("exito", "Response is: " + response);
                 try {
-                    JSONArray arr = new JSONArray(response);
-                    for(int i = 0; i < arr.length(); i++){
-                        int id = arr.getJSONObject(i).getInt("id");
-                        String name = arr.getJSONObject(i).getString("name");
-                        String description = arr.getJSONObject(i).getString("description");
-                        Attraction a = new Attraction(id, name, description);
-                        if (arr.getJSONObject(i).getJSONArray("images").length() > 0 ) {
-                            String imageUrl = arr.getJSONObject(i).getJSONArray("images").getJSONObject(0).getString("path");
-                            a.addImage(imageUrl);
-                        }
-                        attractions.add(a);
-                    }
+
+                    attractions = new ArrayList<Attraction>();
+                    Gson gson = new Gson();
+                    attractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
+
                     filteredModelList = attractions;
                     mAdapter = new AttractionsAdapter(filteredModelList);
                     mRecyclerView.setAdapter(mAdapter);
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     Log.d("error", e.toString());
-
-                    Log.d("error","json error");
                 }
             }
         };
@@ -98,9 +92,9 @@ public class AttractionListActivity extends AppCompatActivity {
             }
         };
 
-        backEndClient.getAttractions(cityId, this, responseListener, errorListener);
+        backEndClient.getAttractions(city.getId(), this, responseListener, errorListener);
 
-        setTitle("Atracciones de " + cityName);
+        setTitle("Atracciones de " + city.getName());
 
         mRecyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(this);
