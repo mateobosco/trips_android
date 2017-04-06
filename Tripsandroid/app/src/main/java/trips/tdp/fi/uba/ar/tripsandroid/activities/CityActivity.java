@@ -13,11 +13,8 @@ import android.widget.ProgressBar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-
-import org.json.JSONException;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
@@ -68,7 +65,7 @@ public class CityActivity extends AppCompatActivity {
                 cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(getApplicationContext(),AttractionListActivity.class);
+                        Intent i = new Intent(getApplicationContext(),AttractionsActivity.class);
                         Gson gson = new Gson();
                         String cityJson = gson.toJson(city);
                         i.putExtra("cityJson", cityJson);
