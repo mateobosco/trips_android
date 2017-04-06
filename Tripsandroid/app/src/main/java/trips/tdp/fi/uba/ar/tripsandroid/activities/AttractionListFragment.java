@@ -1,23 +1,23 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -27,40 +27,26 @@ import trips.tdp.fi.uba.ar.tripsandroid.adapters.AttractionsAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
-public class AttractionListActivity extends AppCompatActivity {
+
+public class AttractionListFragment extends Fragment {
+
+    private OnFragmentInteractionListener mListener;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Attraction> filteredModelList;
-    private ArrayList<Attraction> attractions;
     private EditText searchEditBox;
 
     private City city;
+    private ArrayList<Attraction> attractions;
+
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attraction_list);
-        mRecyclerView = (RecyclerView) findViewById(R.id.attractionListRecyclerView);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        Bundle bundle = getIntent().getExtras();
-        String cityJson = bundle.getString("cityJson");
+        String cityJson = getArguments().getString("cityJson");
         Gson gson = new Gson();
         city = gson.fromJson(cityJson, City.class);
 
@@ -72,7 +58,6 @@ public class AttractionListActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.d("exito", "Response is: " + response);
                 try {
-
                     attractions = new ArrayList<Attraction>();
                     Gson gson = new Gson();
                     attractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
@@ -92,19 +77,22 @@ public class AttractionListActivity extends AppCompatActivity {
             }
         };
 
-        backEndClient.getAttractions(city.getId(), this, responseListener, errorListener);
+        backEndClient.getAttractions(city.getId(), this.getContext(), responseListener, errorListener);
 
-        setTitle("Atracciones de " + city.getName());
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_attraction_list, container, false);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.tabAttractionListRecyclerView);
+        searchEditBox = (EditText) view.findViewById(R.id.tabSearchAttractionListEditText);
         mRecyclerView.setHasFixedSize(false);
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         filteredModelList = attractions;
         mAdapter = new AttractionsAdapter(filteredModelList);
         mRecyclerView.setAdapter(mAdapter);
-
-        searchEditBox = (EditText) findViewById(R.id.searchAttractionListEditText);
 
         searchEditBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -137,5 +125,32 @@ public class AttractionListActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {}
         });
 
+        return view;
+    }
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
     }
 }

@@ -22,15 +22,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigDecimal;
-
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
-import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 public class AttractionActivity extends AppCompatActivity {
 
