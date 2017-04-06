@@ -77,7 +77,7 @@ public class AttractionActivity extends AppCompatActivity {
                         @Override
                         public void onMapReady(GoogleMap map) {
                             LatLng loc = new LatLng(attraction.getLatitude(), attraction.getLongitude());
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14));
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 14));
                             map.addMarker(new MarkerOptions()
                                     .title(attraction.getName())
                                     .snippet(attraction.getSchedule())

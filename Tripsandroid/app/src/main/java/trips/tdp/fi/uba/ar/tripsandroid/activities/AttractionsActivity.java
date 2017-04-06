@@ -18,7 +18,9 @@ import java.util.List;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
-public class AttractionsActivity extends AppCompatActivity implements AttractionListFragment.OnFragmentInteractionListener {
+public class AttractionsActivity extends AppCompatActivity
+        implements  AttractionListFragment.OnFragmentInteractionListener,
+                    AttractionMapFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -56,15 +58,15 @@ public class AttractionsActivity extends AppCompatActivity implements Attraction
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         AttractionListFragment attractionListFragment = new AttractionListFragment();
-        AttractionListFragment attractionListFragment2 = new AttractionListFragment();
+        AttractionMapFragment attractionMapFragment = new AttractionMapFragment();
         Bundle bundle = new Bundle();
         bundle.putString("cityJson", cityJson);
         attractionListFragment.setArguments(bundle);
-        attractionListFragment2.setArguments(bundle);
+        attractionMapFragment.setArguments(bundle);
 
 
+        adapter.addFragment(attractionMapFragment, "MAP");
         adapter.addFragment(attractionListFragment, "LIST");
-        adapter.addFragment(attractionListFragment2, "MAP");
         viewPager.setAdapter(adapter);
     }
 
