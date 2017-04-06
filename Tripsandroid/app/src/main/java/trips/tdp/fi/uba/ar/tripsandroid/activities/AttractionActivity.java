@@ -1,8 +1,10 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,16 +24,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
+import trips.tdp.fi.uba.ar.tripsandroid.adapters.SlidingImageAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 
 public class AttractionActivity extends AppCompatActivity {
 
-    private Attraction attraction;
-    private BackEndClient backEndClient;
     private MapView mapView;
+    private ViewPager mPager;
+    private int currentPage = 0;
+    private int NUM_PAGES = 0;
 
+    private Attraction attraction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +57,8 @@ public class AttractionActivity extends AppCompatActivity {
         final TextView attractionScheduleTimeTextView = (TextView)findViewById(R.id.attractionScheduleTimeTextView);
         final TextView attractionAverageTimeTextView = (TextView)findViewById(R.id.attractionAverageTimeTextView);
         final TextView attractionCostTextView = (TextView)findViewById(R.id.attractionCostTextView);
+//        final ImageView attractionActivityImageView = (ImageView) findViewById(R.id.attractionActivityImageView);
         mapView = (MapView) findViewById(R.id.attractionMapView);
-        final ImageView attractionActivityImageView = (ImageView) findViewById(R.id.attractionActivityImageView);
         mapView.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
@@ -71,8 +79,8 @@ public class AttractionActivity extends AppCompatActivity {
                     attractionScheduleTimeTextView.setText(attraction.getSchedule());
                     attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
                     attractionCostTextView.setText("$ " + Float.toString(attraction.getCost()));
-                    Glide.with(AttractionActivity.this).load(attraction.getFullImageUrl(0))
-                            .into(attractionActivityImageView);
+//                    Glide.with(AttractionActivity.this).load(attraction.getFullImageUrl(0))
+//                            .into(attractionActivityImageView);
                     mapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap map) {
@@ -101,9 +109,6 @@ public class AttractionActivity extends AppCompatActivity {
         };
         new BackEndClient().getAttraction(attraction.getId(), this, responseListener, errorListener);
 
-
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +117,11 @@ public class AttractionActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(new SlidingImageAdapter(AttractionActivity.this, attraction.getImages()));
+
     }
 
     @Override
