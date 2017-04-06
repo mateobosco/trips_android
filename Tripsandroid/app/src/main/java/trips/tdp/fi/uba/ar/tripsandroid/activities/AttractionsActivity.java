@@ -65,8 +65,8 @@ public class AttractionsActivity extends AppCompatActivity
         attractionMapFragment.setArguments(bundle);
 
 
-        adapter.addFragment(attractionMapFragment, "MAP");
-        adapter.addFragment(attractionListFragment, "LIST");
+        adapter.addFragment(attractionMapFragment, "MAPA");
+        adapter.addFragment(attractionListFragment, "LISTA");
         viewPager.setAdapter(adapter);
     }
 

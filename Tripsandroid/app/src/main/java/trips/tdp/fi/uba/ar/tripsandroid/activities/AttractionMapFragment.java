@@ -1,6 +1,7 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.adapters.AttractionsAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
-public class AttractionMapFragment extends Fragment {
+public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     private MapView mapView;
 
@@ -97,6 +98,7 @@ public class AttractionMapFragment extends Fragment {
         int padding = 100;
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         map.animateCamera(cu);
+        map.setOnMarkerClickListener(this);
     }
 
     @Override
@@ -127,6 +129,24 @@ public class AttractionMapFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        String attractionName = marker.getTitle();
+        for (Attraction a: attractions){
+            if (a.getName().contains(attractionName)){
+                Intent i = new Intent(this.getContext(), AttractionActivity.class);
+
+                Gson gson = new Gson();
+                String attractionJson = gson.toJson(a);
+                i.putExtra("attractionJson", attractionJson);
+
+                this.getContext().startActivity(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     public interface OnFragmentInteractionListener {
