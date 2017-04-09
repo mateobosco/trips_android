@@ -2,10 +2,6 @@ package trips.tdp.fi.uba.ar.tripsandroid.model;
 
 import java.util.Date;
 
-/**
- * Created by mbosco on 4/9/17.
- */
-
 public class Review {
 
     private int id;
@@ -46,8 +42,8 @@ public class Review {
         this.author = author;
     }
 
-    public float getScore() {
-        return score;
+    public int getScore() {
+        return (int) score;
     }
 
     public void setScore(float score) {
