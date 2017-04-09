@@ -46,7 +46,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.AttractionsActivity"></activity>
+        <activity android:name=".activities.AttractionsActivity" />
+        <activity android:name=".activities.ReviewsActivity"></activity>
     </application>
 
 </manifest>
