@@ -1,7 +1,6 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -10,12 +9,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -24,51 +25,59 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Date;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.SlidingImageAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
+import trips.tdp.fi.uba.ar.tripsandroid.model.Review;
+import trips.tdp.fi.uba.ar.tripsandroid.model.User;
 
 public class AttractionActivity extends AppCompatActivity {
 
     private MapView mapView;
     private ViewPager mPager;
-    private int currentPage = 0;
-    private int NUM_PAGES = 0;
+    private TextView attractionDescriptionTextView;
+    private TextView attractionScheduleTimeTextView;
+    private TextView attractionAverageTimeTextView;
+    private TextView attractionCostTextView;
+    private RatingBar reviewAverageRatingBar;
+    private TextView reviewAverageTextView;
+    private TextView reviewQuantityTextView;
+    private LinearLayout newReviewLinearLayout;
+    private EditText newReviewEditText;
+    private RatingBar newReviewRatingBar;
+    private Button sendReviewButton;
+    private LinearLayout sendingReviewLoadingLinearLayout;
+
+    private Response.Listener<String> responseListenerGetAttraction;
+    private Response.Listener<String> responseListenerSendReview;
+    private Response.ErrorListener errorListener;
 
     private Attraction attraction;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attraction);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-        final TextView attractionDescriptionTextView = (TextView)findViewById(R.id.attractionDescriptionTextView);
-        final TextView attractionScheduleTimeTextView = (TextView)findViewById(R.id.attractionScheduleTimeTextView);
-        final TextView attractionAverageTimeTextView = (TextView)findViewById(R.id.attractionAverageTimeTextView);
-        final TextView attractionCostTextView = (TextView)findViewById(R.id.attractionCostTextView);
-//        final ImageView attractionActivityImageView = (ImageView) findViewById(R.id.attractionActivityImageView);
+    private void initializeLayoutItems(){
+        attractionDescriptionTextView = (TextView)findViewById(R.id.attractionDescriptionTextView);
+        attractionScheduleTimeTextView = (TextView)findViewById(R.id.attractionScheduleTimeTextView);
+        attractionAverageTimeTextView = (TextView)findViewById(R.id.attractionAverageTimeTextView);
+        attractionCostTextView = (TextView)findViewById(R.id.attractionCostTextView);
         mapView = (MapView) findViewById(R.id.attractionMapView);
-        mapView.onCreate(savedInstanceState);
+        reviewAverageRatingBar = (RatingBar) findViewById(R.id.reviewAverageRatingBar);
+        reviewAverageTextView = (TextView) findViewById(R.id.reviewAverageTextView);
+        reviewQuantityTextView = (TextView) findViewById(R.id.reviewQuantityTextView);
+        newReviewLinearLayout = (LinearLayout) findViewById(R.id.newReviewLinearLayout);
+        newReviewEditText = (EditText) findViewById(R.id.newReviewEditText);
+        newReviewRatingBar = (RatingBar) findViewById(R.id.newReviewRatingBar);
+        sendReviewButton = (Button) findViewById(R.id.sendReviewButton);
+        sendingReviewLoadingLinearLayout = (LinearLayout) findViewById(R.id.sendingReviewLoadingLinearLayout);
+        sendingReviewLoadingLinearLayout.setVisibility(View.GONE);
+        mPager = (ViewPager) findViewById(R.id.pager);
 
-        Bundle bundle = getIntent().getExtras();
-        String cityJson = bundle.getString("attractionJson");
-        Gson gson = new Gson();
-        attraction = gson.fromJson(cityJson, Attraction.class);
+    }
 
-        setTitle(attraction.getName());
-
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+    private void createResponseListeners(){
+        responseListenerGetAttraction = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -79,8 +88,6 @@ public class AttractionActivity extends AppCompatActivity {
                     attractionScheduleTimeTextView.setText(attraction.getSchedule());
                     attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
                     attractionCostTextView.setText("$ " + Float.toString(attraction.getCost()));
-//                    Glide.with(AttractionActivity.this).load(attraction.getFullImageUrl(0))
-//                            .into(attractionActivityImageView);
                     mapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap map) {
@@ -100,14 +107,38 @@ public class AttractionActivity extends AppCompatActivity {
             }
         };
 
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
+        errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("fracaso", "fracaso");
             }
         };
-        new BackEndClient().getAttraction(attraction.getId(), this, responseListener, errorListener);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_attraction);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        initializeLayoutItems();
+
+        mapView.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        String cityJson = bundle.getString("attractionJson");
+        Gson gson = new Gson();
+        attraction = gson.fromJson(cityJson, Attraction.class);
+
+        setTitle(attraction.getName());
+
+        createResponseListeners();
+
+        new BackEndClient().getAttraction(attraction.getId(), this, responseListenerGetAttraction, errorListener);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -118,9 +149,23 @@ public class AttractionActivity extends AppCompatActivity {
             }
         });
 
-
-        mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(new SlidingImageAdapter(AttractionActivity.this, attraction.getImages()));
+
+        sendReviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Review newReview = new Review();
+                newReview.setDate(new Date());
+                newReview.setScore(newReviewRatingBar.getRating());
+                newReview.setText(newReviewEditText.getText().toString());
+                newReview.setAuthor(new User("anonimo"));
+
+                newReviewLinearLayout.setVisibility(View.GONE);
+                sendingReviewLoadingLinearLayout.setVisibility(View.VISIBLE);
+
+
+            }
+        });
 
     }
 
@@ -134,6 +179,7 @@ public class AttractionActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
