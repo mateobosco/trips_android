@@ -22,11 +22,12 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:id="@+id/attractionActivityImageView"
+            <android.support.v4.view.ViewPager
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+                android:layout_height="match_parent">
+            </android.support.v4.view.ViewPager>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -59,6 +60,8 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
 
         <LinearLayout
             android:layout_width="match_parent"

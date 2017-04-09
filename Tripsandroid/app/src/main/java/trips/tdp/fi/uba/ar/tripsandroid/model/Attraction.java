@@ -31,6 +31,10 @@ public class Attraction extends Stop{
         this.id = id;
     }
 
+    public ArrayList<Image> getImages(){
+        return this.images;
+    }
+
     public float getLatitude(){
         return latitude;
     }
