@@ -129,68 +129,10 @@
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/your_rating_text"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/review_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="50dp"
-                android:gravity="center_horizontal"
-                android:hint="Escribir mi propia reseña"
-                android:text="" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <ImageButton
-                    android:id="@+id/your_rating_star_1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/star10" />
-
-                <ImageButton
-                    android:id="@+id/your_rating_star_2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/star10" />
-
-                <ImageButton
-                    android:id="@+id/your_rating_star_3"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/star10" />
-
-                <ImageButton
-                    android:id="@+id/your_rating_star_4"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/star10" />
-
-                <ImageButton
-                    android:id="@+id/your_rating_star_5"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/star10" />
-            </LinearLayout>
+                android:layout_height="match_parent" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -260,73 +202,73 @@
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac metus quis sapien convallis laoreet. Quisque vel urna in metus suscipit eleifend. Sed pulvinar tempus diam, a " />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="50dp"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginTop="50dp"-->
+                <!--android:orientation="horizontal">-->
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center_horizontal"
-                    android:text="5"
-                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+                <!--<TextView-->
+                    <!--android:id="@+id/textView4"-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:gravity="center_horizontal"-->
+                    <!--android:text="5"-->
+                    <!--android:textAppearance="@android:style/TextAppearance.Material.Large" />-->
 
-                <ImageView
-                    android:id="@+id/imageView17"
-                    android:layout_width="30dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/star10" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageView17"-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--app:srcCompat="@drawable/star10" />-->
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_weight="1"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac metus quis sapien convallis laoreet. Quisque vel urna in metus" />
-            </LinearLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/textView5"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="30dp"-->
+                    <!--android:layout_marginRight="30dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac metus quis sapien convallis laoreet. Quisque vel urna in metus" />-->
+            <!--</LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="50dp"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginTop="50dp"-->
+                <!--android:orientation="horizontal">-->
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center_horizontal"
-                    android:text="5"
-                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+                <!--<TextView-->
+                    <!--android:id="@+id/textView4"-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:gravity="center_horizontal"-->
+                    <!--android:text="5"-->
+                    <!--android:textAppearance="@android:style/TextAppearance.Material.Large" />-->
 
-                <ImageView
-                    android:id="@+id/imageView17"
-                    android:layout_width="30dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/star10" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageView17"-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--app:srcCompat="@drawable/star10" />-->
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_weight="1"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac metus quis sapien convallis laoreet. Quisque vel urna in metus suscipit eleifend. Sed pulvinar tempus diam, a luctus mauris varius in. Aliquam facilisis eros quis ultricies finibus. Etiam blandit porttitor cursus. Suspendisse sapien magna, euismod non hendrerit et, bibendum vel orci. Sed id dapibus nibh, at blandit felis. Nulla suscipit sed tortor ut aliquam. Donec iaculis quis nulla vitae tempus. Aliquam sed tellus id ligula euismod condimentum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed mauris tellus, facilisis vel suscipit id, laoreet sed tortor." />
-            </LinearLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/textView5"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="30dp"-->
+                    <!--android:layout_marginRight="30dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac metus quis sapien convallis laoreet. Quisque vel urna in metus suscipit eleifend. Sed pulvinar tempus diam, a luctus mauris varius in. Aliquam facilisis eros quis ultricies finibus. Etiam blandit porttitor cursus. Suspendisse sapien magna, euismod non hendrerit et, bibendum vel orci. Sed id dapibus nibh, at blandit felis. Nulla suscipit sed tortor ut aliquam. Donec iaculis quis nulla vitae tempus. Aliquam sed tellus id ligula euismod condimentum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed mauris tellus, facilisis vel suscipit id, laoreet sed tortor." />-->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 
