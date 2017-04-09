@@ -204,7 +204,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
 
                     <com.google.android.gms.maps.MapView
                         android:id="@+id/attractionMapView"
@@ -215,7 +216,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="200dp">
 
 
                     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -325,6 +327,15 @@
                                     android:layout_height="match_parent"
                                     android:gravity="end"
                                     android:orientation="horizontal">
+
+                                    <Button
+                                        android:id="@+id/moreReviewsButton"
+                                        style="@style/Widget.AppCompat.Button.Borderless"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Ver más reseñas"
+                                        android:textAlignment="viewStart" />
 
                                     <Button
                                         android:id="@+id/sendReviewButton"

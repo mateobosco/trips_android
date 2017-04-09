@@ -1,5 +1,6 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -49,6 +50,7 @@ public class AttractionActivity extends AppCompatActivity {
     private EditText newReviewEditText;
     private RatingBar newReviewRatingBar;
     private Button sendReviewButton;
+    private Button moreReviewsButton;
     private LinearLayout sendingReviewLoadingLinearLayout;
 
     private Response.Listener<String> responseListenerGetAttraction;
@@ -70,6 +72,7 @@ public class AttractionActivity extends AppCompatActivity {
         newReviewEditText = (EditText) findViewById(R.id.newReviewEditText);
         newReviewRatingBar = (RatingBar) findViewById(R.id.newReviewRatingBar);
         sendReviewButton = (Button) findViewById(R.id.sendReviewButton);
+        moreReviewsButton = (Button) findViewById(R.id.moreReviewsButton);
         sendingReviewLoadingLinearLayout = (LinearLayout) findViewById(R.id.sendingReviewLoadingLinearLayout);
         sendingReviewLoadingLinearLayout.setVisibility(View.GONE);
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -164,6 +167,17 @@ public class AttractionActivity extends AppCompatActivity {
                 sendingReviewLoadingLinearLayout.setVisibility(View.VISIBLE);
 
 
+            }
+        });
+
+        moreReviewsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AttractionActivity.this, ReviewActivity.class);
+                Gson gson = new Gson();
+                String stringAttraction = gson.toJson(attraction);
+                intent.putExtra("attraction", stringAttraction);
+                startActivity(intent);
             }
         });
 
