@@ -18,21 +18,16 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/myLocationButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
-
     <EditText
         android:id="@+id/search_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_box_placeholder" />
 
-    <ListView
-        android:id="@+id/list"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cityListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="match_parent" />
+
 </LinearLayout>
 

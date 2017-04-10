@@ -11,6 +11,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,38 +42,21 @@ import java.util.Locale;
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
+import trips.tdp.fi.uba.ar.tripsandroid.adapters.AttractionsAdapter;
+import trips.tdp.fi.uba.ar.tripsandroid.adapters.CitiesAdapter;
+import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 public class CityListActivity extends AppCompatActivity {
     private BackEndClient backEndClient;
     private ProgressBar spinner;
     private EditText searchEditBox;
-    private ListView listView;
+    private RecyclerView cityListRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     private ArrayList<City> cities;
-    private ArrayList<City> displayableCityNames;
-    private Button myLocationButton;
-
-
-    private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView parent, View v, int position, long id) {
-            City city= (City)parent.getItemAtPosition(position);
-            startCityActivity(city);
-        }
-    };
-
-    private void startCityActivity(City city){
-        Intent intent = new Intent(CityListActivity.this, CityActivity.class);
-
-        Gson gson = new Gson();
-        String cityJson = gson.toJson(city);
-        intent.putExtra("cityJson", cityJson);
-
-        startActivity(intent);
-    }
-
-    public CityListActivity() {
-        this.backEndClient = new BackEndClient();
-    }
+    private ArrayList<City> filteredModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,37 +65,43 @@ public class CityListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         setTitle("Ciudades");
 
+        this.backEndClient = new BackEndClient();
+        cities = new ArrayList<>();
+
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
-        listView = (ListView) findViewById(R.id.list);
         searchEditBox = (EditText) findViewById(R.id.search_box);
-        myLocationButton = (Button) findViewById(R.id.myLocationButton);
+        cityListRecyclerView = (RecyclerView) findViewById(R.id.cityListRecyclerView);
 
         spinner.setVisibility(View.VISIBLE);
-        listView.setVisibility(View.INVISIBLE);
         searchEditBox.setVisibility(View.INVISIBLE);
         askPermission();
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new String[]{});
+        cityListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        cityListRecyclerView.setHasFixedSize(false);
+        mLayoutManager = new LinearLayoutManager(this);
+        cityListRecyclerView.setLayoutManager(mLayoutManager);
 
-        listView.setAdapter(adapter);
+        filteredModelList = cities;
+        mAdapter = new CitiesAdapter(filteredModelList);
+        cityListRecyclerView.setAdapter(mAdapter);
+
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    cities = new ArrayList<City>();
+                    cities = new ArrayList<>();
                     Gson gson = new Gson();
                     cities = gson.fromJson(response, new TypeToken<ArrayList<City>>(){}.getType());
 
-                    listView = (ListView) findViewById(R.id.list);
                     Collections.sort(cities);
-                    displayableCityNames = cities;
 
-                    final ArrayAdapter<City> a = new ArrayAdapter<City>(CityListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, displayableCityNames);
+                    filteredModelList = cities;
+                    mAdapter = new CitiesAdapter(filteredModelList);
+                    cityListRecyclerView.setAdapter(mAdapter);
 
-                    listView.setAdapter(a);
+
                     spinner.setVisibility(View.GONE);
-                    listView.setVisibility(View.VISIBLE);
                     searchEditBox.setVisibility(View.VISIBLE);
 
                 } catch (Exception e) {
@@ -129,7 +120,6 @@ public class CityListActivity extends AppCompatActivity {
         backEndClient.getCities(this, responseListener, errorListener);
 
 
-        listView.setOnItemClickListener(mMessageClickedHandler);
 
         searchEditBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -143,9 +133,10 @@ public class CityListActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String query = charSequence.toString();
-                displayableCityNames = filter(cities, query);
-                ArrayAdapter<City> adapter = new ArrayAdapter<City>(CityListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, displayableCityNames);
-                listView.setAdapter(adapter);
+                filteredModelList = filter(cities, query);
+                mAdapter = new CitiesAdapter(filteredModelList);
+                cityListRecyclerView.setAdapter(mAdapter);
+
             }
 
             private ArrayList<City> filter(ArrayList<City> cities, String query) {
@@ -167,41 +158,6 @@ public class CityListActivity extends AppCompatActivity {
             }
         });
 
-        myLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                try{
-                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    double longitude = location.getLongitude();
-                    double latitude = location.getLatitude();
-                    Geocoder gcd = new Geocoder(getBaseContext(), Locale.ENGLISH);
-                    List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
-                    String a = "";
-                    String cityName = addresses.get(0).getLocality();
-                    cityName = "Berlin";
-                    matchCityName(cityName);
-                }
-                catch (SecurityException e){
-                    e.printStackTrace();
-                }
-                catch (IOException e){
-                    e.printStackTrace();
-                }
-
-            }
-        });
-    }
-
-    private void matchCityName(String cityName){
-        for (City c: displayableCityNames){
-            if (c.getName().contains(cityName)){
-                startCityActivity(c);
-                return;
-            }
-        }
-        //VER QUE AHCER SI NO MATCHEA NINGUNA
-
     }
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -217,7 +173,6 @@ public class CityListActivity extends AppCompatActivity {
                     Log.d("con permiso", "con permiso");
                 } else {
                     Log.d("sin permiso", "sin permiso");
-                    //VER QUE HACER SI NO TIENE PERMISO
                 }
                 return;
             }
