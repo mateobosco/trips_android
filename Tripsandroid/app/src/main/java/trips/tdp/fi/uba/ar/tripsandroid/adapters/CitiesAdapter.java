@@ -121,20 +121,19 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         context.startActivity(i);
     }
 
-    private void matchCityName(String cityName, Context context){
-        for (City c: mDataset){
-            if (c.getName().contains(cityName)){
-                startCityActivity(context, c);
-            }
-        }
-        createTextAlertDialog(context, "La ciudad donde se encuentra no esta cargada");
-    }
 
-    private class GetCityName extends AsyncTask<Context, Void, String> {
+
+    private class GetCityName extends AsyncTask<Context, Void, Integer> {
 
         private Context c;
+
+        private Integer RES_OK = 1;
+        private Integer NOT_FOUND = 2;
+        private Integer SECURITY_EXCEPTION = 3;
+        private Integer IO_EXCEPTION = 4;
+        private Integer GENERAL_EXCEPTION = 5;
         @Override
-        protected String doInBackground(Context... context) {
+        protected Integer doInBackground(Context... context) {
             c = context[0];
             try{
                 LocationManager lm = (LocationManager) context[0].getSystemService(Context.LOCATION_SERVICE);
@@ -143,27 +142,52 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
                 double latitude = location.getLatitude();
                 Geocoder gcd = new Geocoder(context[0], Locale.ENGLISH);
                 List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
-                String cityName = addresses.get(0).getLocality();
-                matchCityName(cityName, context[0]);
-                return cityName;
+                String cityName = addresses.get(0).getAdminArea();
+                return matchCityName(cityName, context[0]);
             }
 
             catch (SecurityException e){
                 e.printStackTrace();
                 loadingDialog.cancel();
+                return SECURITY_EXCEPTION;
             }
             catch (IOException e){
                 e.printStackTrace();
                 loadingDialog.cancel();
+                return IO_EXCEPTION;
             }
-            return "";
+            catch (Exception e){
+                e.printStackTrace();
+                loadingDialog.cancel();
+                return GENERAL_EXCEPTION;
+            }
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            if (s == ""){
+        protected void onPostExecute(Integer i) {
+            if (i == GENERAL_EXCEPTION) {
+                createTextAlertDialog(c, "Hubo un error buscando la ubicación");
+            } else if (i == IO_EXCEPTION){
                 createTextAlertDialog(c, "La API de google esta caida :(");
             }
+            else if (i == SECURITY_EXCEPTION){
+                createTextAlertDialog(c, "Falta el permiso de GPS");
+            }
+            else if (i == NOT_FOUND){
+                createTextAlertDialog(c, "La ciudad donde se encuentra no esta cargada");
+            }
+        }
+
+        private Integer matchCityName(String cityName, Context context){
+            for (City c: mDataset){
+                if (c.getName().contains(cityName) || cityName.contains(c.getName())){
+                    loadingDialog.cancel();
+                    startCityActivity(context, c);
+                    return RES_OK;
+                }
+            }
+            loadingDialog.cancel();
+            return NOT_FOUND;
         }
     }
 
