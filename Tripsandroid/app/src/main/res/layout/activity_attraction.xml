@@ -54,6 +54,7 @@
     </include>
 
     <FrameLayout
+        android:id="@+id/frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -61,11 +62,11 @@
 
         <LinearLayout
             android:id="@+id/dummyitem_para_sacar_focus"
-            android:focusable="true"
-            android:orientation="horizontal"
-            android:focusableInTouchMode="true"
             android:layout_width="0px"
-            android:layout_height="0px"/>
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal" />
 
 
         <ScrollView
@@ -345,7 +346,34 @@
                                         android:layout_gravity="center_vertical"
                                         android:text="Enviar"
                                         android:textAlignment="center" />
+
                                 </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/reviewSentLinearLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+                                <Button
+                                    android:id="@+id/moreReviewsButton2"
+                                    style="@style/Widget.AppCompat.Button.Borderless"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Ver más reseñas"
+                                    android:textAlignment="viewStart" />
+
+                                <TextView
+                                    android:id="@+id/reviewSubmitted"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Gracias por enviarnos su reseña" />
 
                             </LinearLayout>
 
@@ -354,7 +382,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginBottom="10dp"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="gone">
 
                                 <ProgressBar
                                     android:id="@+id/sendingReviewProgressBar"
@@ -362,6 +391,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1" />
+
                             </LinearLayout>
 
                         </LinearLayout>

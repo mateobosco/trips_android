@@ -1,9 +1,11 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageButton;
@@ -12,10 +14,17 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.ReviewsAdapter;
+import trips.tdp.fi.uba.ar.tripsandroid.adapters.SlidingImageAdapter;
+import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Review;
 
 public class ReviewActivity extends AppCompatActivity {
@@ -23,6 +32,9 @@ public class ReviewActivity extends AppCompatActivity {
     private ArrayList<ImageButton> yourRatingStars;
     private ArrayList<ImageView> ratingStars;
     private ReviewsAdapter mAdapter;
+    private ViewPager mPager;
+    private Attraction attraction;
+    private ArrayList<Review> reviews;
 
     private float rating;
 
@@ -30,7 +42,31 @@ public class ReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
-        setTitle("Reseñas del obelisco");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        setTitle("Reseñas");
+
+
+        Bundle bundle = getIntent().getExtras();
+        String attractionJson = bundle.getString("attraction");
+        Gson gson = new Gson();
+        attraction = gson.fromJson(attractionJson, Attraction.class);
+
+        String reviewsJson = bundle.getString("reviews");
+        Type listOfTestObject = new TypeToken<List<Review>>(){}.getType();
+        reviews = gson.fromJson(reviewsJson, listOfTestObject);
+
+
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(new SlidingImageAdapter(ReviewActivity.this, attraction.getImages()));
+
 
         rating = 2.2f;
         RecyclerView r = (RecyclerView) findViewById(R.id.review_list);
@@ -42,19 +78,7 @@ public class ReviewActivity extends AppCompatActivity {
         rB.setRating(rating);
         rB.setStepSize(0.5f);
 
-        ArrayList<Review> dataSet = new ArrayList<Review>();
-        Review re = new Review();
-        re.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla iaculis mauris sit amet diam fringilla mattis. Cras aliquet bibendum tortor, quis fringilla mi pellentesque nec. Duis pharetra ex id turpis efficitur ultricies. Etiam congue ullamcorper urna nec suscipit. Cras interdum mauris et lobortis semper. Etiam rutrum velit porttitor velit efficitur ornare. Integer eleifend vulputate dui, lobortis varius ex viverra at. Nulla facilisi. Phasellus blandit gravida ornare. ");
-        re.setScore(2.0f);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        mAdapter = new ReviewsAdapter(dataSet);
+        mAdapter = new ReviewsAdapter(reviews);
         r.setAdapter(mAdapter);
 
 

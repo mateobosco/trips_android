@@ -10,6 +10,15 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import trips.tdp.fi.uba.ar.tripsandroid.activities.AttractionActivity;
+import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
+import trips.tdp.fi.uba.ar.tripsandroid.model.Review;
+import trips.tdp.fi.uba.ar.tripsandroid.model.User;
+
 /**
  * Created by joako on 19/3/17.
  */
@@ -58,5 +67,39 @@ public class BackEndClient {
 
     public static String getCityImageUrl(String imageUrl) {
         return BackEndClient.baseUrl + "images/cities/" + imageUrl;
+    }
+
+    public void getReviews(int attractionId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = this.baseUrl + "attractions/" + attractionId + "/reviews.json";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+        queue.add(stringRequest);
+    }
+
+    public void sendReviews(final Review review, User user, Attraction attraction, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = this.baseUrl + "reviews/";
+        final Review internalReview = review;
+        final Attraction internalAttraction = attraction;
+        final User internalUser = user;
+        Log.d("url POST review", url);
+        Log.d("review", review.toString());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, responseListener, errorListener)
+        {
+            @Override
+            public byte[] getBody() throws com.android.volley.AuthFailureError {
+                String str = "{\"author_id\":1,\"date\":\"2014-04-19T 17:05:53Z\",\"score\":5,\"stop\":1,\"text\":\"muy bueno\"}";
+                return str.getBytes();
+            };
+
+            @Override
+            public Map<String, String> getHeaders(){
+                Map<String, String>  headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+
+        queue.add(stringRequest);
     }
 }

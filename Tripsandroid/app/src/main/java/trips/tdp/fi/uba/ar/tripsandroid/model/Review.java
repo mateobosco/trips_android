@@ -49,4 +49,15 @@ public class Review {
     public void setScore(float score) {
         this.score = score;
     }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", date=" + date +
+                ", author=" + author +
+                ", score=" + score +
+                '}';
+    }
 }

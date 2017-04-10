@@ -7,4 +7,8 @@ public class User {
     public User(String username) {
         this.username = username;
     }
+
+    public int getId(){
+        return 1;
+    }
 }
