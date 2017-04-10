@@ -72,7 +72,7 @@ public class BackEndClient {
 
     public void getReviews(int attractionId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = this.baseUrl + "attractions/" + attractionId + "/reviews.json";
+        String url = this.baseUrl + "attractions/" + attractionId + "/reviews.json?max=1000";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
         queue.add(stringRequest);
     }

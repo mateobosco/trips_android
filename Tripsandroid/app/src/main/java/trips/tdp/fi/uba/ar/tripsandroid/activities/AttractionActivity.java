@@ -50,6 +50,7 @@ public class AttractionActivity extends AppCompatActivity {
     private RatingBar reviewAverageRatingBar;
     private TextView reviewAverageTextView;
     private TextView reviewQuantityTextView;
+    private int reviewQuantity;
     private LinearLayout newReviewLinearLayout;
     private EditText newReviewEditText;
     private RatingBar newReviewRatingBar;
@@ -58,6 +59,7 @@ public class AttractionActivity extends AppCompatActivity {
     private Button moreReviewsButton2;
     private LinearLayout sendingReviewLoadingLinearLayout;
     private LinearLayout reviewSentLayout;
+    private float reviewScoreAverage = 0f;
 
     private TextView reviewSubmittedText;
 
@@ -133,6 +135,19 @@ public class AttractionActivity extends AppCompatActivity {
                     for( int i = 0; i < arr.length() ; i ++){
                         reviews.add(gson.fromJson(arr.getString(i),Review.class));
                     }
+                    int sum = 0;
+                    for (Review r : reviews){
+                        sum+= r.getScore();
+                    }
+                    if (reviews.size() > 0){
+                        reviewScoreAverage = sum * 1.0f / reviews.size();
+                    }else{
+                        reviewScoreAverage = 0;
+                    }
+
+                    reviewQuantity = reviews.size();
+                    reviewAverageTextView.setText(String.format("%.1f", reviewScoreAverage));
+                    reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " Reseñas");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -228,6 +243,8 @@ public class AttractionActivity extends AppCompatActivity {
                 intent.putExtra("attraction", stringAttraction);
                 String stringReviews = gson.toJson(reviews);
                 intent.putExtra("reviews", stringReviews);
+                intent.putExtra("reviewScoreAverage", String.format("%.1f", reviewScoreAverage));
+                intent.putExtra("reviewQuantity", Integer.toString(reviewQuantity));
                 startActivity(intent);
             }
         });

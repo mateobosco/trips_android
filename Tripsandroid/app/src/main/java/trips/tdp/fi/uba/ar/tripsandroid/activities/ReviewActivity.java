@@ -35,8 +35,10 @@ public class ReviewActivity extends AppCompatActivity {
     private ViewPager mPager;
     private Attraction attraction;
     private ArrayList<Review> reviews;
+    private TextView reviewQuantityTextView;
 
     private float rating;
+    private int reviewQuantity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,13 @@ public class ReviewActivity extends AppCompatActivity {
 
 
         Bundle bundle = getIntent().getExtras();
+
+        rating = Float.parseFloat(bundle.getString("reviewScoreAverage"));
+        reviewQuantity = Integer.parseInt(bundle.getString("reviewQuantity"));
+        reviewQuantityTextView = (TextView) findViewById(R.id.rating_quantity);
+        reviewQuantityTextView.setText(Integer.toString(reviewQuantity));
+
+
         String attractionJson = bundle.getString("attraction");
         Gson gson = new Gson();
         attraction = gson.fromJson(attractionJson, Attraction.class);
@@ -68,7 +77,6 @@ public class ReviewActivity extends AppCompatActivity {
         mPager.setAdapter(new SlidingImageAdapter(ReviewActivity.this, attraction.getImages()));
 
 
-        rating = 2.2f;
         RecyclerView r = (RecyclerView) findViewById(R.id.review_list);
         r.setLayoutManager(new LinearLayoutManager(this));
 
