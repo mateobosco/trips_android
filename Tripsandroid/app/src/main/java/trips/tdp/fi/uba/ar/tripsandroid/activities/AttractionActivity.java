@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
-import org.w3c.dom.Text;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,7 +67,7 @@ public class AttractionActivity extends AppCompatActivity {
     private TextView reviewSubmittedText;
 
     private Response.Listener<String> responseListenerGetAttraction;
-    private Response.Listener<String> responseListenerGetReviews;
+//    private Response.Listener<String> responseListenerGetReviews;
     private Response.Listener<String> responseListenerSendReview;
     private Response.ErrorListener errorListener;
     private ArrayList<Review> reviews;
@@ -104,6 +104,7 @@ public class AttractionActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
+                    Log.d("GET Attr response:",response);
                     Gson gson = new Gson();
                     attraction = gson.fromJson(response, Attraction.class);
 
@@ -124,19 +125,9 @@ public class AttractionActivity extends AppCompatActivity {
                         }
                     });
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Log.d("exito", "Response is: " + response);
-            }
-        };
 
-        responseListenerGetReviews = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    Gson gson = new Gson();
-                    JSONArray arr = new JSONArray(response);
+                    JSONObject obj = new JSONObject(response);
+                    JSONArray arr = obj.getJSONArray("reviews");
                     for( int i = 0; i < arr.length() ; i ++){
                         reviews.add(gson.fromJson(arr.getString(i),Review.class));
                     }
@@ -153,12 +144,42 @@ public class AttractionActivity extends AppCompatActivity {
                     reviewQuantity = reviews.size();
                     reviewAverageTextView.setText(String.format("%.1f", reviewScoreAverage));
                     reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " Reseñas");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Log.d("Reviews::exito", "Response is: " + response);
+                Log.d("exito", "Response is: " + response);
             }
         };
+
+//        responseListenerGetReviews = new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                try {
+//                    Gson gson = new Gson();
+//                    JSONArray arr = new JSONArray(response);
+//                    for( int i = 0; i < arr.length() ; i ++){
+//                        reviews.add(gson.fromJson(arr.getString(i),Review.class));
+//                    }
+//                    int sum = 0;
+//                    for (Review r : reviews){
+//                        sum+= r.getScore();
+//                    }
+//                    if (reviews.size() > 0){
+//                        reviewScoreAverage = sum * 1.0f / reviews.size();
+//                    }else{
+//                        reviewScoreAverage = 0;
+//                    }
+//
+//                    reviewQuantity = reviews.size();
+//                    reviewAverageTextView.setText(String.format("%.1f", reviewScoreAverage));
+//                    reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " Reseñas");
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                Log.d("Reviews::exito", "Response is: " + response);
+//            }
+//        };
 
         responseListenerSendReview = new Response.Listener<String>() {
             @Override
@@ -214,7 +235,7 @@ public class AttractionActivity extends AppCompatActivity {
         createResponseListeners();
 
         new BackEndClient().getAttraction(attraction.getId(), this, responseListenerGetAttraction, errorListener);
-        new BackEndClient().getReviews(attraction.getId(), this, responseListenerGetReviews, errorListener);
+//        new BackEndClient().getReviews(attraction.getId(), this, responseListenerGetReviews, errorListener);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -249,7 +270,7 @@ public class AttractionActivity extends AppCompatActivity {
             }
         });
 
-        moreReviewsButton.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener goToReviews = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AttractionActivity.this, ReviewActivity.class);
@@ -262,20 +283,11 @@ public class AttractionActivity extends AppCompatActivity {
                 intent.putExtra("reviewQuantity", Integer.toString(reviewQuantity));
                 startActivity(intent);
             }
-        });
+        } ;
 
-        moreReviewsButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AttractionActivity.this, ReviewActivity.class);
-                Gson gson = new Gson();
-                String stringAttraction = gson.toJson(attraction);
-                intent.putExtra("attraction", stringAttraction);
-                String stringReviews = gson.toJson(reviews);
-                intent.putExtra("reviews", stringReviews);
-                startActivity(intent);
-            }
-        });
+        moreReviewsButton.setOnClickListener(goToReviews);
+
+        moreReviewsButton2.setOnClickListener(goToReviews);
 
     }
 
