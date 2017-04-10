@@ -26,7 +26,6 @@ import java.util.Locale;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.activities.CityActivity;
-import trips.tdp.fi.uba.ar.tripsandroid.activities.CityListActivity;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 /**
@@ -121,20 +120,16 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         context.startActivity(i);
     }
 
-    private void matchCityName(String cityName, Context context){
-        for (City c: mDataset){
-            if (c.getName().contains(cityName)){
-                startCityActivity(context, c);
-            }
-        }
-        createTextAlertDialog(context, "La ciudad donde se encuentra no esta cargada");
-    }
+    private class GetCityName extends AsyncTask<Context, Void, Integer> {
 
-    private class GetCityName extends AsyncTask<Context, Void, String> {
+        public Integer NOT_FOUND = 1;
+        public Integer SECURITY_ERROR = 2;
+        public Integer IO_ERROR = 3;
+        public Integer OK = 0;
 
         private Context c;
         @Override
-        protected String doInBackground(Context... context) {
+        protected Integer doInBackground(Context... context) {
             c = context[0];
             try{
                 LocationManager lm = (LocationManager) context[0].getSystemService(Context.LOCATION_SERVICE);
@@ -144,25 +139,46 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
                 Geocoder gcd = new Geocoder(context[0], Locale.ENGLISH);
                 List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
                 String cityName = addresses.get(0).getLocality();
-                matchCityName(cityName, context[0]);
-                return cityName;
+//                String cityName = "ARGENTINA PA";
+                return matchCityName(cityName, context[0]);
+
             }
 
             catch (SecurityException e){
                 e.printStackTrace();
                 loadingDialog.cancel();
+                return SECURITY_ERROR;
             }
             catch (IOException e){
                 e.printStackTrace();
                 loadingDialog.cancel();
+                return IO_ERROR;
             }
-            return "";
+        }
+
+        private Integer matchCityName(String cityName, Context context){
+            for (City c: mDataset){
+                if (c.getName().contains(cityName)){
+                    loadingDialog.cancel();
+                    startCityActivity(context, c);
+                    return OK;
+                }
+            }
+            loadingDialog.cancel();
+            return NOT_FOUND;
+
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            if (s == ""){
+        protected void onPostExecute(Integer i) {
+            if (i == IO_ERROR){
                 createTextAlertDialog(c, "La API de google esta caida :(");
+            }
+            else if (i == SECURITY_ERROR){
+                createTextAlertDialog(c, "Falta permiso de GPS");
+            }
+            else if (i == NOT_FOUND){
+                createTextAlertDialog(c, "La ciudad donde se encuentra no esta cargada");
             }
         }
     }
