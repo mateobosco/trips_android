@@ -1,6 +1,7 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +62,7 @@ public class AttractionActivity extends AppCompatActivity {
     private LinearLayout sendingReviewLoadingLinearLayout;
     private LinearLayout reviewSentLayout;
     private float reviewScoreAverage = 0f;
+    private TextView attractionPhoneNumberTextView;
 
     private TextView reviewSubmittedText;
 
@@ -92,6 +95,7 @@ public class AttractionActivity extends AppCompatActivity {
         reviews = new ArrayList<Review>();
         reviewSubmittedText = (TextView) findViewById(R.id.reviewSubmitted);
         reviewSentLayout = (LinearLayout) findViewById(R.id.reviewSentLinearLayout);
+        attractionPhoneNumberTextView = (TextView) findViewById(R.id.attractionPhoneNumberTextView);
 
     }
 
@@ -107,6 +111,7 @@ public class AttractionActivity extends AppCompatActivity {
                     attractionScheduleTimeTextView.setText(attraction.getSchedule());
                     attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
                     attractionCostTextView.setText("$ " + Float.toString(attraction.getCost()));
+                    attractionPhoneNumberTextView.setText(attraction.getTelephone());
                     mapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap map) {
@@ -173,6 +178,16 @@ public class AttractionActivity extends AppCompatActivity {
                 Log.d("fracaso", error.toString());
             }
         };
+
+        attractionPhoneNumberTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_DIAL);
+                String p = "tel:" + attraction.getTelephone();
+                i.setData(Uri.parse(p));
+                startActivity(i);
+            }
+        });
     }
 
     @Override
