@@ -57,18 +57,6 @@ public class CityListActivity extends AppCompatActivity {
 
     private ArrayList<City> cities;
     private ArrayList<City> filteredModelList;
-    private Button myLocationButton;
-
-
-    private void startCityActivity(City city){
-        Intent intent = new Intent(CityListActivity.this, CityActivity.class);
-
-        Gson gson = new Gson();
-        String cityJson = gson.toJson(city);
-        intent.putExtra("cityJson", cityJson);
-
-        startActivity(intent);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +173,6 @@ public class CityListActivity extends AppCompatActivity {
                     Log.d("con permiso", "con permiso");
                 } else {
                     Log.d("sin permiso", "sin permiso");
-                    //VER QUE HACER SI NO TIENE PERMISO
                 }
                 return;
             }

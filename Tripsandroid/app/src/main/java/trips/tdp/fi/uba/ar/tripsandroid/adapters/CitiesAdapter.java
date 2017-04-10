@@ -6,9 +6,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.Locale;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
-import trips.tdp.fi.uba.ar.tripsandroid.activities.AttractionActivity;
 import trips.tdp.fi.uba.ar.tripsandroid.activities.CityActivity;
 import trips.tdp.fi.uba.ar.tripsandroid.activities.CityListActivity;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
@@ -35,6 +35,8 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder> {
     private ArrayList<City> mDataset;
+    private AlertDialog loadingDialog;
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView cityNameTextView;
@@ -70,27 +72,12 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         final CitiesAdapter.ViewHolder h = holder;
         if (position == 0){
             holder.cityCountryTextView.setVisibility(View.GONE);
-            holder.cityNameTextView.setText("Mi Ubicación");
+            holder.cityNameTextView.setText("Mi ubicación");
             holder.cityCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    LocationManager lm = (LocationManager) h.context.getSystemService(Context.LOCATION_SERVICE);
-                    try{
-                        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        double longitude = location.getLongitude();
-                        double latitude = location.getLatitude();
-                        Geocoder gcd = new Geocoder(h.context, Locale.ENGLISH);
-                        List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
-                        String cityName = addresses.get(0).getLocality();
-                        cityName = "Berlin";
-                        matchCityName(cityName, h.context);
-                    }
-                    catch (SecurityException e){
-                        e.printStackTrace();
-                    }
-                    catch (IOException e){
-                        e.printStackTrace();
-                    }
+                    createLoadingAlertDialog(h.context);
+                    new GetCityName().execute(h.context);
                 }
             });
 
@@ -109,6 +96,22 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
 
     }
 
+    private void createLoadingAlertDialog(Context context){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setTitle("Loading");
+        View v = (View) LayoutInflater.from(context).inflate(R.layout.loading_alert_dialog_layout,null);
+        alertDialogBuilder.setView(v);
+        loadingDialog = alertDialogBuilder.show();
+    }
+
+    private void createTextAlertDialog(Context context, String text){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setTitle("Error");
+        alertDialogBuilder.setMessage(text);
+        alertDialogBuilder.setPositiveButton("OK", null);
+        alertDialogBuilder.show();
+    }
+
     private void startCityActivity(Context context, City city){
         Intent i = new Intent(context,CityActivity.class);
         Gson gson = new Gson();
@@ -124,8 +127,44 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
                 startCityActivity(context, c);
             }
         }
-        //VER QUE AHCER SI NO MATCHEA NINGUNA
+        createTextAlertDialog(context, "La ciudad donde se encuentra no esta cargada");
+    }
 
+    private class GetCityName extends AsyncTask<Context, Void, String> {
+
+        private Context c;
+        @Override
+        protected String doInBackground(Context... context) {
+            c = context[0];
+            try{
+                LocationManager lm = (LocationManager) context[0].getSystemService(Context.LOCATION_SERVICE);
+                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+                Geocoder gcd = new Geocoder(context[0], Locale.ENGLISH);
+                List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
+                String cityName = addresses.get(0).getLocality();
+                matchCityName(cityName, context[0]);
+                return cityName;
+            }
+
+            catch (SecurityException e){
+                e.printStackTrace();
+                loadingDialog.cancel();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+                loadingDialog.cancel();
+            }
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s == ""){
+                createTextAlertDialog(c, "La API de google esta caida :(");
+            }
+        }
     }
 
     @Override
