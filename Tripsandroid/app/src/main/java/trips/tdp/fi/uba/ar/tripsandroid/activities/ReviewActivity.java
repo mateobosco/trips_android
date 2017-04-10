@@ -15,8 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.ReviewsAdapter;
@@ -31,6 +34,7 @@ public class ReviewActivity extends AppCompatActivity {
     private ReviewsAdapter mAdapter;
     private ViewPager mPager;
     private Attraction attraction;
+    private ArrayList<Review> reviews;
 
     private float rating;
 
@@ -47,13 +51,18 @@ public class ReviewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        setTitle("Reseñas del obelisco");
+        setTitle("Reseñas");
 
 
         Bundle bundle = getIntent().getExtras();
         String attractionJson = bundle.getString("attraction");
         Gson gson = new Gson();
         attraction = gson.fromJson(attractionJson, Attraction.class);
+
+        String reviewsJson = bundle.getString("reviews");
+        Type listOfTestObject = new TypeToken<List<Review>>(){}.getType();
+        reviews = gson.fromJson(reviewsJson, listOfTestObject);
+
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(new SlidingImageAdapter(ReviewActivity.this, attraction.getImages()));
@@ -69,19 +78,7 @@ public class ReviewActivity extends AppCompatActivity {
         rB.setRating(rating);
         rB.setStepSize(0.5f);
 
-        ArrayList<Review> dataSet = new ArrayList<Review>();
-        Review re = new Review();
-        re.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla iaculis mauris sit amet diam fringilla mattis. Cras aliquet bibendum tortor, quis fringilla mi pellentesque nec. Duis pharetra ex id turpis efficitur ultricies. Etiam congue ullamcorper urna nec suscipit. Cras interdum mauris et lobortis semper. Etiam rutrum velit porttitor velit efficitur ornare. Integer eleifend vulputate dui, lobortis varius ex viverra at. Nulla facilisi. Phasellus blandit gravida ornare. ");
-        re.setScore(2.0f);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        dataSet.add(re);
-        mAdapter = new ReviewsAdapter(dataSet);
+        mAdapter = new ReviewsAdapter(reviews);
         r.setAdapter(mAdapter);
 
 

@@ -25,7 +25,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
@@ -51,11 +55,17 @@ public class AttractionActivity extends AppCompatActivity {
     private RatingBar newReviewRatingBar;
     private Button sendReviewButton;
     private Button moreReviewsButton;
+    private Button moreReviewsButton2;
     private LinearLayout sendingReviewLoadingLinearLayout;
+    private LinearLayout reviewSentLayout;
+
+    private TextView reviewSubmittedText;
 
     private Response.Listener<String> responseListenerGetAttraction;
+    private Response.Listener<String> responseListenerGetReviews;
     private Response.Listener<String> responseListenerSendReview;
     private Response.ErrorListener errorListener;
+    private ArrayList<Review> reviews;
 
     private Attraction attraction;
 
@@ -73,9 +83,13 @@ public class AttractionActivity extends AppCompatActivity {
         newReviewRatingBar = (RatingBar) findViewById(R.id.newReviewRatingBar);
         sendReviewButton = (Button) findViewById(R.id.sendReviewButton);
         moreReviewsButton = (Button) findViewById(R.id.moreReviewsButton);
+        moreReviewsButton2 = (Button) findViewById(R.id.moreReviewsButton2);
         sendingReviewLoadingLinearLayout = (LinearLayout) findViewById(R.id.sendingReviewLoadingLinearLayout);
         sendingReviewLoadingLinearLayout.setVisibility(View.GONE);
         mPager = (ViewPager) findViewById(R.id.pager);
+        reviews = new ArrayList<Review>();
+        reviewSubmittedText = (TextView) findViewById(R.id.reviewSubmitted);
+        reviewSentLayout = (LinearLayout) findViewById(R.id.reviewSentLinearLayout);
 
     }
 
@@ -110,10 +124,38 @@ public class AttractionActivity extends AppCompatActivity {
             }
         };
 
+        responseListenerGetReviews = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    Gson gson = new Gson();
+                    JSONArray arr = new JSONArray(response);
+                    for( int i = 0; i < arr.length() ; i ++){
+                        reviews.add(gson.fromJson(arr.getString(i),Review.class));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.d("Reviews::exito", "Response is: " + response);
+            }
+        };
+
+        responseListenerSendReview = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response){
+                Log.d("response to POST", "success");
+                reviewSentLayout.setVisibility(View.VISIBLE);
+                sendingReviewLoadingLinearLayout.setVisibility(View.GONE);
+
+                Snackbar.make(findViewById(R.id.frame_layout), "Reseña enviada satisfactoriamente", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        };
+
         errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("fracaso", "fracaso");
+                Log.d("fracaso", error.toString());
             }
         };
     }
@@ -142,6 +184,7 @@ public class AttractionActivity extends AppCompatActivity {
         createResponseListeners();
 
         new BackEndClient().getAttraction(attraction.getId(), this, responseListenerGetAttraction, errorListener);
+        new BackEndClient().getReviews(attraction.getId(), this, responseListenerGetReviews, errorListener);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +197,9 @@ public class AttractionActivity extends AppCompatActivity {
 
         mPager.setAdapter(new SlidingImageAdapter(AttractionActivity.this, attraction.getImages()));
 
+        newReviewLinearLayout.setVisibility(View.VISIBLE);
+        sendingReviewLoadingLinearLayout.setVisibility(View.GONE);
+
         sendReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,11 +207,14 @@ public class AttractionActivity extends AppCompatActivity {
                 newReview.setDate(new Date());
                 newReview.setScore(newReviewRatingBar.getRating());
                 newReview.setText(newReviewEditText.getText().toString());
-                newReview.setAuthor(new User("anonimo"));
+                User user = new User("anonimo");
+                newReview.setAuthor(user);
 
                 newReviewLinearLayout.setVisibility(View.GONE);
                 sendingReviewLoadingLinearLayout.setVisibility(View.VISIBLE);
 
+                BackEndClient backEndClient = new BackEndClient();
+                backEndClient.sendReviews(newReview, user, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
 
             }
         });
@@ -177,6 +226,21 @@ public class AttractionActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 String stringAttraction = gson.toJson(attraction);
                 intent.putExtra("attraction", stringAttraction);
+                String stringReviews = gson.toJson(reviews);
+                intent.putExtra("reviews", stringReviews);
+                startActivity(intent);
+            }
+        });
+
+        moreReviewsButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AttractionActivity.this, ReviewActivity.class);
+                Gson gson = new Gson();
+                String stringAttraction = gson.toJson(attraction);
+                intent.putExtra("attraction", stringAttraction);
+                String stringReviews = gson.toJson(reviews);
+                intent.putExtra("reviews", stringReviews);
                 startActivity(intent);
             }
         });
