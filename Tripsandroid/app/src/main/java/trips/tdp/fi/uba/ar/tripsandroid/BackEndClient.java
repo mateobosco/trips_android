@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,7 +89,17 @@ public class BackEndClient {
         {
             @Override
             public byte[] getBody() throws com.android.volley.AuthFailureError {
-                String str = "{\"author_id\":1,\"date\":\"2014-04-19T 17:05:53Z\",\"score\":5,\"stop\":1,\"text\":\"muy bueno\"}";
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T' hh:mm:ss'Z'");
+                String date = sdf.format(new Date());
+
+                String str = "{\"author_id\":" +
+                        Integer.toString(internalUser.getId()) +
+                        ",\"date\":\"" + date + "\"" +
+                        ",\"score\":" + Integer.toString(review.getScore()) +
+                        ",\"stop\":" + Integer.toString(internalAttraction.getId()) +
+                        ",\"text\":\"" + review.getText() + "\"" +
+                        "}";
+                Log.d("review posting body", str);
                 return str.getBytes();
             };
 
