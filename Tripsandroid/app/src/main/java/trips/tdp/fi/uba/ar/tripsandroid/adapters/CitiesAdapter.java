@@ -88,7 +88,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
             holder.cityCardView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    startCityActivity(h.context, mDataset.get(position-1));
+                    startCityActivity(h.context, mDataset.get(position-1), false);
                 }
             });
         }
@@ -111,11 +111,12 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         alertDialogBuilder.show();
     }
 
-    private void startCityActivity(Context context, City city){
+    private void startCityActivity(Context context, City city, boolean myLocation){
         Intent i = new Intent(context,CityActivity.class);
         Gson gson = new Gson();
         String cityJson = gson.toJson(city);
         i.putExtra("cityJson", cityJson);
+        i.putExtra("mycity", myLocation);
 
         context.startActivity(i);
     }
@@ -160,7 +161,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
             for (City c: mDataset){
                 if (c.getName().contains(cityName)){
                     loadingDialog.cancel();
-                    startCityActivity(context, c);
+                    startCityActivity(context, c, true);
                     return OK;
                 }
             }

@@ -23,6 +23,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 public class CityActivity extends AppCompatActivity {
 
     private City city;
+    private boolean myLocation;
     private ProgressBar spinner;
 
 
@@ -41,6 +42,7 @@ public class CityActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         String cityJson = bundle.getString("cityJson");
+        myLocation = bundle.getBoolean("myLocation", false);
         Gson gson = new Gson();
         city = gson.fromJson(cityJson, City.class);
 

@@ -99,6 +99,12 @@ public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarke
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         map.animateCamera(cu);
         map.setOnMarkerClickListener(this);
+        try{
+            map.setMyLocationEnabled(true);
+        }
+        catch(SecurityException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
