@@ -84,14 +84,14 @@ public class ReviewActivity extends AppCompatActivity {
         RatingBar rB = (RatingBar) findViewById(R.id.ratingBar);
 
         rB.setRating(rating);
-        rB.setStepSize(0.5f);
+        rB.setStepSize(0.1f);
 
         mAdapter = new ReviewsAdapter(reviews);
         r.setAdapter(mAdapter);
 
 
         TextView ratingInNumbers = (TextView) findViewById(R.id.rating_in_numbers);
-        ratingInNumbers.setText(Float.toString(rating));
+        ratingInNumbers.setText(Float.toString(rating) + " Reseñas");
 
 
 

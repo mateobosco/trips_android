@@ -144,6 +144,7 @@ public class AttractionActivity extends AppCompatActivity {
                     reviewQuantity = reviews.size();
                     reviewAverageTextView.setText(String.format("%.1f", reviewScoreAverage));
                     reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " Reseñas");
+                    reviewAverageRatingBar.setRating(reviewScoreAverage);
 
                 } catch (Exception e) {
                     e.printStackTrace();
