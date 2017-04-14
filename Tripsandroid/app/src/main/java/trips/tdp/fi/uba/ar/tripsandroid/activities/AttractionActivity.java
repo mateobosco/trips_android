@@ -127,6 +127,7 @@ public class AttractionActivity extends AppCompatActivity {
 
 
                     JSONObject obj = new JSONObject(response);
+                    reviews = new ArrayList<Review>();
                     JSONArray arr = obj.getJSONArray("reviews");
                     for( int i = 0; i < arr.length() ; i ++){
                         reviews.add(gson.fromJson(arr.getString(i),Review.class));
@@ -153,35 +154,6 @@ public class AttractionActivity extends AppCompatActivity {
             }
         };
 
-//        responseListenerGetReviews = new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                try {
-//                    Gson gson = new Gson();
-//                    JSONArray arr = new JSONArray(response);
-//                    for( int i = 0; i < arr.length() ; i ++){
-//                        reviews.add(gson.fromJson(arr.getString(i),Review.class));
-//                    }
-//                    int sum = 0;
-//                    for (Review r : reviews){
-//                        sum+= r.getScore();
-//                    }
-//                    if (reviews.size() > 0){
-//                        reviewScoreAverage = sum * 1.0f / reviews.size();
-//                    }else{
-//                        reviewScoreAverage = 0;
-//                    }
-//
-//                    reviewQuantity = reviews.size();
-//                    reviewAverageTextView.setText(String.format("%.1f", reviewScoreAverage));
-//                    reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " Reseñas");
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                Log.d("Reviews::exito", "Response is: " + response);
-//            }
-//        };
-
         responseListenerSendReview = new Response.Listener<String>() {
             @Override
             public void onResponse(String response){
@@ -191,6 +163,9 @@ public class AttractionActivity extends AppCompatActivity {
 
                 Snackbar.make(findViewById(R.id.frame_layout), "Reseña enviada satisfactoriamente", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                // Actualizar lista de reviews
+                new BackEndClient().getAttraction(attraction.getId(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
             }
         };
 
