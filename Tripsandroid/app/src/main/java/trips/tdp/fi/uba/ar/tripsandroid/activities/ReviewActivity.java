@@ -61,7 +61,7 @@ public class ReviewActivity extends AppCompatActivity {
         rating = Float.parseFloat(bundle.getString("reviewScoreAverage"));
         reviewQuantity = Integer.parseInt(bundle.getString("reviewQuantity"));
         reviewQuantityTextView = (TextView) findViewById(R.id.rating_quantity);
-        reviewQuantityTextView.setText(Integer.toString(reviewQuantity));
+        reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " Reseñas");
 
 
         String attractionJson = bundle.getString("attraction");
