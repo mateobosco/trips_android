@@ -230,18 +230,23 @@ public class AttractionActivity extends AppCompatActivity {
         sendReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Review newReview = new Review();
-                newReview.setDate(new Date());
-                newReview.setScore(newReviewRatingBar.getRating());
-                newReview.setText(newReviewEditText.getText().toString());
-                User user = new User("anonimo");
-                newReview.setAuthor(user);
+                if(newReviewEditText.getText().toString().length() > 0) {
+                    Review newReview = new Review();
+                    newReview.setDate(new Date());
+                    newReview.setScore(newReviewRatingBar.getRating());
+                    newReview.setText(newReviewEditText.getText().toString());
+                    User user = new User("anonimo");
+                    newReview.setAuthor(user);
 
-                newReviewLinearLayout.setVisibility(View.GONE);
-                sendingReviewLoadingLinearLayout.setVisibility(View.VISIBLE);
+                    newReviewLinearLayout.setVisibility(View.GONE);
+                    sendingReviewLoadingLinearLayout.setVisibility(View.VISIBLE);
 
-                BackEndClient backEndClient = new BackEndClient();
-                backEndClient.sendReviews(newReview, user, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
+                    BackEndClient backEndClient = new BackEndClient();
+                    backEndClient.sendReviews(newReview, user, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
+                }else{
+                    Snackbar.make(findViewById(R.id.frame_layout), "Ingrese un comentario", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
 
             }
         });
