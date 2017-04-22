@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -20,6 +21,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.LoggedUser;
 public class LogInActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     private LoginButton loginButton;
+    private Button withoutLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,15 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException exception) {
                 Log.d("Login", "error logging to facebook");
+            }
+        });
+
+        withoutLoginButton = (Button) findViewById(R.id.no_loggin_button);
+
+        withoutLoginButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(LogInActivity.this, CityListActivity.class);
+                startActivity(intent);
             }
         });
 
