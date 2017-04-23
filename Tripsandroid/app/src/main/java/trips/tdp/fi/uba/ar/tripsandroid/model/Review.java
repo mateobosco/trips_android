@@ -7,7 +7,7 @@ public class Review {
     private int id;
     private String text;
     private Date date;
-    private User author;
+    private String author;
     private float score;
 
     public int getId() {
@@ -34,11 +34,11 @@ public class Review {
         this.date = date;
     }
 
-    public User getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 

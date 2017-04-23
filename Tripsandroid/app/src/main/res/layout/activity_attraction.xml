@@ -346,7 +346,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="0.17"
-                                        android:text="4.5"
+                                        android:text="0.0"
                                         android:textAlignment="center"
                                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                                         android:textSize="30sp" />
@@ -363,7 +363,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:gravity="center"
-                                        android:text="98 reseñas"
+                                        android:text="0 reseñas"
                                         android:textAlignment="center"
                                         android:textSize="24sp" />
                                 </LinearLayout>
