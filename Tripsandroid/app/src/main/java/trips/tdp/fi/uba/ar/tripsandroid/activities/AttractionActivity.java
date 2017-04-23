@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -43,6 +44,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.SlidingImageAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
+import trips.tdp.fi.uba.ar.tripsandroid.model.LoggedUser;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Review;
 import trips.tdp.fi.uba.ar.tripsandroid.model.User;
 
@@ -222,7 +224,7 @@ public class AttractionActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.frame_layout), "Reseña enviada satisfactoriamente", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 // Actualizar lista de reviews
-                new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getDisplayLanguage(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
+                new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getISO3Language(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
             }
         };
 
@@ -267,7 +269,7 @@ public class AttractionActivity extends AppCompatActivity {
 
         createResponseListeners();
 
-        new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getDisplayLanguage(), this, responseListenerGetAttraction, errorListener);
+        new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getISO3Language(), this, responseListenerGetAttraction, errorListener);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -336,6 +338,11 @@ public class AttractionActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        if (!LoggedUser.instance().isLogged()){
+            newReviewLinearLayout.setVisibility(View.GONE);
+        }
 
     }
 

@@ -1,17 +1,17 @@
 package trips.tdp.fi.uba.ar.tripsandroid.model;
 
+import com.facebook.AccessToken;
+
 /**
  * Created by joako on 14/4/17.
  */
 
 public class LoggedUser {
     private static LoggedUser instance = new LoggedUser();
-    private boolean logged;
     private String name;
-    private String facebookId;
 
     private LoggedUser() {
-        logged = false;
+
     }
 
     public static LoggedUser instance(){
@@ -19,18 +19,21 @@ public class LoggedUser {
     }
 
     public boolean isLogged() {
-        return logged;
-    }
-
-    public void setLogged(boolean logged) {
-        this.logged = logged;
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
     }
 
     public void setName(String name) {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
         this.name = name;
     }
 
-    public void setFacebookId(String id) {
-        this.facebookId = id;
+    public String getName(){
+        return name;
+    }
+
+    public String getFacebookId() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken.getUserId();
     }
 }
