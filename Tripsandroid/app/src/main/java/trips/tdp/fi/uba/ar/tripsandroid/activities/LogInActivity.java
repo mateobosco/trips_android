@@ -31,7 +31,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.LoggedUser;
 
 public class LogInActivity extends AppCompatActivity {
-    CallbackManager callbackManager;
+    private CallbackManager callbackManager;
     private LoginButton loginButton;
     private Button withoutLoginButton;
 
@@ -39,13 +39,11 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
-        setContentView(R.layout.activity_log_in);
-        String a = Locale.getDefault().getDisplayLanguage();
-
         callbackManager = CallbackManager.Factory.create();
 
+        setContentView(R.layout.activity_log_in);
+
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile","email"));
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
