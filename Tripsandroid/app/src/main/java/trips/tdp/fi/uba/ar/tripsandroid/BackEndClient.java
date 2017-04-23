@@ -116,7 +116,7 @@ public class BackEndClient {
 
     public void loginUser(String id, String name, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = this.baseUrl + "login";
+        String url = this.baseUrl + "user/login";
         final String finalId = id;
         final String finalName = name;
 
@@ -124,9 +124,10 @@ public class BackEndClient {
         {
             @Override
             public byte[] getBody() throws com.android.volley.AuthFailureError {
-                String str = "{\"id\":" + finalId +
-                        ",\"name\":\"" + finalName+
+                String str = "{\"id\":\"" + finalId + "\"" +
+                        ",\"name\":\"" + finalName + "\"" +
                         "}";
+                Log.d("logging_to_webapp_body", str);
                 Log.d("loggin user in webapp", str);
                 return str.getBytes();
             };
