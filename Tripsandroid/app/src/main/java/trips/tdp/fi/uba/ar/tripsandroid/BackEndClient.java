@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import trips.tdp.fi.uba.ar.tripsandroid.activities.AttractionActivity;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Review;
 import trips.tdp.fi.uba.ar.tripsandroid.model.User;
