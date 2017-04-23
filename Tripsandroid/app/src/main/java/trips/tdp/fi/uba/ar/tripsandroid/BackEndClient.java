@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import trips.tdp.fi.uba.ar.tripsandroid.activities.AttractionActivity;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Review;
 import trips.tdp.fi.uba.ar.tripsandroid.model.User;
@@ -37,9 +36,9 @@ public class BackEndClient {
         queue.add(stringRequest);
     }
 
-    public void getAttraction(int id, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
+    public void getAttraction(int id, String language, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url =this.baseUrl + "attractions/" + id + ".json";
+        String url =this.baseUrl + "attractions/" + id + ".json?lang="+language;
         Log.d("url", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
         queue.add(stringRequest);
@@ -55,9 +54,9 @@ public class BackEndClient {
 
     }
 
-    public void getAttractions(int cityId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+    public void getAttractions(int cityId, String language, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = this.baseUrl + "cities/" + cityId + "/attractions.json";
+        String url = this.baseUrl + "cities/" + cityId + "/attractions.json?lang=" + language;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
         queue.add(stringRequest);
     }
@@ -115,6 +114,34 @@ public class BackEndClient {
             }
         };
 
+        queue.add(stringRequest);
+    }
+
+
+    public void loginUser(String id, String name, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = this.baseUrl + "login";
+        final String finalId = id;
+        final String finalName = name;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, responseListener, errorListener)
+        {
+            @Override
+            public byte[] getBody() throws com.android.volley.AuthFailureError {
+                String str = "{\"id\":" + finalId +
+                        ",\"name\":\"" + finalName+
+                        "}";
+                Log.d("loggin user in webapp", str);
+                return str.getBytes();
+            };
+
+            @Override
+            public Map<String, String> getHeaders(){
+                Map<String, String>  headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
         queue.add(stringRequest);
     }
 }

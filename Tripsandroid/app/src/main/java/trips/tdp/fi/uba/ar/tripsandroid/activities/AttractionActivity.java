@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
@@ -220,7 +221,8 @@ public class AttractionActivity extends AppCompatActivity {
 
                 Snackbar.make(findViewById(R.id.frame_layout), "Reseña enviada satisfactoriamente", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                new BackEndClient().getAttraction(attraction.getId(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
+                // Actualizar lista de reviews
+                new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getDisplayLanguage(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
             }
         };
 
@@ -265,8 +267,7 @@ public class AttractionActivity extends AppCompatActivity {
 
         createResponseListeners();
 
-        new BackEndClient().getAttraction(attraction.getId(), this, responseListenerGetAttraction, errorListener);
-//        new BackEndClient().getReviews(attraction.getId(), this, responseListenerGetReviews, errorListener);
+        new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getDisplayLanguage(), this, responseListenerGetAttraction, errorListener);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -285,18 +286,23 @@ public class AttractionActivity extends AppCompatActivity {
         sendReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Review newReview = new Review();
-                newReview.setDate(new Date());
-                newReview.setScore(newReviewRatingBar.getRating());
-                newReview.setText(newReviewEditText.getText().toString());
-                User user = new User("anonimo");
-                newReview.setAuthor(user);
+                if(newReviewEditText.getText().toString().length() > 0) {
+                    Review newReview = new Review();
+                    newReview.setDate(new Date());
+                    newReview.setScore(newReviewRatingBar.getRating());
+                    newReview.setText(newReviewEditText.getText().toString());
+                    User user = new User("anonimo");
+                    newReview.setAuthor(user);
 
-                newReviewLinearLayout.setVisibility(View.GONE);
-                sendingReviewLoadingLinearLayout.setVisibility(View.VISIBLE);
+                    newReviewLinearLayout.setVisibility(View.GONE);
+                    sendingReviewLoadingLinearLayout.setVisibility(View.VISIBLE);
 
-                BackEndClient backEndClient = new BackEndClient();
-                backEndClient.sendReviews(newReview, user, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
+                    BackEndClient backEndClient = new BackEndClient();
+                    backEndClient.sendReviews(newReview, user, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
+                }else{
+                    Snackbar.make(findViewById(R.id.frame_layout), "Ingrese un comentario", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
 
             }
         });
