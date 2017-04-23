@@ -157,6 +157,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/attractionScheduleTimeLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal">
@@ -181,6 +182,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/attractionPhoneNumberLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal">
@@ -205,6 +207,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/attractionAverageTimeLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal">
@@ -229,6 +232,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/attractionCostLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal">

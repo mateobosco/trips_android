@@ -71,6 +71,10 @@ public class AttractionActivity extends AppCompatActivity {
     private SeekBar audioguideProgressBar;
     private MediaPlayer mediaPlayer;
     private LinearLayout audioguideLinearLayout;
+    private LinearLayout attractionAverageTimeLinearLayout;
+    private LinearLayout attractionCostLinearLayout;
+    private LinearLayout attractionPhoneNumberLinearLayout;
+    private LinearLayout attractionScheduleTimeLinearLayout;
 
     private TextView reviewSubmittedText;
 
@@ -110,6 +114,10 @@ public class AttractionActivity extends AppCompatActivity {
         audioguideProgressBar.setVisibility(View.GONE);
         mediaPlayer = new MediaPlayer();
         audioguideLinearLayout = (LinearLayout) findViewById(R.id.audioguideLinearLayout);
+        attractionAverageTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionAverageTimeLinearLayout);
+        attractionCostLinearLayout = (LinearLayout) findViewById(R.id.attractionCostLinearLayout);
+        attractionPhoneNumberLinearLayout = (LinearLayout) findViewById(R.id.attractionPhoneNumberLinearLayout);
+        attractionScheduleTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionScheduleTimeLinearLayout);
 
     }
 
@@ -123,10 +131,26 @@ public class AttractionActivity extends AppCompatActivity {
                     attraction = gson.fromJson(response, Attraction.class);
 
                     attractionDescriptionTextView.setText(attraction.getDescription());
-                    attractionScheduleTimeTextView.setText(attraction.getSchedule());
-                    attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
-                    attractionCostTextView.setText("$ " + Float.toString(attraction.getCost()));
-                    attractionPhoneNumberTextView.setText(attraction.getTelephone());
+                    if (attraction.hasSchedule()){
+                        attractionScheduleTimeTextView.setText(attraction.getSchedule());
+                    } else {
+                        attractionScheduleTimeLinearLayout.setVisibility(View.GONE);
+                    }
+                    if (attraction.hasAverageTime()){
+                        attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
+                    } else {
+                        attractionAverageTimeLinearLayout.setVisibility(View.GONE);
+                    }
+                    if (attraction.hasCost()){
+                        attractionCostTextView.setText("$ " + Float.toString(attraction.getCost()));
+                    } else {
+                        attractionCostLinearLayout.setVisibility(View.GONE);
+                    }
+                    if (attraction.hasPhoneNumber()) {
+                        attractionPhoneNumberTextView.setText(attraction.getTelephone());
+                    } else {
+                        attractionPhoneNumberLinearLayout.setVisibility(View.GONE);
+                    }
                     mapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap map) {

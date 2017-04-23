@@ -19,8 +19,8 @@ public class Attraction extends Stop{
     private float longitude;
     @SerializedName("schedule")
     private String scheduleTime;
-    private float cost;
-    private int averageTime;
+    private float cost = -1;
+    private int averageTime = -1;
     private Classification classification;
     private City city;
     private String address;
@@ -138,6 +138,22 @@ public class Attraction extends Stop{
 
     public boolean hasAudioguide(){
         return this.getAudioguides() != null && this.getAudioguides().size()>=1;
+    }
+
+    public boolean hasSchedule() {
+        return (this.scheduleTime != null && this.scheduleTime != "");
+    }
+
+    public boolean hasAverageTime() {
+        return (this.averageTime > 0);
+    }
+
+    public boolean hasCost() {
+        return this.cost > 0;
+    }
+
+    public boolean hasPhoneNumber() {
+        return (this.telephone != null && this.telephone != "");
     }
 }
 
