@@ -9,6 +9,15 @@ import com.facebook.AccessToken;
 public class LoggedUser {
     private static LoggedUser instance = new LoggedUser();
     private String name;
+    private String backendId;
+
+    public String getBackendId() {
+        return backendId;
+    }
+
+    public void setBackendId(String backendId) {
+        this.backendId = backendId;
+    }
 
     private LoggedUser() {
 
@@ -36,4 +45,5 @@ public class LoggedUser {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken.getUserId();
     }
+
 }

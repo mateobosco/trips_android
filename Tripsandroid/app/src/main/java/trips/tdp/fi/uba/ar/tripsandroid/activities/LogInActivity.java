@@ -84,6 +84,7 @@ public class LogInActivity extends AppCompatActivity {
                                                 Log.d("login", "posted login to webapp login sucessfully, going to next activity");
 
                                                 LoggedUser user = LoggedUser.instance();
+                                                user.setBackendId(response);
                                                 Intent intent = new Intent(LogInActivity.this, CityListActivity.class);
                                                 startActivity(intent);
                                             }

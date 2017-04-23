@@ -293,14 +293,12 @@ public class AttractionActivity extends AppCompatActivity {
                     newReview.setDate(new Date());
                     newReview.setScore(newReviewRatingBar.getRating());
                     newReview.setText(newReviewEditText.getText().toString());
-                    User user = new User("anonimo");
-                    newReview.setAuthor(user);
 
                     newReviewLinearLayout.setVisibility(View.GONE);
                     sendingReviewLoadingLinearLayout.setVisibility(View.VISIBLE);
 
                     BackEndClient backEndClient = new BackEndClient();
-                    backEndClient.sendReviews(newReview, user, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
+                    backEndClient.sendReviews(newReview, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
                 }else{
                     Snackbar.make(findViewById(R.id.frame_layout), "Ingrese un comentario", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();

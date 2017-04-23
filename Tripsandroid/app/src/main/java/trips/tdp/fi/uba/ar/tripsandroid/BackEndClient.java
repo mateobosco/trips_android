@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
+import trips.tdp.fi.uba.ar.tripsandroid.model.LoggedUser;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Review;
 import trips.tdp.fi.uba.ar.tripsandroid.model.User;
 
@@ -80,12 +81,11 @@ public class BackEndClient {
         queue.add(stringRequest);
     }
 
-    public void sendReviews(final Review review, User user, Attraction attraction, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
+    public void sendReviews(final Review review, Attraction attraction, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = this.baseUrl + "reviews/";
-        final Review internalReview = review;
         final Attraction internalAttraction = attraction;
-        final User internalUser = user;
+        final String userId = LoggedUser.instance().getBackendId();
         Log.d("url POST review", url);
         Log.d("review", review.toString());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, responseListener, errorListener)
@@ -95,8 +95,8 @@ public class BackEndClient {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T' hh:mm:ss'Z'");
                 String date = sdf.format(new Date());
 
-                String str = "{\"author_id\":" +
-                        Integer.toString(internalUser.getId()) +
+                String str = "{\"author\":" +
+                        userId +
                         ",\"date\":\"" + date + "\"" +
                         ",\"score\":" + Integer.toString(review.getScore()) +
                         ",\"stop\":" + Integer.toString(internalAttraction.getId()) +
