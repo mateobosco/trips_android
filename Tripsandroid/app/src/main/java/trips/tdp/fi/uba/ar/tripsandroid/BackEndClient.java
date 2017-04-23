@@ -55,9 +55,9 @@ public class BackEndClient {
 
     }
 
-    public void getAttractions(int cityId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+    public void getAttractions(int cityId, String language, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = this.baseUrl + "cities/" + cityId + "/attractions.json";
+        String url = this.baseUrl + "cities/" + cityId + "/attractions.json?lang=" + language;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
         queue.add(stringRequest);
     }

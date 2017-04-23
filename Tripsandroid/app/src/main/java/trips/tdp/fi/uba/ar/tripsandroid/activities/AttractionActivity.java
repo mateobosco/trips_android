@@ -166,7 +166,7 @@ public class AttractionActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
 
                 // Actualizar lista de reviews
-                new BackEndClient().getAttraction(attraction.getId(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
+                new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getDisplayLanguage(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
             }
         };
 

@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
@@ -77,7 +78,7 @@ public class AttractionListFragment extends Fragment {
             }
         };
 
-        backEndClient.getAttractions(city.getId(), this.getContext(), responseListener, errorListener);
+        backEndClient.getAttractions(city.getId(), Locale.getDefault().getDisplayLanguage(), this.getContext(), responseListener, errorListener);
 
     }
 
