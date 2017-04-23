@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
+import trips.tdp.fi.uba.ar.tripsandroid.model.media.Audioguide;
 import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 
 /**
@@ -18,11 +19,13 @@ public class Attraction extends Stop{
     private float longitude;
     @SerializedName("schedule")
     private String scheduleTime;
-    private float cost;
-    private int averageTime;
+    private float cost = -1;
+    private int averageTime = -1;
     private Classification classification;
     private City city;
     private String address;
+    @SerializedName("audioGuides")
+    private ArrayList<Audioguide> audioguides;
 
     public String getTelephone() {
         return telephone;
@@ -123,6 +126,34 @@ public class Attraction extends Stop{
 
     public void setClassification(Classification classification) {
         this.classification = classification;
+    }
+
+    public ArrayList<Audioguide> getAudioguides() {
+        return audioguides;
+    }
+
+    public void setAudioguides(ArrayList<Audioguide> audioguides){
+        this.audioguides = audioguides;
+    }
+
+    public boolean hasAudioguide(){
+        return this.getAudioguides() != null && this.getAudioguides().size()>=1;
+    }
+
+    public boolean hasSchedule() {
+        return (this.scheduleTime != null && this.scheduleTime != "");
+    }
+
+    public boolean hasAverageTime() {
+        return (this.averageTime > 0);
+    }
+
+    public boolean hasCost() {
+        return this.cost > 0;
+    }
+
+    public boolean hasPhoneNumber() {
+        return (this.telephone != null && this.telephone != "");
     }
 }
 

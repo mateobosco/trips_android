@@ -1,6 +1,8 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -31,6 +34,7 @@ import com.google.gson.JsonArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -64,6 +68,14 @@ public class AttractionActivity extends AppCompatActivity {
     private LinearLayout reviewSentLayout;
     private float reviewScoreAverage = 0f;
     private TextView attractionPhoneNumberTextView;
+    private Button audioguideButton;
+    private SeekBar audioguideProgressBar;
+    private MediaPlayer mediaPlayer;
+    private LinearLayout audioguideLinearLayout;
+    private LinearLayout attractionAverageTimeLinearLayout;
+    private LinearLayout attractionCostLinearLayout;
+    private LinearLayout attractionPhoneNumberLinearLayout;
+    private LinearLayout attractionScheduleTimeLinearLayout;
 
     private TextView reviewSubmittedText;
 
@@ -93,10 +105,20 @@ public class AttractionActivity extends AppCompatActivity {
         sendingReviewLoadingLinearLayout = (LinearLayout) findViewById(R.id.sendingReviewLoadingLinearLayout);
         sendingReviewLoadingLinearLayout.setVisibility(View.GONE);
         mPager = (ViewPager) findViewById(R.id.pager);
-        reviews = new ArrayList<Review>();
+        reviews = new ArrayList<>();
         reviewSubmittedText = (TextView) findViewById(R.id.reviewSubmitted);
         reviewSentLayout = (LinearLayout) findViewById(R.id.reviewSentLinearLayout);
         attractionPhoneNumberTextView = (TextView) findViewById(R.id.attractionPhoneNumberTextView);
+        audioguideButton = (Button) findViewById(R.id.audioguideButton);
+        audioguideButton.setEnabled(false);
+        audioguideProgressBar = (SeekBar) findViewById(R.id.audioguideProgressBar);
+        audioguideProgressBar.setVisibility(View.GONE);
+        mediaPlayer = new MediaPlayer();
+        audioguideLinearLayout = (LinearLayout) findViewById(R.id.audioguideLinearLayout);
+        attractionAverageTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionAverageTimeLinearLayout);
+        attractionCostLinearLayout = (LinearLayout) findViewById(R.id.attractionCostLinearLayout);
+        attractionPhoneNumberLinearLayout = (LinearLayout) findViewById(R.id.attractionPhoneNumberLinearLayout);
+        attractionScheduleTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionScheduleTimeLinearLayout);
 
     }
 
@@ -110,10 +132,26 @@ public class AttractionActivity extends AppCompatActivity {
                     attraction = gson.fromJson(response, Attraction.class);
 
                     attractionDescriptionTextView.setText(attraction.getDescription());
-                    attractionScheduleTimeTextView.setText(attraction.getSchedule());
-                    attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
-                    attractionCostTextView.setText("$ " + Float.toString(attraction.getCost()));
-                    attractionPhoneNumberTextView.setText(attraction.getTelephone());
+                    if (attraction.hasSchedule()){
+                        attractionScheduleTimeTextView.setText(attraction.getSchedule());
+                    } else {
+                        attractionScheduleTimeLinearLayout.setVisibility(View.GONE);
+                    }
+                    if (attraction.hasAverageTime()){
+                        attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
+                    } else {
+                        attractionAverageTimeLinearLayout.setVisibility(View.GONE);
+                    }
+                    if (attraction.hasCost()){
+                        attractionCostTextView.setText("$ " + Float.toString(attraction.getCost()));
+                    } else {
+                        attractionCostLinearLayout.setVisibility(View.GONE);
+                    }
+                    if (attraction.hasPhoneNumber()) {
+                        attractionPhoneNumberTextView.setText(attraction.getTelephone());
+                    } else {
+                        attractionPhoneNumberLinearLayout.setVisibility(View.GONE);
+                    }
                     mapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap map) {
@@ -128,7 +166,7 @@ public class AttractionActivity extends AppCompatActivity {
 
 
                     JSONObject obj = new JSONObject(response);
-                    reviews = new ArrayList<Review>();
+                    reviews = new ArrayList<>();
                     JSONArray arr = obj.getJSONArray("reviews");
                     for( int i = 0; i < arr.length() ; i ++){
                         reviews.add(gson.fromJson(arr.getString(i),Review.class));
@@ -148,6 +186,25 @@ public class AttractionActivity extends AppCompatActivity {
                     reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " Reseñas");
                     reviewAverageRatingBar.setRating(reviewScoreAverage);
 
+                    if (attraction.hasAudioguide()){
+                        String path = attraction.getAudioguides().get(0).getPath();
+                        String url = BackEndClient.getAudioUrl(path);
+                        try {
+                            mediaPlayer.setDataSource(url);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener(){
+                            @Override
+                            public void onPrepared(MediaPlayer mediaPlayer) {
+                                audioguideButton.setEnabled(true);
+                            }
+                        });
+                        mediaPlayer.prepareAsync();
+                    } else {
+                        audioguideLinearLayout.setVisibility(View.GONE);
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -164,7 +221,6 @@ public class AttractionActivity extends AppCompatActivity {
 
                 Snackbar.make(findViewById(R.id.frame_layout), "Reseña enviada satisfactoriamente", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-
                 // Actualizar lista de reviews
                 new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getDisplayLanguage(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
             }
@@ -270,12 +326,26 @@ public class AttractionActivity extends AppCompatActivity {
 
         moreReviewsButton2.setOnClickListener(goToReviews);
 
+        audioguideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mediaPlayer.isPlaying()){
+                    mediaPlayer.pause();
+                } else {
+                    mediaPlayer.start();
+                }
+            }
+        });
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                if (mediaPlayer.isPlaying()){
+                    mediaPlayer.pause();
+                }
                 onBackPressed();
                 return true;
             default:
@@ -293,6 +363,9 @@ public class AttractionActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         mapView.onPause();
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.pause();
+        }
     }
 
     @Override
