@@ -26,7 +26,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                Intent intent = new Intent(HomeActivity.this, CityListActivity.class);
+                Intent intent = new Intent(HomeActivity.this, LogInActivity.class);
                 startActivity(intent);
             }
         }.start();

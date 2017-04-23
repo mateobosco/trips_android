@@ -29,6 +29,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC8P8vX8F9mdpdH3iqyDvk0IyIGx6r4Lfo" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
         <activity android:name=".activities.CityListActivity" />
         <activity
@@ -44,22 +45,17 @@
             android:theme="@style/AppTheme.NoActionBar">
 
              <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-
-
-             <category android:name="android.intent.category.LAUNCHER" />
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
         </activity>
         <activity android:name=".activities.AttractionsActivity" />
         <activity android:name=".activities.ReviewActivity"
             android:theme="@style/AppTheme.NoActionBar" >
-
-             <!--<intent-filter>-->
-             <!--<action android:name="android.intent.action.MAIN" />-->
-
-
-             <!--<category android:name="android.intent.category.LAUNCHER" />-->
-             <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activities.LogInActivity"
+            android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
     </application>
