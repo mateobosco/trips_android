@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
+import trips.tdp.fi.uba.ar.tripsandroid.model.media.Audioguide;
 import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 
 /**
@@ -23,6 +24,8 @@ public class Attraction extends Stop{
     private Classification classification;
     private City city;
     private String address;
+    @SerializedName("audioGuides")
+    private ArrayList<Audioguide> audioguides;
 
     public String getTelephone() {
         return telephone;
@@ -123,6 +126,18 @@ public class Attraction extends Stop{
 
     public void setClassification(Classification classification) {
         this.classification = classification;
+    }
+
+    public ArrayList<Audioguide> getAudioguides() {
+        return audioguides;
+    }
+
+    public void setAudioguides(ArrayList<Audioguide> audioguides){
+        this.audioguides = audioguides;
+    }
+
+    public boolean hasAudioguide(){
+        return this.getAudioguides() != null && this.getAudioguides().size()>=1;
     }
 }
 
