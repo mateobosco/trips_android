@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
@@ -234,8 +235,7 @@ public class AttractionActivity extends AppCompatActivity {
 
         createResponseListeners();
 
-        new BackEndClient().getAttraction(attraction.getId(), this, responseListenerGetAttraction, errorListener);
-//        new BackEndClient().getReviews(attraction.getId(), this, responseListenerGetReviews, errorListener);
+        new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getDisplayLanguage(), this, responseListenerGetAttraction, errorListener);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
