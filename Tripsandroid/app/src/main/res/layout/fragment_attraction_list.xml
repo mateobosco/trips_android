@@ -23,7 +23,7 @@
             android:inputType="textPersonName"
             android:nextFocusLeft="@id/tabSearchAttractionListEditText"
             android:nextFocusUp="@id/tabSearchAttractionListEditText"
-            android:text="Search"
+            android:text="@string/search"
             android:textAppearance="@style/TextAppearance.AppCompat" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tabAttractionListRecyclerView"

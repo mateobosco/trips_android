@@ -53,7 +53,7 @@ public class ReviewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        setTitle("Reseñas");
+        setTitle(getResources().getString(R.string.reviews));
 
 
         Bundle bundle = getIntent().getExtras();
@@ -61,7 +61,7 @@ public class ReviewActivity extends AppCompatActivity {
         rating = Float.parseFloat(bundle.getString("reviewScoreAverage"));
         reviewQuantity = Integer.parseInt(bundle.getString("reviewQuantity"));
         reviewQuantityTextView = (TextView) findViewById(R.id.rating_quantity);
-        reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " Reseñas");
+        reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " " + getResources().getString(R.string.reviews));
 
 
         String attractionJson = bundle.getString("attraction");
@@ -91,7 +91,7 @@ public class ReviewActivity extends AppCompatActivity {
 
 
         TextView ratingInNumbers = (TextView) findViewById(R.id.rating_in_numbers);
-        ratingInNumbers.setText(Float.toString(rating) + " Reseñas");
+        ratingInNumbers.setText(Float.toString(rating) + " " + getResources().getString(R.string.reviews));
 
 
 

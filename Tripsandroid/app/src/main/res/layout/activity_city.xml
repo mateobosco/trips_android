@@ -102,7 +102,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="31dp"
                         android:gravity="center_vertical"
-                        android:text="Atracciones"
+                        android:text="@string/attractions"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -140,7 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="31dp"
                         android:gravity="center_vertical"
-                        android:text="Recorridos"
+                        android:text="@string/tours"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -178,7 +178,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="31dp"
                         android:gravity="center_vertical"
-                        android:text="Favoritos"
+                        android:text="@string/favourites"
                         android:textAlignment="center"
                         android:textSize="20sp"
                         android:textStyle="bold" />

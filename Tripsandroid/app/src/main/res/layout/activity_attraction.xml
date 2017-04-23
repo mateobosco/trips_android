@@ -104,7 +104,7 @@
                         android:layout_weight="0.27"
                         android:gravity="center|left"
                         android:paddingLeft="10dp"
-                        android:text="Visitado"
+                        android:text="@string/visited"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -273,7 +273,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:elevation="5dp"
-                            android:text="Audioguia" />
+                            android:text="@string/audioguide" />
 
                         <SeekBar
                             android:id="@+id/audioguideProgressBar"
@@ -363,7 +363,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:gravity="center"
-                                        android:text="98 reseñas"
+                                        android:text="@string/_98_reviews"
                                         android:textAlignment="center"
                                         android:textSize="24sp" />
                                 </LinearLayout>
@@ -417,7 +417,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:text="Ver más reseñas"
+                                        android:text="@string/see_more_reviews"
                                         android:textAlignment="viewStart" />
 
                                     <Button
@@ -426,7 +426,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
-                                        android:text="Enviar"
+                                        android:text="@string/send"
                                         android:textAlignment="center" />
 
                                 </LinearLayout>
@@ -447,7 +447,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="Ver más reseñas"
+                                    android:text="@string/see_more_reviews"
                                     android:textAlignment="viewStart" />
 
                                 <TextView
@@ -455,7 +455,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="Gracias por enviarnos su reseña" />
+                                    android:text="@string/thanks_for_sending_us_your_review" />
 
                             </LinearLayout>
 
