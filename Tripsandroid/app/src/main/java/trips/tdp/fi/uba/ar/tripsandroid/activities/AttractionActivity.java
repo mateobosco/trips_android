@@ -316,7 +316,8 @@ public class AttractionActivity extends AppCompatActivity {
                 intent.putExtra("attraction", stringAttraction);
                 String stringReviews = gson.toJson(reviews);
                 intent.putExtra("reviews", stringReviews);
-                intent.putExtra("reviewScoreAverage", String.format("%.1f", reviewScoreAverage));
+                //Locale english par que ponga punto en lugar de coma, xq la coma rompe
+                intent.putExtra("reviewScoreAverage", String.format(Locale.ENGLISH, "%.1f", reviewScoreAverage));
                 intent.putExtra("reviewQuantity", Integer.toString(reviewQuantity));
                 startActivity(intent);
             }
