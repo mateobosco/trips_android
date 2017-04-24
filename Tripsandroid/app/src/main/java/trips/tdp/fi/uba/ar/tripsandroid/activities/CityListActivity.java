@@ -1,12 +1,7 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.Manifest;
 
@@ -30,21 +21,14 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.*;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
-import trips.tdp.fi.uba.ar.tripsandroid.adapters.AttractionsAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.CitiesAdapter;
-import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 
 public class CityListActivity extends AppCompatActivity {
@@ -63,7 +47,7 @@ public class CityListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_list);
-        setTitle("Ciudades");
+        setTitle(getResources().getString(R.string.cities));
 
         this.backEndClient = new BackEndClient();
         cities = new ArrayList<>();

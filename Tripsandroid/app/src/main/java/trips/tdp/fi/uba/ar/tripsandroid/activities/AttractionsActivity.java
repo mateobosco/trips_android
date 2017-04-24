@@ -49,7 +49,7 @@ public class AttractionsActivity extends AppCompatActivity
         Gson gson = new Gson();
         city = gson.fromJson(cityJson, City.class);
 
-        setTitle("Atracciones de " + city.getName());
+        setTitle(city.getName() + " - " + getResources().getString(R.string.attractions));
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
     }
@@ -65,8 +65,8 @@ public class AttractionsActivity extends AppCompatActivity
         attractionMapFragment.setArguments(bundle);
 
 
-        adapter.addFragment(attractionMapFragment, "MAPA");
-        adapter.addFragment(attractionListFragment, "LISTA");
+        adapter.addFragment(attractionMapFragment, getResources().getString(R.string.MAP));
+        adapter.addFragment(attractionListFragment, getResources().getString(R.string.LIST));
         viewPager.setAdapter(adapter);
     }
 
