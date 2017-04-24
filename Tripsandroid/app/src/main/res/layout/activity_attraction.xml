@@ -437,7 +437,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
-                                    android:text="Acceder con facebook para escribir una reseña"
+                                    android:text="@string/login_to_facebook_to_submit_review"
                                     android:textAlignment="center" />
 
                             </LinearLayout>

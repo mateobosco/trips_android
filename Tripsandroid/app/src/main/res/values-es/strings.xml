@@ -37,4 +37,5 @@
     <string name="google_api_is_down">La API de Google esta caida</string>
     <string name="the_app_needs_gps_permission">La app necesita permisos de GPS</string>
     <string name="the_city_where_you_are_is_not_available">La ciudad donde se encuentra no esta disponible</string>
+    <string name="login_to_facebook_to_submit_review">Acceder con facebook para escribir una reseña</string>
 </resources>
