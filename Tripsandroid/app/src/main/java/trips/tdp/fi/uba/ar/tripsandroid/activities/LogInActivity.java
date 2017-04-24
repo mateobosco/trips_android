@@ -35,13 +35,19 @@ public class LogInActivity extends AppCompatActivity {
     private LoginButton loginButton;
     private Button withoutLoginButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
+
         setContentView(R.layout.activity_log_in);
+
+        if(LoggedUser.instance().isLogged()){
+            LoginManager.getInstance().logOut();
+        }
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
 
@@ -67,7 +73,6 @@ public class LogInActivity extends AppCompatActivity {
                                     name = object.getString("name");
                                     LoggedUser user = LoggedUser.instance();
                                     user.setName(name);
-                                    user.setFacebookId(id);
                                 } catch (JSONException e) {
 
                                 }
@@ -79,7 +84,7 @@ public class LogInActivity extends AppCompatActivity {
                                                 Log.d("login", "posted login to webapp login sucessfully, going to next activity");
 
                                                 LoggedUser user = LoggedUser.instance();
-                                                user.setLogged(true);
+                                                user.setBackendId(response);
                                                 Intent intent = new Intent(LogInActivity.this, CityListActivity.class);
                                                 startActivity(intent);
                                             }
@@ -89,7 +94,6 @@ public class LogInActivity extends AppCompatActivity {
                                             public void onErrorResponse(VolleyError error) {
                                                 Log.d("login", "error loggeando contra webapp");
                                                 LoginManager.getInstance().logOut();
-                                                LoggedUser.instance().setLogged(false);
                                             }
                                         }
                                 );

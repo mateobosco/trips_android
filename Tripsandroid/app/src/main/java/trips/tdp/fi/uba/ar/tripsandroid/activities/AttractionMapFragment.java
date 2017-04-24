@@ -79,7 +79,7 @@ public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarke
             }
         };
 
-        backEndClient.getAttractions(city.getId(), Locale.getDefault().getDisplayLanguage(), this.getContext(), responseListener, errorListener);
+        backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), responseListener, errorListener);
 
     }
 

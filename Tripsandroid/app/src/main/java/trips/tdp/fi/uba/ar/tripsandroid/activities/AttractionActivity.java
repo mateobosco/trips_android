@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -43,6 +44,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.SlidingImageAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
+import trips.tdp.fi.uba.ar.tripsandroid.model.LoggedUser;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Review;
 import trips.tdp.fi.uba.ar.tripsandroid.model.User;
 
@@ -222,7 +224,7 @@ public class AttractionActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.frame_layout), getResources().getString(R.string.successfully_sent_review), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 // Actualizar lista de reviews
-                new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getDisplayLanguage(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
+                new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getISO3Language(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
             }
         };
 
@@ -267,7 +269,7 @@ public class AttractionActivity extends AppCompatActivity {
 
         createResponseListeners();
 
-        new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getDisplayLanguage(), this, responseListenerGetAttraction, errorListener);
+        new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getISO3Language(), this, responseListenerGetAttraction, errorListener);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -291,14 +293,12 @@ public class AttractionActivity extends AppCompatActivity {
                     newReview.setDate(new Date());
                     newReview.setScore(newReviewRatingBar.getRating());
                     newReview.setText(newReviewEditText.getText().toString());
-                    User user = new User("anonimo");
-                    newReview.setAuthor(user);
 
                     newReviewLinearLayout.setVisibility(View.GONE);
                     sendingReviewLoadingLinearLayout.setVisibility(View.VISIBLE);
 
                     BackEndClient backEndClient = new BackEndClient();
-                    backEndClient.sendReviews(newReview, user, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
+                    backEndClient.sendReviews(newReview, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
                 }else{
                     Snackbar.make(findViewById(R.id.frame_layout), getResources().getString(R.string.enter_a_comment), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -336,6 +336,11 @@ public class AttractionActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        if (!LoggedUser.instance().isLogged()){
+            newReviewLinearLayout.setVisibility(View.GONE);
+        }
 
     }
 
