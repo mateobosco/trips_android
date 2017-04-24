@@ -429,9 +429,19 @@
                                         android:text="@string/send"
                                         android:textAlignment="center" />
 
+
                                 </LinearLayout>
 
+                                <TextView
+                                    android:id="@+id/mustLogin"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="Acceder con facebook para escribir una reseña"
+                                    android:textAlignment="center" />
+
                             </LinearLayout>
+
 
                             <LinearLayout
                                 android:id="@+id/reviewSentLinearLayout"
