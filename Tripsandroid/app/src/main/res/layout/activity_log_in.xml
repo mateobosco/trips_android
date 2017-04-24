@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Seguir sin loggearse"
+            android:text="@string/continue_without_login"
             tools:layout_editor_absoluteX="102dp"
             tools:layout_editor_absoluteY="231dp" />
 

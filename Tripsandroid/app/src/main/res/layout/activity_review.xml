@@ -57,11 +57,8 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:weightSum="1"><![CDATA[>
-
-
-            ]]>
-
+                android:weightSum="1">
+                
                 <LinearLayout
                     android:layout_width="190dp"
                     android:layout_height="match_parent"
@@ -94,7 +91,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|center_horizontal|center"
                     android:paddingRight="20dp"
-                    android:text="92 reseñas"
+                    android:text="@string/_98_reviews"
                     android:textAppearance="@android:style/TextAppearance.Large" />
 
             </LinearLayout>

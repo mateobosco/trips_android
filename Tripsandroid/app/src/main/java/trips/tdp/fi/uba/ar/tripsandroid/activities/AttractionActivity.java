@@ -140,7 +140,7 @@ public class AttractionActivity extends AppCompatActivity {
                         attractionScheduleTimeLinearLayout.setVisibility(View.GONE);
                     }
                     if (attraction.hasAverageTime()){
-                        attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " minutos");
+                        attractionAverageTimeTextView.setText(Integer.toString(attraction.getAverageTime()) + " " + getResources().getString(R.string.minutes));
                     } else {
                         attractionAverageTimeLinearLayout.setVisibility(View.GONE);
                     }
@@ -185,7 +185,7 @@ public class AttractionActivity extends AppCompatActivity {
 
                     reviewQuantity = reviews.size();
                     reviewAverageTextView.setText(String.format("%.1f", reviewScoreAverage));
-                    reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " Reseñas");
+                    reviewQuantityTextView.setText(Integer.toString(reviewQuantity) + " "+ getResources().getString(R.string.reviews));
                     reviewAverageRatingBar.setRating(reviewScoreAverage);
 
                     if (attraction.hasAudioguide()){
@@ -221,7 +221,7 @@ public class AttractionActivity extends AppCompatActivity {
                 reviewSentLayout.setVisibility(View.VISIBLE);
                 sendingReviewLoadingLinearLayout.setVisibility(View.GONE);
 
-                Snackbar.make(findViewById(R.id.frame_layout), "Reseña enviada satisfactoriamente", Snackbar.LENGTH_LONG)
+                Snackbar.make(findViewById(R.id.frame_layout), getResources().getString(R.string.successfully_sent_review), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 // Actualizar lista de reviews
                 new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getISO3Language(), AttractionActivity.this, responseListenerGetAttraction, errorListener);
@@ -275,7 +275,7 @@ public class AttractionActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Marcado como favorito", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, getResources().getString(R.string.marked_as_favorite), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -300,7 +300,7 @@ public class AttractionActivity extends AppCompatActivity {
                     BackEndClient backEndClient = new BackEndClient();
                     backEndClient.sendReviews(newReview, attraction, AttractionActivity.this, responseListenerSendReview, errorListener);
                 }else{
-                    Snackbar.make(findViewById(R.id.frame_layout), "Ingrese un comentario", Snackbar.LENGTH_LONG)
+                    Snackbar.make(findViewById(R.id.frame_layout), getResources().getString(R.string.enter_a_comment), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
 

@@ -72,7 +72,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         final CitiesAdapter.ViewHolder h = holder;
         if (position == 0){
             holder.cityCountryTextView.setVisibility(View.GONE);
-            holder.cityNameTextView.setText("Mi ubicación");
+            holder.cityNameTextView.setText(h.context.getResources().getString(R.string.my_location));
             holder.cityCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,9 +106,9 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
 
     private void createTextAlertDialog(Context context, String text){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setTitle("Error");
+        alertDialogBuilder.setTitle(context.getResources().getString(R.string.error));
         alertDialogBuilder.setMessage(text);
-        alertDialogBuilder.setPositiveButton("OK", null);
+        alertDialogBuilder.setPositiveButton(context.getResources().getString(R.string.ok), null);
         alertDialogBuilder.show();
     }
 
@@ -166,15 +166,15 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.ViewHolder
         @Override
         protected void onPostExecute(Integer i) {
             if (i == GENERAL_EXCEPTION) {
-                createTextAlertDialog(c, "Hubo un error buscando la ubicación");
+                createTextAlertDialog(c, c.getResources().getString(R.string.there_was_an_error_looking_for_your_location));
             } else if (i == IO_EXCEPTION){
-                createTextAlertDialog(c, "La API de google esta caida :(");
+                createTextAlertDialog(c, c.getResources().getString(R.string.google_api_is_down));
             }
             else if (i == SECURITY_EXCEPTION){
-                createTextAlertDialog(c, "Falta el permiso de GPS");
+                createTextAlertDialog(c, c.getResources().getString(R.string.the_app_needs_gps_permission));
             }
             else if (i == NOT_FOUND){
-                createTextAlertDialog(c, "La ciudad donde se encuentra no esta cargada");
+                createTextAlertDialog(c, c.getResources().getString(R.string.the_city_where_you_are_is_not_available));
             }
         }
 
