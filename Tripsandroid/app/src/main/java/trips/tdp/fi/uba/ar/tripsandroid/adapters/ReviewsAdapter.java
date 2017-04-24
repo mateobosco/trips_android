@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
@@ -34,7 +36,9 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.reviewText.setText(mDataset.get(position).getText());
-        holder.reviewScore.setText(Float.toString(mDataset.get(position).getScore()));
+//        holder.reviewScore.setText(Float.toString(mDataset.get(position).getScore()));
+        holder.reviewScore.setText(Integer.toString((int)mDataset.get(position).getScore()));
+        holder.reviewerName.setText(mDataset.get(position).getAuthor());
     }
 
     @Override
@@ -45,11 +49,13 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView reviewText;
         public TextView reviewScore;
+        public TextView reviewerName;
         public ViewHolder(View itemView) {
             super(itemView);
 
             reviewScore = (TextView) itemView.findViewById(R.id.textView4);
             reviewText= (TextView) itemView.findViewById(R.id.textView5);
+            reviewerName = (TextView) itemView.findViewById(R.id.user_name);
 
         }
     }

@@ -338,8 +338,14 @@ public class AttractionActivity extends AppCompatActivity {
         });
 
 
-        if (!LoggedUser.instance().isLogged()){
-            newReviewLinearLayout.setVisibility(View.GONE);
+        TextView mustLogin = (TextView) findViewById(R.id.mustLogin);
+        if (LoggedUser.instance().isLogged()){
+            mustLogin.setVisibility(View.GONE);
+        }else{
+            newReviewEditText.setVisibility(View.GONE);
+            newReviewRatingBar.setVisibility(View.GONE);
+            sendReviewButton.setVisibility(View.GONE);
+            mustLogin.setVisibility(View.VISIBLE);
         }
 
     }

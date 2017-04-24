@@ -346,7 +346,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="0.17"
-                                        android:text="4.5"
+                                        android:text="0.0"
                                         android:textAlignment="center"
                                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                                         android:textSize="30sp" />
@@ -429,9 +429,19 @@
                                         android:text="@string/send"
                                         android:textAlignment="center" />
 
+
                                 </LinearLayout>
 
+                                <TextView
+                                    android:id="@+id/mustLogin"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="@string/login_to_facebook_to_submit_review"
+                                    android:textAlignment="center" />
+
                             </LinearLayout>
+
 
                             <LinearLayout
                                 android:id="@+id/reviewSentLinearLayout"

@@ -91,7 +91,7 @@ public class ReviewActivity extends AppCompatActivity {
 
 
         TextView ratingInNumbers = (TextView) findViewById(R.id.rating_in_numbers);
-        ratingInNumbers.setText(Float.toString(rating) + " " + getResources().getString(R.string.reviews));
+        ratingInNumbers.setText(Float.toString(rating) );
 
 
 

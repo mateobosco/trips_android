@@ -42,8 +42,12 @@ public class LoggedUser {
     }
 
     public String getFacebookId() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        return accessToken.getUserId();
+        if (isLogged()) {
+            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            return accessToken.getUserId();
+        }else{
+            return null;
+        }
     }
 
 }
