@@ -117,6 +117,31 @@ public class BackEndClient {
         queue.add(stringRequest);
     }
 
+    public void postToFavourites(Attraction attraction, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = this.baseUrl + "user/fav";
+        final String userId = LoggedUser.instance().getBackendId();
+        final int attractionId = attraction.getId();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, responseListener, errorListener){
+            @Override
+            public byte[] getBody() throws com.android.volley.AuthFailureError {
+                String str = "{\"id\":" + userId +
+                        ",\"stop_id\":" + Integer.toString(attractionId) +
+                        "}";
+                Log.d("FAV posting body", str);
+                return str.getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders(){
+                Map<String, String>  headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+        queue.add(stringRequest);
+    }
+
 
     public void loginUser(String id, String name, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
