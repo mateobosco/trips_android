@@ -177,4 +177,14 @@ public class BackEndClient {
         };
         queue.add(stringRequest);
     }
+
+
+    public void getRoutes(int cityId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = this.baseUrl + "cities/" + cityId + "/routes.json";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+        queue.add(stringRequest);
+    }
+
+
 }

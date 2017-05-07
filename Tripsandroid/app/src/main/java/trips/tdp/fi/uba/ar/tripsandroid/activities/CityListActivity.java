@@ -104,7 +104,6 @@ public class CityListActivity extends AppCompatActivity {
         backEndClient.getCities(this, responseListener, errorListener);
 
 
-
         searchEditBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {

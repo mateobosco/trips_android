@@ -17,6 +17,8 @@
     <string name="attractions">Atracciones</string>
     <string name="tours">Recorridos</string>
     <string name="favourites">Favoritos</string>
+    <string name="routes">Rocorridos</string>
+    <string name="route">Recorrido</string>
     <string name="MAP">MAPA</string>
     <string name="LIST">LISTA</string>
     <string name="minutes">minutos</string>
