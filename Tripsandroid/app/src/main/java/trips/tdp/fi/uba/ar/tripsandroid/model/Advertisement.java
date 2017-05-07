@@ -9,7 +9,8 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 public class Advertisement {
 
     private String title;
-    private String text;
+    private String subtitle;
+    private String description;
     private Float latitude;
     private Float longitude;
     private String link;
@@ -23,12 +24,20 @@ public class Advertisement {
         this.title = title;
     }
 
-    public String getText() {
-        return text;
+    public String getSubtitle() {
+        return subtitle;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setSubitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Float getLatitude() {
