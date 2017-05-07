@@ -24,6 +24,7 @@
     <string name="reviews">Reviews</string>
     <string name="successfully_sent_review">Review sent successfully</string>
     <string name="marked_as_favorite">Marked as favorite</string>
+    <string name="unmarked_as_favorite">Unmarked as favorite</string>
     <string name="enter_a_comment">Enter a comment</string>
     <string name="visited">Visited</string>
     <string name="audioguide">Audioguide</string>

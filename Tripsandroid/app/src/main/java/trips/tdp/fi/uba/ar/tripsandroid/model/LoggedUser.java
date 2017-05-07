@@ -20,7 +20,7 @@ public class LoggedUser {
     }
 
     private LoggedUser() {
-
+        this.backendId = "-1";
     }
 
     public static LoggedUser instance(){

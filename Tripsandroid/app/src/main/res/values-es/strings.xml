@@ -23,6 +23,7 @@
     <string name="reviews">Reseñas</string>
     <string name="successfully_sent_review">Reseña enviada exitosamente</string>
     <string name="marked_as_favorite">Marcado como favorito</string>
+    <string name="unmarked_as_favorite">Desmarcado como favorito</string>
     <string name="enter_a_comment">Ingrese un comentario</string>
     <string name="visited">Visitado</string>
     <string name="audioguide">Audioguia</string>

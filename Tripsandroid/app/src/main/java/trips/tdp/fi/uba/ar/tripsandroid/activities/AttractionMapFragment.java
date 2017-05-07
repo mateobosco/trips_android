@@ -36,6 +36,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     private MapView mapView;
+    private boolean isFavourites;
 
     private City city;
     private ArrayList<Attraction> attractions;
@@ -46,21 +47,20 @@ public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarke
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String cityJson = getArguments().getString("cityJson");
-        Gson gson = new Gson();
-        city = gson.fromJson(cityJson, City.class);
-
-        BackEndClient backEndClient = new BackEndClient();
-        attractions = new ArrayList<Attraction>();
-
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("exito", "Response is: " + response);
                 try {
-                    attractions = new ArrayList<Attraction>();
+                    attractions = new ArrayList<>();
                     Gson gson = new Gson();
-                    attractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
+                    ArrayList<Attraction> allAttractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
+                    for (Attraction attraction: allAttractions){
+                        if (attraction.getCity().getId() == city.getId()){
+                            attractions.add(attraction);
+                        }
+                    }
+
                     mapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap map) {
@@ -79,7 +79,19 @@ public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarke
             }
         };
 
-        backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), responseListener, errorListener);
+        BackEndClient backEndClient = new BackEndClient();
+        attractions = new ArrayList<>();
+
+        String cityJson = getArguments().getString("cityJson");
+        Gson gson = new Gson();
+        city = gson.fromJson(cityJson, City.class);
+        isFavourites = getArguments().getBoolean("isFavourites", false);
+        if (!isFavourites){
+            backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), responseListener, errorListener);
+        }
+        else {
+            backEndClient.getFavourites(this.getContext(), responseListener, errorListener);
+        }
 
     }
 
