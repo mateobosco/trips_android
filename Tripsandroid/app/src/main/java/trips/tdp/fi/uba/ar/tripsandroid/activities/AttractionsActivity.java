@@ -46,12 +46,11 @@ public class AttractionsActivity extends AppCompatActivity
         });
 
         Bundle bundle = getIntent().getExtras();
+        cityJson = bundle.getString("cityJson");
+        Gson gson = new Gson();
+        city = gson.fromJson(cityJson, City.class);
         isFavourites = bundle.getBoolean("isFavourites", false);
         if (!isFavourites){
-            cityJson = bundle.getString("cityJson");
-            Gson gson = new Gson();
-            city = gson.fromJson(cityJson, City.class);
-
             setTitle(city.getName() + " - " + getResources().getString(R.string.attractions));
         }
         else {

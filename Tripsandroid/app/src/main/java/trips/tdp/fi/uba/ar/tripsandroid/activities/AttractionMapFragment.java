@@ -54,7 +54,13 @@ public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarke
                 try {
                     attractions = new ArrayList<>();
                     Gson gson = new Gson();
-                    attractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
+                    ArrayList<Attraction> allAttractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
+                    for (Attraction attraction: allAttractions){
+                        if (attraction.getCity().getId() == city.getId()){
+                            attractions.add(attraction);
+                        }
+                    }
+
                     mapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap map) {
@@ -76,11 +82,11 @@ public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarke
         BackEndClient backEndClient = new BackEndClient();
         attractions = new ArrayList<>();
 
+        String cityJson = getArguments().getString("cityJson");
+        Gson gson = new Gson();
+        city = gson.fromJson(cityJson, City.class);
         isFavourites = getArguments().getBoolean("isFavourites", false);
         if (!isFavourites){
-            String cityJson = getArguments().getString("cityJson");
-            Gson gson = new Gson();
-            city = gson.fromJson(cityJson, City.class);
             backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), responseListener, errorListener);
         }
         else {

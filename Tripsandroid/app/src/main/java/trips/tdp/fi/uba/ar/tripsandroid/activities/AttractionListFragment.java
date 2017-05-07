@@ -55,8 +55,12 @@ public class AttractionListFragment extends Fragment {
                 try {
                     attractions = new ArrayList<>();
                     Gson gson = new Gson();
-                    attractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
-
+                    ArrayList<Attraction> allAttractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
+                    for (Attraction attraction: allAttractions){
+                        if (attraction.getCity().getId() == city.getId()){
+                            attractions.add(attraction);
+                        }
+                    }
                     filteredModelList = attractions;
                     mAdapter = new AttractionsAdapter(filteredModelList);
                     mRecyclerView.setAdapter(mAdapter);
@@ -75,23 +79,17 @@ public class AttractionListFragment extends Fragment {
         BackEndClient backEndClient = new BackEndClient();
         attractions = new ArrayList<>();
 
+        String cityJson = getArguments().getString("cityJson");
+        Gson gson = new Gson();
+        city = gson.fromJson(cityJson, City.class);
 
         isFavourites = getArguments().getBoolean("isFavourites", false);
         if (!isFavourites){
-            String cityJson = getArguments().getString("cityJson");
-            Gson gson = new Gson();
-            city = gson.fromJson(cityJson, City.class);
             backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), responseListener, errorListener);
         }
         else{
             backEndClient.getFavourites(this.getContext(), responseListener, errorListener);
         }
-
-
-
-
-
-
     }
 
     @Override
