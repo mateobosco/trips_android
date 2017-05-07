@@ -27,6 +27,7 @@ public class AttractionsActivity extends AppCompatActivity
 
     private City city;
     private String cityJson;
+    private boolean isFavourites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +46,18 @@ public class AttractionsActivity extends AppCompatActivity
         });
 
         Bundle bundle = getIntent().getExtras();
-        cityJson = bundle.getString("cityJson");
-        Gson gson = new Gson();
-        city = gson.fromJson(cityJson, City.class);
+        isFavourites = bundle.getBoolean("isFavourites", false);
+        if (!isFavourites){
+            cityJson = bundle.getString("cityJson");
+            Gson gson = new Gson();
+            city = gson.fromJson(cityJson, City.class);
 
-        setTitle(city.getName() + " - " + getResources().getString(R.string.attractions));
+            setTitle(city.getName() + " - " + getResources().getString(R.string.attractions));
+        }
+        else {
+            setTitle(getResources().getString(R.string.favourites));
+        }
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
     }
@@ -61,6 +69,7 @@ public class AttractionsActivity extends AppCompatActivity
         AttractionMapFragment attractionMapFragment = new AttractionMapFragment();
         Bundle bundle = new Bundle();
         bundle.putString("cityJson", cityJson);
+        bundle.putBoolean("isFavourites", this.isFavourites);
         attractionListFragment.setArguments(bundle);
         attractionMapFragment.setArguments(bundle);
 

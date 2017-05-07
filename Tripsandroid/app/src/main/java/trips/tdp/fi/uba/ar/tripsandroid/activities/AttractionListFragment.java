@@ -40,6 +40,7 @@ public class AttractionListFragment extends Fragment {
     private EditText searchEditBox;
 
     private City city;
+    private boolean isFavourites;
     private ArrayList<Attraction> attractions;
 
 
@@ -47,19 +48,12 @@ public class AttractionListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String cityJson = getArguments().getString("cityJson");
-        Gson gson = new Gson();
-        city = gson.fromJson(cityJson, City.class);
-
-        BackEndClient backEndClient = new BackEndClient();
-        attractions = new ArrayList<Attraction>();
-
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("exito", "Response is: " + response);
                 try {
-                    attractions = new ArrayList<Attraction>();
+                    attractions = new ArrayList<>();
                     Gson gson = new Gson();
                     attractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
 
@@ -78,7 +72,25 @@ public class AttractionListFragment extends Fragment {
             }
         };
 
-        backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), responseListener, errorListener);
+        BackEndClient backEndClient = new BackEndClient();
+        attractions = new ArrayList<>();
+
+
+        isFavourites = getArguments().getBoolean("isFavourites", false);
+        if (!isFavourites){
+            String cityJson = getArguments().getString("cityJson");
+            Gson gson = new Gson();
+            city = gson.fromJson(cityJson, City.class);
+            backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), responseListener, errorListener);
+        }
+        else{
+            backEndClient.getFavourites(this.getContext(), responseListener, errorListener);
+        }
+
+
+
+
+
 
     }
 

@@ -62,6 +62,14 @@ public class BackEndClient {
         queue.add(stringRequest);
     }
 
+    public void getFavourites(Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final String userId = LoggedUser.instance().getBackendId();
+        String url = this.baseUrl + "user/" + userId + "/fav";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+        queue.add(stringRequest);
+    }
+
     public static String getAttractionImageUrl(String imageUrl) {
         return BackEndClient.baseUrl + "images/attractions/" + imageUrl;
     }
@@ -141,7 +149,6 @@ public class BackEndClient {
         };
         queue.add(stringRequest);
     }
-
 
     public void loginUser(String id, String name, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(context);

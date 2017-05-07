@@ -61,14 +61,28 @@ public class CityActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 spinner.setVisibility(View.GONE);
 
-                CardView cardView = (CardView) findViewById(R.id.attractionsCardView);
-                cardView.setOnClickListener(new View.OnClickListener() {
+                CardView cardViewAttractions = (CardView) findViewById(R.id.attractionsCardView);
+                cardViewAttractions.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(getApplicationContext(),AttractionsActivity.class);
                         Gson gson = new Gson();
                         String cityJson = gson.toJson(city);
                         i.putExtra("cityJson", cityJson);
+                        i.putExtra("isFavourites", false);
+                        startActivity(i);
+                    }
+                });
+
+                CardView cardViewFavourites = (CardView) findViewById(R.id.favouritesCardView);
+                cardViewFavourites.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(getApplicationContext(),AttractionsActivity.class);
+                        Gson gson = new Gson();
+                        String cityJson = gson.toJson(city);
+                        i.putExtra("cityJson", cityJson);
+                        i.putExtra("isFavourites", true);
                         startActivity(i);
                     }
                 });
