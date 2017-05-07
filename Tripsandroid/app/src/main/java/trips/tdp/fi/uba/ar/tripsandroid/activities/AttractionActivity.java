@@ -1,7 +1,6 @@
 package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -30,7 +28,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -51,6 +48,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.User;
 public class AttractionActivity extends AppCompatActivity {
 
     private MapView mapView;
+    FloatingActionButton favoritesFloatingActionButton;
     private ViewPager mPager;
     private TextView attractionDescriptionTextView;
     private TextView attractionScheduleTimeTextView;
@@ -78,12 +76,13 @@ public class AttractionActivity extends AppCompatActivity {
     private LinearLayout attractionCostLinearLayout;
     private LinearLayout attractionPhoneNumberLinearLayout;
     private LinearLayout attractionScheduleTimeLinearLayout;
+    TextView mustLoginTextView;
 
     private TextView reviewSubmittedText;
 
     private Response.Listener<String> responseListenerGetAttraction;
-//    private Response.Listener<String> responseListenerGetReviews;
     private Response.Listener<String> responseListenerSendReview;
+    private Response.Listener<String> responseListenerFavorites;
     private Response.ErrorListener errorListener;
     private ArrayList<Review> reviews;
 
@@ -95,6 +94,7 @@ public class AttractionActivity extends AppCompatActivity {
         attractionAverageTimeTextView = (TextView)findViewById(R.id.attractionAverageTimeTextView);
         attractionCostTextView = (TextView)findViewById(R.id.attractionCostTextView);
         mapView = (MapView) findViewById(R.id.attractionMapView);
+        favoritesFloatingActionButton = (FloatingActionButton) findViewById(R.id.favoritesFloatingActionButton);
         reviewAverageRatingBar = (RatingBar) findViewById(R.id.reviewAverageRatingBar);
         reviewAverageTextView = (TextView) findViewById(R.id.reviewAverageTextView);
         reviewQuantityTextView = (TextView) findViewById(R.id.reviewQuantityTextView);
@@ -121,6 +121,7 @@ public class AttractionActivity extends AppCompatActivity {
         attractionCostLinearLayout = (LinearLayout) findViewById(R.id.attractionCostLinearLayout);
         attractionPhoneNumberLinearLayout = (LinearLayout) findViewById(R.id.attractionPhoneNumberLinearLayout);
         attractionScheduleTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionScheduleTimeLinearLayout);
+        mustLoginTextView = (TextView) findViewById(R.id.mustLogin);
 
     }
 
@@ -228,6 +229,24 @@ public class AttractionActivity extends AppCompatActivity {
             }
         };
 
+        responseListenerFavorites = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response){
+                Log.d("POST to favorites", "success");
+                Gson gson = new Gson();
+                User user = gson.fromJson(response, User.class);
+                if (user.hasFavourite(attraction)){
+                    Snackbar.make(findViewById(R.id.frame_layout), getResources().getString(R.string.marked_as_favorite), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                else{
+                    Snackbar.make(findViewById(R.id.frame_layout), getResources().getString(R.string.unmarked_as_favorite), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+
+            }
+        };
+
         errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -271,12 +290,11 @@ public class AttractionActivity extends AppCompatActivity {
 
         new BackEndClient().getAttraction(attraction.getId(), Locale.getDefault().getISO3Language(), this, responseListenerGetAttraction, errorListener);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        favoritesFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, getResources().getString(R.string.marked_as_favorite), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                new BackEndClient().postToFavourites(attraction, AttractionActivity.this, responseListenerFavorites, errorListener);
             }
         });
 
@@ -339,14 +357,15 @@ public class AttractionActivity extends AppCompatActivity {
         });
 
 
-        TextView mustLogin = (TextView) findViewById(R.id.mustLogin);
         if (LoggedUser.instance().isLogged()){
-            mustLogin.setVisibility(View.GONE);
+            mustLoginTextView.setVisibility(View.GONE);
+
         }else{
             newReviewEditText.setVisibility(View.GONE);
             newReviewRatingBar.setVisibility(View.GONE);
             sendReviewButton.setVisibility(View.GONE);
-            mustLogin.setVisibility(View.VISIBLE);
+            mustLoginTextView.setVisibility(View.VISIBLE);
+            favoritesFloatingActionButton.setVisibility(View.GONE);
         }
 
     }
