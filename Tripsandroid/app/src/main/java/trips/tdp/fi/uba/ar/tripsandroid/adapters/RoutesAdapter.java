@@ -1,6 +1,7 @@
 package trips.tdp.fi.uba.ar.tripsandroid.adapters;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
+import trips.tdp.fi.uba.ar.tripsandroid.activities.AttractionActivity;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Route;
 
 /**
@@ -22,23 +24,25 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public final Context context;
-        public TextView cityNameTextView;
-        public TextView cityCountryTextView;
-        public CardView cityCardView;
+        public TextView routeNameTextView;
+        public TextView routeDescriptionTextView;
+        public CardView routeCardView;
+        public ViewPager routeViewPager;
 
         public ViewHolder(View itemView) {
             super(itemView);
             context = itemView.getContext();
-            cityNameTextView = (TextView) itemView.findViewById(R.id.cityNameTextView);
-            cityCountryTextView = (TextView) itemView.findViewById(R.id.cityCountryTextView);
-            cityCardView = (CardView) itemView.findViewById(R.id.cityCardView);
+            routeNameTextView = (TextView) itemView.findViewById(R.id.routeNameTextView);
+            routeDescriptionTextView = (TextView) itemView.findViewById(R.id.routeDescriptionTextView);
+            routeCardView = (CardView) itemView.findViewById(R.id.routeCardView);
+            routeViewPager = (ViewPager) itemView.findViewById(R.id.routeViewPager);
         }
 
     }
 
     @Override
     public RoutesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.city_card_layout, parent, false);
+        View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.route_card_layout, parent, false);
 
         RoutesAdapter.ViewHolder vh = new RoutesAdapter.ViewHolder(v);
         return vh;
@@ -51,8 +55,10 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(RoutesAdapter.ViewHolder holder, final int position) {
         final RoutesAdapter.ViewHolder h = holder;
-        holder.cityNameTextView.setText(mDataset.get(position).getName());
-        holder.cityCountryTextView.setText(mDataset.get(position).getDescription());
+        holder.routeNameTextView.setText(mDataset.get(position).getName());
+        holder.routeDescriptionTextView.setText(mDataset.get(position).getDescription());
+        holder.routeViewPager.setAdapter(new SlidingImageAdapter(holder.context, mDataset.get(position).getAttractionImagesPath()));
+
     }
 
     public int getItemCount() {

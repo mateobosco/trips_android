@@ -100,6 +100,15 @@ public class Attraction extends Stop{
         return BackEndClient.getAttractionImageUrl(image.getPath());
     }
 
+    public ArrayList<String> getImagesFullPath(){
+        ArrayList<String> a = new ArrayList<>();
+        for (Image i: images){
+            String url = BackEndClient.getAttractionImageUrl(i.getPath());
+            a.add(url);
+        }
+        return a;
+    }
+
     public int getId() {
         return id;
     }

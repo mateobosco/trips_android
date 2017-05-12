@@ -1,5 +1,7 @@
 package trips.tdp.fi.uba.ar.tripsandroid.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
@@ -10,6 +12,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 
 public class Route {
 
+    @SerializedName("stops")
     private ArrayList<Attraction> attractions;
     private ArrayList<String> stopsOrder;
     private String name;
@@ -63,5 +66,13 @@ public class Route {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public ArrayList<String> getAttractionImagesPath(){
+        ArrayList<String> paths = new ArrayList<>();
+        for (Attraction a: attractions){
+            paths.add(a.getFullImageUrl(0));
+        }
+        return paths;
     }
 }

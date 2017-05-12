@@ -74,7 +74,7 @@ public class ReviewActivity extends AppCompatActivity {
 
 
         mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(new SlidingImageAdapter(ReviewActivity.this, attraction.getImages()));
+        mPager.setAdapter(new SlidingImageAdapter(ReviewActivity.this, attraction.getImagesFullPath()));
 
 
         RecyclerView r = (RecyclerView) findViewById(R.id.review_list);

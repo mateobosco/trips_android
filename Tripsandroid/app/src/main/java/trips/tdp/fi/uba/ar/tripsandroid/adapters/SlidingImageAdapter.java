@@ -24,11 +24,11 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 public class SlidingImageAdapter extends PagerAdapter {
 
 
-    private ArrayList<Image> images;
+    private ArrayList<String> images;
     private LayoutInflater inflater;
     private Context context;
 
-    public SlidingImageAdapter(Context context,ArrayList<Image> images) {
+    public SlidingImageAdapter(Context context,ArrayList<String> images) {
         this.context = context;
         this.images = images;
         inflater = LayoutInflater.from(context);
@@ -49,8 +49,8 @@ public class SlidingImageAdapter extends PagerAdapter {
         View imageLayout = inflater.inflate(R.layout.sliding_images_layout, view, false);
         ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image);
 
-        Image image = images.get(position);
-        Glide.with(context).load(BackEndClient.getAttractionImageUrl(image.getPath())).into(imageView);
+        String image = images.get(position);
+        Glide.with(context).load(image).into(imageView);
 
         view.addView(imageLayout, 0);
 
