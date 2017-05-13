@@ -21,6 +21,7 @@ public class Route {
     private Image image;
 
     public ArrayList<Attraction> getAttractions() {
+        ArrayList<Attraction> orderedAttractions = new ArrayList<Attraction>();
         return attractions;
     }
 

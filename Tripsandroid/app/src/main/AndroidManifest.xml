@@ -75,7 +75,8 @@
             -->
 
         </activity>
-        <activity android:name=".activities.RoutesActivity"></activity>
+        <activity android:name=".activities.RoutesActivity" />
+        <activity android:name=".activities.RouteActivity"></activity>
     </application>
 
 </manifest>

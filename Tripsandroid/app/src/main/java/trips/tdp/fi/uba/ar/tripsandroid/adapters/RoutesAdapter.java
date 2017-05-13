@@ -1,6 +1,7 @@
 package trips.tdp.fi.uba.ar.tripsandroid.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.activities.AttractionActivity;
+import trips.tdp.fi.uba.ar.tripsandroid.activities.AttractionsActivity;
+import trips.tdp.fi.uba.ar.tripsandroid.activities.RouteActivity;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Route;
 
 /**
@@ -58,6 +63,17 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.ViewHolder
         holder.routeNameTextView.setText(mDataset.get(position).getName());
         holder.routeDescriptionTextView.setText(mDataset.get(position).getDescription());
         holder.routeViewPager.setAdapter(new SlidingImageAdapter(holder.context, mDataset.get(position).getAttractionImagesPath()));
+
+        holder.routeCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(h.context, RouteActivity.class);
+                Gson gson = new Gson();
+                String routeJson = gson.toJson(mDataset.get(position));
+                i.putExtra("routeJson", routeJson);
+                h.context.startActivity(i);
+            }
+        });
 
     }
 
