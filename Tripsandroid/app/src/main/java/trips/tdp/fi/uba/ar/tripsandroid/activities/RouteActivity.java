@@ -2,6 +2,8 @@ package trips.tdp.fi.uba.ar.tripsandroid.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,6 +17,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
+import trips.tdp.fi.uba.ar.tripsandroid.adapters.AttractionsInRouteAdapter;
+import trips.tdp.fi.uba.ar.tripsandroid.adapters.CitiesAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Route;
 
@@ -23,6 +27,9 @@ public class RouteActivity extends AppCompatActivity {
     private Route route;
 
     private MapView mapView;
+    private RecyclerView routeRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +41,21 @@ public class RouteActivity extends AppCompatActivity {
         Gson gson = new Gson();
         route = gson.fromJson(routeJson, Route.class);
 
+        setTitle(route.getName());
 
         mapView = (MapView) findViewById(R.id.routeMapView);
+        routeRecyclerView = (RecyclerView) findViewById(R.id.routeRecyclerView);
+
+        routeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        routeRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        routeRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new AttractionsInRouteAdapter(route.getAttractions());
+        routeRecyclerView.setAdapter(mAdapter);
+
+
+
         mapView.onCreate(savedInstanceState);
-
-
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap map) {

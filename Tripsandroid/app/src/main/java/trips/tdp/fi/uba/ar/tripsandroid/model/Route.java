@@ -22,7 +22,16 @@ public class Route {
 
     public ArrayList<Attraction> getAttractions() {
         ArrayList<Attraction> orderedAttractions = new ArrayList<Attraction>();
-        return attractions;
+
+        for (String index: stopsOrder){
+            for (Attraction a: attractions){
+                if (index.equals(Integer.toString(a.getId()))){
+                    orderedAttractions.add(a);
+                    break;
+                }
+            }
+        }
+        return orderedAttractions;
     }
 
     public void setAttractions(ArrayList<Attraction> attractions) {
