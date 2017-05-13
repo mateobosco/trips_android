@@ -104,7 +104,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/pathsCardView"
+                android:id="@+id/routesCardView"
                 android:layout_width="350dp"
                 android:layout_height="250dp"
                 android:layout_gravity="center"

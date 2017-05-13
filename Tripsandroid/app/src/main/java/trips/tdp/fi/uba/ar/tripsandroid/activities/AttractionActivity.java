@@ -298,7 +298,7 @@ public class AttractionActivity extends AppCompatActivity {
             }
         });
 
-        mPager.setAdapter(new SlidingImageAdapter(AttractionActivity.this, attraction.getImages()));
+        mPager.setAdapter(new SlidingImageAdapter(AttractionActivity.this, attraction.getImagesFullPath()));
 
         newReviewLinearLayout.setVisibility(View.VISIBLE);
         sendingReviewLoadingLinearLayout.setVisibility(View.GONE);
