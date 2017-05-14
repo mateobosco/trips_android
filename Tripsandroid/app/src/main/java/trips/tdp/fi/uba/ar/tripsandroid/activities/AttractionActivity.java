@@ -238,10 +238,12 @@ public class AttractionActivity extends AppCompatActivity {
                 if (user.hasFavourite(attraction)){
                     Snackbar.make(findViewById(R.id.frame_layout), getResources().getString(R.string.marked_as_favorite), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    favoritesFloatingActionButton.setImageResource(android.R.drawable.btn_star_big_on);
                 }
                 else{
                     Snackbar.make(findViewById(R.id.frame_layout), getResources().getString(R.string.unmarked_as_favorite), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    favoritesFloatingActionButton.setImageResource(android.R.drawable.btn_star_big_off);
                 }
 
             }
