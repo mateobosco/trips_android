@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,13 +26,14 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.City;
 public class CityActivity extends AppCompatActivity {
 
     private City city;
-    private CardView cardViewAttractions;
-    private CardView cardViewFavourites;
+    private CardView attractionsCardView;
+    private CardView favouritesCardView;
+    private CardView routesCardView;
 
 
     private void initializeActivity(){
-        cardViewAttractions = (CardView) findViewById(R.id.attractionsCardView);
-        cardViewAttractions.setOnClickListener(new View.OnClickListener() {
+        attractionsCardView = (CardView) findViewById(R.id.attractionsCardView);
+        attractionsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),AttractionsActivity.class);
@@ -45,8 +45,8 @@ public class CityActivity extends AppCompatActivity {
             }
         });
 
-        cardViewFavourites = (CardView) findViewById(R.id.favouritesCardView);
-        cardViewFavourites.setOnClickListener(new View.OnClickListener() {
+        favouritesCardView = (CardView) findViewById(R.id.favouritesCardView);
+        favouritesCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),AttractionsActivity.class);
@@ -54,6 +54,18 @@ public class CityActivity extends AppCompatActivity {
                 String cityJson = gson.toJson(city);
                 i.putExtra("cityJson", cityJson);
                 i.putExtra("isFavourites", true);
+                startActivity(i);
+            }
+        });
+
+        routesCardView = (CardView) findViewById(R.id.routesCardView);
+        routesCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), RoutesActivity.class);
+                Gson gson = new Gson();
+                String cityJson = gson.toJson(city);
+                i.putExtra("cityJson", cityJson);
                 startActivity(i);
             }
         });
@@ -101,7 +113,7 @@ public class CityActivity extends AppCompatActivity {
                     }
                 }
                 if (showFavouritesCard) {
-                    cardViewFavourites.setVisibility(View.VISIBLE);
+                    favouritesCardView.setVisibility(View.VISIBLE);
                 }
                 Log.d("exito", "Response is: " + response);
             }
