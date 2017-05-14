@@ -150,11 +150,12 @@ public class BackEndClient {
         queue.add(stringRequest);
     }
 
-    public void loginUser(String id, String name, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
+    public void loginUser(String id, String name, String gcmToken, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = this.baseUrl + "user/login";
         final String finalId = id;
         final String finalName = name;
+        final String finalToken = gcmToken;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, responseListener, errorListener)
         {
@@ -162,6 +163,7 @@ public class BackEndClient {
             public byte[] getBody() throws com.android.volley.AuthFailureError {
                 String str = "{\"id\":\"" + finalId + "\"" +
                         ",\"name\":\"" + finalName + "\"" +
+                        ",\"gcmToken\":\"" + finalToken + "\"" +
                         "}";
                 Log.d("logging_to_webapp_body", str);
                 Log.d("loggin user in webapp", str);

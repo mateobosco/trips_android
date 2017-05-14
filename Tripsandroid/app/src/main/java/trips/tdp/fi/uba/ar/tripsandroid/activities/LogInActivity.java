@@ -23,9 +23,6 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-import java.util.Locale;
-
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.LoggedUser;
@@ -77,7 +74,7 @@ public class LogInActivity extends AppCompatActivity {
 
                                 }
 
-                                backendClient.loginUser(id, name, LogInActivity.this,
+                                backendClient.loginUser(id, name, LoggedUser.instance().getGCMToken(), LogInActivity.this,
                                         new Response.Listener<String>() {
                                             @Override
                                             public void onResponse(String response){

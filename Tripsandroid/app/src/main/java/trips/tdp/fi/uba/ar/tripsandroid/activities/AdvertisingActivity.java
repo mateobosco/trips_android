@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Advertisement;
+import trips.tdp.fi.uba.ar.tripsandroid.model.LoggedUser;
 import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 
 public class AdvertisingActivity extends AppCompatActivity {
@@ -52,6 +54,9 @@ public class AdvertisingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advertising);
+        Log.d("notif tracking","inside AdvertisingActivity onCreate");
+        Bundle extras = getIntent().getExtras();
+        Log.d("bundle extras", extras.getString("add_id"));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
+import trips.tdp.fi.uba.ar.tripsandroid.services.RegistrationService;
 
 public class HomeActivity extends AppCompatActivity {
     private ImageView logo;
@@ -19,6 +20,9 @@ public class HomeActivity extends AppCompatActivity {
         logo = (ImageView) findViewById(R.id.homeLogo);
 
         logo.setAlpha(0.9f);
+
+        Intent i = new Intent(this, RegistrationService.class);
+        startService(i);
 
         CountDownTimer countDownTimer = new CountDownTimer(1500, 1000) {
 
