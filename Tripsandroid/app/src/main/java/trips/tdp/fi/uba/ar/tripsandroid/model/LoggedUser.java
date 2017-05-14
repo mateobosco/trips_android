@@ -10,6 +10,7 @@ public class LoggedUser {
     private static LoggedUser instance = new LoggedUser();
     private String name;
     private String backendId;
+    private String GCMToken;
 
     public String getBackendId() {
         return backendId;
@@ -50,4 +51,11 @@ public class LoggedUser {
         }
     }
 
+    public String getGCMToken() {
+        return GCMToken;
+    }
+
+    public void setGCMToken(String GCMToken) {
+        this.GCMToken = GCMToken;
+    }
 }

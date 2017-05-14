@@ -11,6 +11,7 @@ import com.google.android.gms.iid.InstanceID;
 import java.io.IOException;
 
 import trips.tdp.fi.uba.ar.tripsandroid.R;
+import trips.tdp.fi.uba.ar.tripsandroid.model.LoggedUser;
 
 /**
  * Created by joako on 7/5/17.
@@ -33,8 +34,7 @@ public class RegistrationService extends IntentService {
                     null
             );
 
-            GcmPubSub subscription = GcmPubSub.getInstance(this);
-            subscription.subscribe(registrationToken, "/topics/my_little_topic", null);
+            LoggedUser.instance().setGCMToken(registrationToken);
 
             Log.d("Registration Token", registrationToken);
 
