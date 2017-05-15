@@ -11,8 +11,8 @@ public class Advertisement {
     private String title;
     private String subtitle;
     private String description;
-    private Float latitude;
-    private Float longitude;
+    private Double latitude;
+    private Double longitude;
     private String link;
     private Image image;
 
@@ -40,19 +40,19 @@ public class Advertisement {
         this.description = description;
     }
 
-    public Float getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Float latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Float getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Float longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

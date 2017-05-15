@@ -55,6 +55,16 @@ public class BackEndClient {
 
     }
 
+
+    public void getAdvertisement(String advertisementId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url =this.baseUrl + "ads/" + advertisementId + ".json";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+        queue.add(stringRequest);
+
+    }
+
     public void getAttractions(int cityId, String language, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener){
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = this.baseUrl + "cities/" + cityId + "/attractions.json?lang=" + language;
