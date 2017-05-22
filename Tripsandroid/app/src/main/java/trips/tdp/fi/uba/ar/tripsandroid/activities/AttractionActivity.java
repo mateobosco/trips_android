@@ -15,9 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -76,6 +78,7 @@ public class AttractionActivity extends AppCompatActivity {
     private LinearLayout attractionCostLinearLayout;
     private LinearLayout attractionPhoneNumberLinearLayout;
     private LinearLayout attractionScheduleTimeLinearLayout;
+    private VideoView videoView;
     TextView mustLoginTextView;
 
     private TextView reviewSubmittedText;
@@ -122,6 +125,7 @@ public class AttractionActivity extends AppCompatActivity {
         attractionPhoneNumberLinearLayout = (LinearLayout) findViewById(R.id.attractionPhoneNumberLinearLayout);
         attractionScheduleTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionScheduleTimeLinearLayout);
         mustLoginTextView = (TextView) findViewById(R.id.mustLogin);
+        videoView = (VideoView) findViewById(R.id.videoView);
 
     }
 
@@ -285,6 +289,17 @@ public class AttractionActivity extends AppCompatActivity {
         String cityJson = bundle.getString("attractionJson");
         Gson gson = new Gson();
         attraction = gson.fromJson(cityJson, Attraction.class);
+
+        String path = "android.resource://" + getPackageName() + "/" + R.raw.squirrel;
+        videoView.setVideoURI(Uri.parse(path));
+        videoView.setVideoPath("http://www.ebookfrenzy.com/android_book/movie.mp4");
+        videoView.setVisibility(View.VISIBLE);
+        MediaController mediaController = new
+                MediaController(this);
+        mediaController.setAnchorView(videoView);
+        videoView.setMediaController(mediaController);
+
+        videoView.start();
 
         setTitle(attraction.getName());
 
