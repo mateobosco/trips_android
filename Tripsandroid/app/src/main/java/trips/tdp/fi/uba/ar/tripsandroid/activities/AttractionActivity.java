@@ -19,7 +19,6 @@ import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -78,7 +77,7 @@ public class AttractionActivity extends AppCompatActivity {
     private LinearLayout attractionCostLinearLayout;
     private LinearLayout attractionPhoneNumberLinearLayout;
     private LinearLayout attractionScheduleTimeLinearLayout;
-    private VideoView videoView;
+    private Button playVideoButton;
     TextView mustLoginTextView;
 
     private TextView reviewSubmittedText;
@@ -125,7 +124,7 @@ public class AttractionActivity extends AppCompatActivity {
         attractionPhoneNumberLinearLayout = (LinearLayout) findViewById(R.id.attractionPhoneNumberLinearLayout);
         attractionScheduleTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionScheduleTimeLinearLayout);
         mustLoginTextView = (TextView) findViewById(R.id.mustLogin);
-        videoView = (VideoView) findViewById(R.id.videoView);
+        playVideoButton = (Button) findViewById(R.id.playVideoButton);
 
     }
 
@@ -269,6 +268,16 @@ public class AttractionActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        playVideoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+                Uri data = Uri.parse("http://www.ebookfrenzy.com/android_book/movie.mp4");
+                intent.setDataAndType(data, "video/mp4");
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -290,16 +299,16 @@ public class AttractionActivity extends AppCompatActivity {
         Gson gson = new Gson();
         attraction = gson.fromJson(cityJson, Attraction.class);
 
-        String path = "android.resource://" + getPackageName() + "/" + R.raw.squirrel;
-        videoView.setVideoURI(Uri.parse(path));
-        videoView.setVideoPath("http://www.ebookfrenzy.com/android_book/movie.mp4");
-        videoView.setVisibility(View.VISIBLE);
-        MediaController mediaController = new
-                MediaController(this);
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
-
-        videoView.start();
+//        String path = "android.resource://" + getPackageName() + "/" + R.raw.squirrel;
+//        videoView.setVideoURI(Uri.parse(path));
+//        videoView.setVideoPath("http://www.ebookfrenzy.com/android_book/movie.mp4");
+//        videoView.setVisibility(View.VISIBLE);
+//        MediaController mediaController = new
+//                MediaController(this);
+//        mediaController.setAnchorView(videoView);
+//        videoView.setMediaController(mediaController);
+//
+//        videoView.start();
 
         setTitle(attraction.getName());
 
