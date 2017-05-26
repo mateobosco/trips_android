@@ -26,6 +26,7 @@ public class Attraction extends Stop{
     private String address;
     @SerializedName("audioGuides")
     private ArrayList<Audioguide> audioguides;
+    private ArrayList<PointOfInterest> pointsOfInterests;
 
     public String getTelephone() {
         return telephone;
@@ -163,6 +164,18 @@ public class Attraction extends Stop{
 
     public boolean hasPhoneNumber() {
         return (this.telephone != null && this.telephone != "");
+    }
+
+    public boolean isVisitable() {
+        return true;
+    }
+
+    public ArrayList<PointOfInterest> getPointsOfInterests() {
+        return pointsOfInterests;
+    }
+
+    public void setPointsOfInterests(ArrayList<PointOfInterest> pointsOfInterests) {
+        this.pointsOfInterests = pointsOfInterests;
     }
 }
 

@@ -109,7 +109,8 @@
 
         <activity android:name=".activities.RoutesActivity" />
         <activity android:name=".activities.RouteActivity" />
-        <activity android:name=".activities.PointsOfInterestActivity"></activity>
+        <activity android:name=".activities.PointsOfInterestActivity" />
+        <activity android:name=".activities.PointOfInterestActivity"></activity>
     </application>
 
 </manifest>
