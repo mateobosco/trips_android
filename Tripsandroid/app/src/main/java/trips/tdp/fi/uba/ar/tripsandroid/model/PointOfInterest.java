@@ -47,4 +47,8 @@ public class PointOfInterest {
     public void setAudioguide(Audioguide audioguide) {
         this.audioguide = audioguide;
     }
+
+    public boolean hasAudioguide() {
+        return this.audioguide != null && !this.audioguide.getPath().equals("");
+    }
 }

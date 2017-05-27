@@ -37,6 +37,7 @@ public class PointsOfInterestActivity extends AppCompatActivity {
         i.setPath("");
         pof.setImage(i);
         Audioguide audio = new Audioguide();
+        audio.setPath("lalalal.mp3");
         pof.setAudioguide(audio);
         ArrayList<PointOfInterest> points = new ArrayList<>();
         points.add(pof);
