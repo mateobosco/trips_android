@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -55,6 +56,7 @@ public class PointOfInterestActivity extends AppCompatActivity {
 
         pointOfInterestNameTextView.setText(pointOfInterest.getName());
         pointOfInterestDescriptionTextView.setText(pointOfInterest.getDescription());
+        Glide.with(this).load(pointOfInterest.getFullImageUrl()).into(pointOfInterestImageView);
         if (!pointOfInterest.hasAudioguide()){
             pointOfInterestAudioguideLinearLayout.setVisibility(View.GONE);
         } else {

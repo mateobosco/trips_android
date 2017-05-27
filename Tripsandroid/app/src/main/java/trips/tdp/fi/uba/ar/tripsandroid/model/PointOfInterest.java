@@ -1,5 +1,6 @@
 package trips.tdp.fi.uba.ar.tripsandroid.model;
 
+import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.model.media.Audioguide;
 import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 
@@ -50,5 +51,9 @@ public class PointOfInterest {
 
     public boolean hasAudioguide() {
         return this.audioguide != null && !this.audioguide.getPath().equals("");
+    }
+
+    public String getFullImageUrl() {
+        return BackEndClient.getCityImageUrl(image.getPath());
     }
 }

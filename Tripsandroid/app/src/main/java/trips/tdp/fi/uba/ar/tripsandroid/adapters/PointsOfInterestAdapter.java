@@ -59,8 +59,8 @@ public class PointsOfInterestAdapter extends RecyclerView.Adapter<PointsOfIntere
     public void onBindViewHolder(PointsOfInterestAdapter.ViewHolder holder, final int position) {
         holder.pointOfInterestTitleTextView.setText(mDataset.get(position).getName());
 
-        /*Glide.with(holder.pointOfInterestImageView.getContext()).load(mDataset.get(position).getFullImageUrl(0))
-                .into(holder.pointOfInterestImageView);*/
+        Glide.with(holder.pointOfInterestImageView.getContext()).load(mDataset.get(position).getFullImageUrl())
+                .into(holder.pointOfInterestImageView);
 
         final PointsOfInterestAdapter.ViewHolder h = holder;
 

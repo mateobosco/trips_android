@@ -34,7 +34,7 @@ public class PointsOfInterestActivity extends AppCompatActivity {
         pof.setName("Cacona");
         pof.setDescription("Una verdadera cacona bien grande y enorme como le gusta a Juanma");
         Image i = new Image();
-        i.setPath("");
+        i.setPath("buenos_aires_city.png");
         pof.setImage(i);
         Audioguide audio = new Audioguide();
         audio.setPath("lalalal.mp3");
