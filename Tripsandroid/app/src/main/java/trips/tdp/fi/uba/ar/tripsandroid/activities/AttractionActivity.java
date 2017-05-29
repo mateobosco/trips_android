@@ -49,7 +49,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.User;
 public class AttractionActivity extends AppCompatActivity {
 
     private MapView mapView;
-    FloatingActionButton favoritesFloatingActionButton;
+    private FloatingActionButton favoritesFloatingActionButton;
     private ViewPager mPager;
     private TextView attractionDescriptionTextView;
     private TextView attractionScheduleTimeTextView;
@@ -80,10 +80,12 @@ public class AttractionActivity extends AppCompatActivity {
     private LinearLayout videoLinearLayout;
 
     private Button playVideoButton;
-    TextView mustLoginTextView;
     private String videoUrl;
 
+    private TextView mustLoginTextView;
     private TextView reviewSubmittedText;
+    private Button pointsOfInterestButton;
+    private LinearLayout pointsOfInterestLinearLayout;
 
     private Response.Listener<String> responseListenerGetAttraction;
     private Response.Listener<String> responseListenerSendReview;
@@ -129,6 +131,8 @@ public class AttractionActivity extends AppCompatActivity {
         mustLoginTextView = (TextView) findViewById(R.id.mustLogin);
         playVideoButton = (Button) findViewById(R.id.playVideoButton);
         videoLinearLayout = (LinearLayout) findViewById(R.id.videoLinearLayout);
+        pointsOfInterestButton = (Button) findViewById(R.id.pointsOfInterestButton);
+        pointsOfInterestLinearLayout = (LinearLayout) findViewById(R.id.pointsOfInterestLinearLayout);
 
     }
 
@@ -224,6 +228,22 @@ public class AttractionActivity extends AppCompatActivity {
                         mediaPlayer.prepareAsync();
                     } else {
                         audioguideLinearLayout.setVisibility(View.GONE);
+                    }
+
+                    if (attraction.isVisitable()){
+                        pointsOfInterestButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(AttractionActivity.this, PointsOfInterestActivity.class);
+                                Gson gson = new Gson();
+                                String stringAttraction = gson.toJson(attraction);
+                                intent.putExtra("attractionJson", stringAttraction);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    else{
+                        pointsOfInterestLinearLayout.setVisibility(View.GONE);
                     }
 
                 } catch (Exception e) {

@@ -73,6 +73,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="OPEN_ADVERTISING" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -107,7 +108,10 @@
         </service>
 
         <activity android:name=".activities.RoutesActivity" />
-        <activity android:name=".activities.RouteActivity"></activity>
+        <activity android:name=".activities.RouteActivity" />
+        <activity android:name=".activities.PointsOfInterestActivity" />
+        <activity android:name=".activities.PointOfInterestActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

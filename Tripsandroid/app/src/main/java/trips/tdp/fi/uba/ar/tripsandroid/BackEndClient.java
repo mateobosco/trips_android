@@ -84,6 +84,10 @@ public class BackEndClient {
         return BackEndClient.baseUrl + "images/attractions/" + imageUrl;
     }
 
+    public static String getPointOfInterestImageUrl(String imageUrl) {
+        return BackEndClient.baseUrl + "images/pointsofinterest/" + imageUrl;
+    }
+
     public static String getCityImageUrl(String imageUrl) {
         return BackEndClient.baseUrl + "images/cities/" + imageUrl;
     }

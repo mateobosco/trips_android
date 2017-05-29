@@ -1,5 +1,7 @@
 package trips.tdp.fi.uba.ar.tripsandroid.model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class Attraction extends Stop{
     private String address;
     @SerializedName("audioGuides")
     private ArrayList<Audioguide> audioguides;
+    private ArrayList<PointOfInterest> pointsOfInterest;
+
 
     public String getTelephone() {
         return telephone;
@@ -163,6 +167,20 @@ public class Attraction extends Stop{
 
     public boolean hasPhoneNumber() {
         return (this.telephone != null && this.telephone != "");
+    }
+
+    public boolean isVisitable() {
+        Log.d("NULL", Boolean.toString(pointsOfInterest != null));
+        Log.d("SIZE", Integer.toString(pointsOfInterest.size()));
+        return pointsOfInterest != null && pointsOfInterest.size() > 0;
+    }
+
+    public ArrayList<PointOfInterest> getPointsOfInterest() {
+        return pointsOfInterest;
+    }
+
+    public void setPointsOfInterest(ArrayList<PointOfInterest> pointsOfInterest) {
+        this.pointsOfInterest = pointsOfInterest;
     }
 }
 
