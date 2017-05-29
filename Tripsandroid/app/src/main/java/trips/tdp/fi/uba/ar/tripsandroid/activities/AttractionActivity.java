@@ -77,8 +77,11 @@ public class AttractionActivity extends AppCompatActivity {
     private LinearLayout attractionCostLinearLayout;
     private LinearLayout attractionPhoneNumberLinearLayout;
     private LinearLayout attractionScheduleTimeLinearLayout;
+    private LinearLayout videoLinearLayout;
+
     private Button playVideoButton;
     TextView mustLoginTextView;
+    private String videoUrl;
 
     private TextView reviewSubmittedText;
 
@@ -125,6 +128,7 @@ public class AttractionActivity extends AppCompatActivity {
         attractionScheduleTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionScheduleTimeLinearLayout);
         mustLoginTextView = (TextView) findViewById(R.id.mustLogin);
         playVideoButton = (Button) findViewById(R.id.playVideoButton);
+        videoLinearLayout = (LinearLayout) findViewById(R.id.videoLinearLayout);
 
     }
 
@@ -172,6 +176,17 @@ public class AttractionActivity extends AppCompatActivity {
 
 
                     JSONObject obj = new JSONObject(response);
+
+                    JSONArray arrayVideos = obj.getJSONArray("videos");
+
+                    if (arrayVideos.length() > 0){
+                        String videoName = arrayVideos.getJSONObject(0).getString("path");
+                        videoUrl = BackEndClient.getVideoUrl(videoName);
+                        videoLinearLayout.setVisibility(View.VISIBLE);
+                    }else{
+                        videoLinearLayout.setVisibility(View.GONE);
+                    }
+
                     reviews = new ArrayList<>();
                     JSONArray arr = obj.getJSONArray("reviews");
                     for( int i = 0; i < arr.length() ; i ++){
@@ -273,7 +288,8 @@ public class AttractionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-                Uri data = Uri.parse("http://www.ebookfrenzy.com/android_book/movie.mp4");
+//                Uri data = Uri.parse("http://www.ebookfrenzy.com/android_book/movie.mp4");
+                Uri data = Uri.parse(videoUrl);
                 intent.setDataAndType(data, "video/mp4");
                 startActivity(intent);
             }
