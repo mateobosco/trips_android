@@ -43,7 +43,7 @@ public class PointsOfInterestActivity extends AppCompatActivity {
         attractionMapImageView = (ImageView) findViewById(R.id.attractionMapImageView);
         pointsOfInterestRecyclerView = (RecyclerView) findViewById(R.id.pointsOfInterestRecyclerView);
 
-        Glide.with(this).load(attraction.getFullImageUrl(0)).into(attractionMapImageView);
+        Glide.with(this).load(attraction.getMapImage()).into(attractionMapImageView);
 
 
         pointsOfInterestRecyclerView.setLayoutManager(new LinearLayoutManager(this));

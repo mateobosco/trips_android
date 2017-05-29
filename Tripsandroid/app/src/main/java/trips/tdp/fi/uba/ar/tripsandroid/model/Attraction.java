@@ -29,6 +29,23 @@ public class Attraction extends Stop{
     @SerializedName("audioGuides")
     private ArrayList<Audioguide> audioguides;
     private ArrayList<PointOfInterest> pointsOfInterest;
+    private ArrayList<Image> maps;
+
+    public String getMapImage(){
+        if (maps != null && maps.size() > 0){
+            return BackEndClient.getAttractionMapFullUrl(maps.get(0).getPath());
+        }else{
+            return this.getFullImageUrl(0);
+        }
+    }
+
+    public ArrayList<Image> getMaps() {
+        return maps;
+    }
+
+    public void setMaps(ArrayList<Image> maps) {
+        this.maps = maps;
+    }
 
 
     public String getTelephone() {

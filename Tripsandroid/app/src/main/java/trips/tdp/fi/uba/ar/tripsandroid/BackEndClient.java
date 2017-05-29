@@ -19,6 +19,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.LoggedUser;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Review;
 import trips.tdp.fi.uba.ar.tripsandroid.model.User;
+import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
 
 /**
  * Created by joako on 19/3/17.
@@ -98,6 +99,10 @@ public class BackEndClient {
 
     public static String getVideoUrl(String path) {
         return BackEndClient.baseUrl + "videos/" + path;
+    }
+
+    public static String getAttractionMapFullUrl(String path) {
+        return BackEndClient.baseUrl + "images/maps/" + path;
     }
 
     public void getReviews(int attractionId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
@@ -205,6 +210,4 @@ public class BackEndClient {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
         queue.add(stringRequest);
     }
-
-
 }
