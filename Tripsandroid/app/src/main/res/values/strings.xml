@@ -43,4 +43,5 @@
     <string name="the_city_where_you_are_is_not_available">The city where you are is not available</string>
     <string name="login_to_facebook_to_submit_review">Please login to facebook to submit a review</string>
     <string name="title_activity_advertisement">AdvertisementActivity</string>
+    <string name="points_of_interest">Points of Interest</string>
 </resources>
