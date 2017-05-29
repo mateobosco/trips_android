@@ -1,5 +1,7 @@
 package trips.tdp.fi.uba.ar.tripsandroid.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.model.media.Audioguide;
 import trips.tdp.fi.uba.ar.tripsandroid.model.media.Image;
@@ -13,6 +15,7 @@ public class PointOfInterest {
     private String name;
     private String description;
     private Image image;
+    @SerializedName("audioGuide")
     private Audioguide audioguide;
 
     public PointOfInterest(){}
@@ -54,6 +57,6 @@ public class PointOfInterest {
     }
 
     public String getFullImageUrl() {
-        return BackEndClient.getCityImageUrl(image.getPath());
+        return BackEndClient.getPointOfInterestImageUrl(image.getPath());
     }
 }

@@ -41,7 +41,7 @@ public class PointOfInterestActivity extends AppCompatActivity {
         String pointOfInterestJson = bundle.getString("pointOfInterestJson");
         Gson gson = new Gson();
         pointOfInterest = gson.fromJson(pointOfInterestJson, PointOfInterest.class);
-        setTitle("Punto de Interes");
+        setTitle(getResources().getString(R.string.points_of_interest));
 
 
         pointOfInterestImageView = (ImageView) findViewById(R.id.pointOfInterestImageView);
@@ -50,6 +50,7 @@ public class PointOfInterestActivity extends AppCompatActivity {
         pointOfInterestAudioguideLinearLayout = (LinearLayout) findViewById(R.id.pointOfInterestAudioguideLinearLayout);
         pointOfInterestAudioguideButton = (Button) findViewById(R.id.pointOfInterestAudioguideButton);
         pointOfInterestAudioguideProgressBar = (SeekBar) findViewById(R.id.pointOfInterestAudioguideProgressBar);
+        pointOfInterestAudioguideProgressBar.setVisibility(View.GONE);
         mediaPlayer = new MediaPlayer();
 
 

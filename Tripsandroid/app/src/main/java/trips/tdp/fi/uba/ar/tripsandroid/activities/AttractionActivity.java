@@ -79,6 +79,7 @@ public class AttractionActivity extends AppCompatActivity {
     private TextView mustLoginTextView;
     private TextView reviewSubmittedText;
     private Button pointsOfInterestButton;
+    private LinearLayout pointsOfInterestLinearLayout;
 
     private Response.Listener<String> responseListenerGetAttraction;
     private Response.Listener<String> responseListenerSendReview;
@@ -123,6 +124,7 @@ public class AttractionActivity extends AppCompatActivity {
         attractionScheduleTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionScheduleTimeLinearLayout);
         mustLoginTextView = (TextView) findViewById(R.id.mustLogin);
         pointsOfInterestButton = (Button) findViewById(R.id.pointsOfInterestButton);
+        pointsOfInterestLinearLayout = (LinearLayout) findViewById(R.id.pointsOfInterestLinearLayout);
 
     }
 
@@ -220,6 +222,9 @@ public class AttractionActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         });
+                    }
+                    else{
+                        pointsOfInterestLinearLayout.setVisibility(View.GONE);
                     }
 
                 } catch (Exception e) {
