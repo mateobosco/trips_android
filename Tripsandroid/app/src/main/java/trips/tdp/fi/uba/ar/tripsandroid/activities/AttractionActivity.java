@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -76,6 +77,11 @@ public class AttractionActivity extends AppCompatActivity {
     private LinearLayout attractionCostLinearLayout;
     private LinearLayout attractionPhoneNumberLinearLayout;
     private LinearLayout attractionScheduleTimeLinearLayout;
+    private LinearLayout videoLinearLayout;
+
+    private Button playVideoButton;
+    private String videoUrl;
+
     private TextView mustLoginTextView;
     private TextView reviewSubmittedText;
     private Button pointsOfInterestButton;
@@ -123,6 +129,8 @@ public class AttractionActivity extends AppCompatActivity {
         attractionPhoneNumberLinearLayout = (LinearLayout) findViewById(R.id.attractionPhoneNumberLinearLayout);
         attractionScheduleTimeLinearLayout = (LinearLayout) findViewById(R.id.attractionScheduleTimeLinearLayout);
         mustLoginTextView = (TextView) findViewById(R.id.mustLogin);
+        playVideoButton = (Button) findViewById(R.id.playVideoButton);
+        videoLinearLayout = (LinearLayout) findViewById(R.id.videoLinearLayout);
         pointsOfInterestButton = (Button) findViewById(R.id.pointsOfInterestButton);
         pointsOfInterestLinearLayout = (LinearLayout) findViewById(R.id.pointsOfInterestLinearLayout);
 
@@ -172,6 +180,17 @@ public class AttractionActivity extends AppCompatActivity {
 
 
                     JSONObject obj = new JSONObject(response);
+
+                    JSONArray arrayVideos = obj.getJSONArray("videos");
+
+                    if (arrayVideos.length() > 0){
+                        String videoName = arrayVideos.getJSONObject(0).getString("path");
+                        videoUrl = BackEndClient.getVideoUrl(videoName);
+                        videoLinearLayout.setVisibility(View.VISIBLE);
+                    }else{
+                        videoLinearLayout.setVisibility(View.GONE);
+                    }
+
                     reviews = new ArrayList<>();
                     JSONArray arr = obj.getJSONArray("reviews");
                     for( int i = 0; i < arr.length() ; i ++){
@@ -284,6 +303,17 @@ public class AttractionActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        playVideoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+//                Uri data = Uri.parse("http://www.ebookfrenzy.com/android_book/movie.mp4");
+                Uri data = Uri.parse(videoUrl);
+                intent.setDataAndType(data, "video/mp4");
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -304,6 +334,17 @@ public class AttractionActivity extends AppCompatActivity {
         String cityJson = bundle.getString("attractionJson");
         Gson gson = new Gson();
         attraction = gson.fromJson(cityJson, Attraction.class);
+
+//        String path = "android.resource://" + getPackageName() + "/" + R.raw.squirrel;
+//        videoView.setVideoURI(Uri.parse(path));
+//        videoView.setVideoPath("http://www.ebookfrenzy.com/android_book/movie.mp4");
+//        videoView.setVisibility(View.VISIBLE);
+//        MediaController mediaController = new
+//                MediaController(this);
+//        mediaController.setAnchorView(videoView);
+//        videoView.setMediaController(mediaController);
+//
+//        videoView.start();
 
         setTitle(attraction.getName());
 

@@ -96,6 +96,10 @@ public class BackEndClient {
         return BackEndClient.baseUrl + "audios/" + path;
     }
 
+    public static String getVideoUrl(String path) {
+        return BackEndClient.baseUrl + "videos/" + path;
+    }
+
     public void getReviews(int attractionId, Context context, Response.Listener<String> responseListener, Response.ErrorListener errorListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = this.baseUrl + "attractions/" + attractionId + "/reviews.json?max=1000";

@@ -235,6 +235,33 @@
                         android:gravity="center|left"
                         android:paddingLeft="10dp"
                         android:text="TextView"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/videoLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/videoLogo"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@android:drawable/presence_video_online" />
+
+                    <Button
+                        android:id="@+id/playVideoButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|left"
+                        android:layout_weight="0.27"
+                        android:gravity="center|left"
+                        android:paddingLeft="10dp"
+                        android:text="Play Video"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -263,6 +290,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
+
 
                     </LinearLayout>
 
