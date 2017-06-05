@@ -27,6 +27,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.AttractionsAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
+import trips.tdp.fi.uba.ar.tripsandroid.model.Favourite;
 
 
 public class AttractionListFragment extends Fragment {
@@ -48,7 +49,7 @@ public class AttractionListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+        Response.Listener<String> getAttractionsResponseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("exito", "Response is: " + response);
@@ -59,6 +60,28 @@ public class AttractionListFragment extends Fragment {
                     for (Attraction attraction: allAttractions){
                         if (attraction.getCity().getId() == city.getId()){
                             attractions.add(attraction);
+                        }
+                    }
+                    filteredModelList = attractions;
+                    mAdapter = new AttractionsAdapter(filteredModelList);
+                    mRecyclerView.setAdapter(mAdapter);
+                } catch (Exception e) {
+                    Log.d("error", e.toString());
+                }
+            }
+        };
+
+        Response.Listener<String> getFavsResponseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("exito", "Response is: " + response);
+                try {
+                    attractions = new ArrayList<>();
+                    Gson gson = new Gson();
+                    ArrayList<Favourite> favs = gson.fromJson(response, new TypeToken<ArrayList<Favourite>>(){}.getType());
+                    for (Favourite fav: favs){
+                        if (fav.getAttraction().getCity().getId() == city.getId()){
+                            attractions.add(fav.getAttraction());
                         }
                     }
                     filteredModelList = attractions;
@@ -85,10 +108,10 @@ public class AttractionListFragment extends Fragment {
 
         isFavourites = getArguments().getBoolean("isFavourites", false);
         if (!isFavourites){
-            backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), responseListener, errorListener);
+            backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), getAttractionsResponseListener, errorListener);
         }
         else{
-            backEndClient.getFavourites(this.getContext(), responseListener, errorListener);
+            backEndClient.getFavourites(this.getContext(), getFavsResponseListener, errorListener);
         }
     }
 

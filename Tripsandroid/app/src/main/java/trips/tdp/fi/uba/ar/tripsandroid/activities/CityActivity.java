@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 import trips.tdp.fi.uba.ar.tripsandroid.BackEndClient;
 import trips.tdp.fi.uba.ar.tripsandroid.R;
-import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
+import trips.tdp.fi.uba.ar.tripsandroid.model.Favourite;
 
 public class CityActivity extends AppCompatActivity {
 
@@ -103,19 +103,25 @@ public class CityActivity extends AppCompatActivity {
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Gson gson = new Gson();
-                boolean showFavouritesCard = false;
-                ArrayList<Attraction> attractions = gson.fromJson(response, new TypeToken<ArrayList<Attraction>>(){}.getType());
-                for (Attraction attraction: attractions){
-                    if (attraction.getCity().getId() == city.getId()){
-                        showFavouritesCard = true;
-                        break;
+                try{
+                    Gson gson = new Gson();
+                    boolean showFavouritesCard = false;
+                    ArrayList<Favourite> favs = gson.fromJson(response, new TypeToken<ArrayList<Favourite>>(){}.getType());
+                    for (Favourite fav: favs){
+                        if (fav.getAttraction().getCity().getId() == city.getId()){
+                            showFavouritesCard = true;
+                            break;
+                        }
                     }
+                    if (showFavouritesCard) {
+                        favouritesCardView.setVisibility(View.VISIBLE);
+                    }
+                    Log.d("exito", "Response is: " + response);
                 }
-                if (showFavouritesCard) {
-                    favouritesCardView.setVisibility(View.VISIBLE);
+                catch (Exception e){
+                    Log.d("error", "error parsing response");
                 }
-                Log.d("exito", "Response is: " + response);
+
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {

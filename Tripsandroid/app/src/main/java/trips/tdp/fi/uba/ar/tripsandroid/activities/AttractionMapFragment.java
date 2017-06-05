@@ -32,6 +32,7 @@ import trips.tdp.fi.uba.ar.tripsandroid.R;
 import trips.tdp.fi.uba.ar.tripsandroid.adapters.AttractionsAdapter;
 import trips.tdp.fi.uba.ar.tripsandroid.model.Attraction;
 import trips.tdp.fi.uba.ar.tripsandroid.model.City;
+import trips.tdp.fi.uba.ar.tripsandroid.model.Favourite;
 
 public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
@@ -47,7 +48,7 @@ public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarke
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+        Response.Listener<String> getAttractionsResponseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("exito", "Response is: " + response);
@@ -58,6 +59,32 @@ public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarke
                     for (Attraction attraction: allAttractions){
                         if (attraction.getCity().getId() == city.getId()){
                             attractions.add(attraction);
+                        }
+                    }
+
+                    mapView.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap map) {
+                            initializeMap(map);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.d("error", e.toString());
+                }
+            }
+        };
+
+        Response.Listener<String> getFavResponseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("exito", "Response is: " + response);
+                try {
+                    attractions = new ArrayList<>();
+                    Gson gson = new Gson();
+                    ArrayList<Favourite> favs = gson.fromJson(response, new TypeToken<ArrayList<Favourite>>(){}.getType());
+                    for (Favourite fav: favs){
+                        if (fav.getAttraction().getCity().getId() == city.getId()){
+                            attractions.add(fav.getAttraction());
                         }
                     }
 
@@ -87,10 +114,10 @@ public class AttractionMapFragment extends Fragment implements GoogleMap.OnMarke
         city = gson.fromJson(cityJson, City.class);
         isFavourites = getArguments().getBoolean("isFavourites", false);
         if (!isFavourites){
-            backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), responseListener, errorListener);
+            backEndClient.getAttractions(city.getId(), Locale.getDefault().getISO3Language(), this.getContext(), getAttractionsResponseListener, errorListener);
         }
         else {
-            backEndClient.getFavourites(this.getContext(), responseListener, errorListener);
+            backEndClient.getFavourites(this.getContext(), getFavResponseListener, errorListener);
         }
 
     }
