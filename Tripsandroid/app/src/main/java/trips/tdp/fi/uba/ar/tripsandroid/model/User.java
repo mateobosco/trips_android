@@ -6,7 +6,7 @@ public class User {
 
     private String username;
     private int id;
-    private ArrayList<Attraction> favourites;
+    private ArrayList<Favourite> favourites;
     private boolean blocked;
 
     public User(){}
@@ -31,11 +31,11 @@ public class User {
         this.id = id;
     }
 
-    public ArrayList<Attraction> getFavourites() {
+    public ArrayList<Favourite> getFavourites() {
         return favourites;
     }
 
-    public void setFavourites(ArrayList<Attraction> favourites) {
+    public void setFavourites(ArrayList<Favourite> favourites) {
         this.favourites = favourites;
     }
 
@@ -51,8 +51,8 @@ public class User {
         if (favourites == null){
             return false;
         }
-        for (Attraction a: favourites){
-            if (attraction.getId() == a.getId()){
+        for (Favourite fav: favourites){
+            if (attraction.getId() == fav.getAttraction().getId()){
                 return true;
             }
         }

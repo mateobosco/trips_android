@@ -307,9 +307,7 @@ public class AttractionActivity extends AppCompatActivity {
         playVideoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-//                Uri data = Uri.parse("http://www.ebookfrenzy.com/android_book/movie.mp4");
-                Uri data = Uri.parse(videoUrl);
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW);Uri data = Uri.parse(videoUrl);
                 intent.setDataAndType(data, "video/mp4");
                 startActivity(intent);
             }
